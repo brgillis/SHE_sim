@@ -28,12 +28,17 @@
 """
 
 import sys
-import os
 import math
 import numpy           as np
 import galsim
 import multiprocessing as mtp
 import subprocess
+    
+# Default values
+default_random_seed = 8241573
+default_shear_type =   'shear'
+default_image_type =   '32f'
+default_gain = 1.7
 
 def load_default_configurations(config_dict):
     """This function loads a default set of configuration parameters. If you wish to run
@@ -179,12 +184,6 @@ def main(argv):
     allowed_shear_types = ['ellipticity', 'shear', 'ellipticity-angle', 'shear-angle']
     allowed_image_types = ['16i', '32i', '32f', '64f']
     
-    # Default values
-    default_random_seed = 8241573
-    default_shear_type =   'shear'
-    default_image_type =   '32f'
-    default_gain = 1.7
-    
     # Hard bounds for input
     min_num_files    = 1
     min_num_per_file = 1
@@ -278,24 +277,24 @@ def main(argv):
                 print "WARNING: Adjusted config_dict['image_size_y_pix'] to minimum of " + str(min_image_size)
                 
             shear_type_found = False
-            for type in allowed_shear_types:
-                if(config_dict['shear_type'] == type):
+            for im_type in allowed_shear_types:
+                if(config_dict['shear_type'] == im_type):
                     shear_type_found = True
                     break
             if not shear_type_found:
                 config_dict['shear_type'] = default_shear_type
-                print "WARNING: Shear type not known. It's been adjusted to"
-                print "the default type (" + default_shear_type + ")."
+                print "WARNING: Shear im_type not known. It's been adjusted to"
+                print "the default im_type (" + default_shear_type + ")."
                 
             image_type_found = False
-            for type in allowed_image_types:
-                if(config_dict['image_type'] == type):
+            for im_type in allowed_image_types:
+                if(config_dict['image_type'] == im_type):
                     image_type_found = True
                     break
             if not image_type_found:
                 config_dict['image_type'] = default_image_type
-                print "WARNING: Image type not known. It's been adjusted to"
-                print "the default type (" + default_image_type + ")."
+                print "WARNING: Image im_type not known. It's been adjusted to"
+                print "the default im_type (" + default_image_type + ")."
             
             # End reading in the configuration file
         
@@ -873,26 +872,26 @@ def get_dist(type_line   ,
        draw a random variable.
        
        The function adjusts to read in the expected number of parameters for each different
-       distribution type. It also performs a few minor corrections: All strings are fixed to
+       distribution dist_type. It also performs a few minor corrections: All strings are fixed to
        lower case (so they can be read in in any case), and values that can only ever be
        positive are read in as their absolute values.
     """
     
-    # Read in the type of distribution to use
-    type = str(type_line.split()[-1]).lower()
+    # Read in the dist_type of distribution to use
+    dist_type = str(type_line.split()[-1]).lower()
     
-    if(type == 'fixed'):
+    if(dist_type == 'fixed'):
         # Fixed to a single value.
         # Parameters: Value
         params = (float(params_line.split()[-1]))
         
-    elif(type == 'gaussian'):
+    elif(dist_type == 'gaussian'):
         # Gaussian distribution
         # Parameters: Mean, Sigma
         params = (float(params_line.split()[-2])        ,
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'truncated_gaussian'):
+    elif(dist_type == 'truncated_gaussian'):
         # Truncated Gaussian distribution
         # Parameters: Mean, Sigma, Min, Max
         params = (float(params_line.split()[-4])        ,
@@ -900,38 +899,38 @@ def get_dist(type_line   ,
                   float(params_line.split()[-2])        ,
                   float(params_line.split()[-1])        )
         
-    elif(type == 'lognormal-peak'):
+    elif(dist_type == 'lognormal-peak'):
         # Gaussian distribution in log10-space
         # Parameters: Peak, Sigma (both in log10-space)
         params = (float(params_line.split()[-2])        ,
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'lognormal-mean'):
+    elif(dist_type == 'lognormal-mean'):
         # Gaussian distribution in log10-space
         # Parameters: Mean, Sigma (both in log10-space)
         params = (float(params_line.split()[-2])        ,
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'rayleigh'):
+    elif(dist_type == 'rayleigh'):
         # Rayleigh distribution
         # Parameters: Sigma
         params = (np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'truncated_rayleigh'):
+    elif(dist_type == 'truncated_rayleigh'):
         # Truncated Rayleigh distribution
         # Parameters: Sigma, Min, Max
         params = (np.abs(float(params_line.split()[-3])),
                   np.abs(float(params_line.split()[-2])),
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'contracted_rayleigh'):
+    elif(dist_type == 'contracted_rayleigh'):
         # Contracted Rayleigh distribution (using Bryan's formula to shrink in the tail)
         # Parameters: Sigma, Max, Contraction Power
         params = (np.abs(float(params_line.split()[-3])),
                   np.abs(float(params_line.split()[-2])),
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'softened_rayleigh'):
+    elif(dist_type == 'softened_rayleigh'):
         # Softened Rayleigh distribution (using Rachel and Barney's formula to softly truncate)
         # Parameters: Sigma, Beginning of softening zone, End of softening zone (max)
         # WARNING: The current implementation of this uses GalSim functions, which encounter
@@ -941,22 +940,22 @@ def get_dist(type_line   ,
                   np.abs(float(params_line.split()[-2])),
                   np.abs(float(params_line.split()[-1])))
         
-    elif(type == 'uniform'):
+    elif(dist_type == 'uniform'):
         # Uniform distribution
         # Parameters: Min, Max
         params = (float(params_line.split()[-2]),
                   float(params_line.split()[-1]))
         
-    elif(type == 'loguniform'):
+    elif(dist_type == 'loguniform'):
         # Uniform distribution in log10-space
         # Parameters: Min, Max (both in log10-space)
         params = (float(params_line.split()[-2]),
                   float(params_line.split()[-1]))
         
     else:  # Assume uniform otherwise
-        print "WARNING: Unrecognised distribution type. Assuming uniform (min, max)."
+        print "WARNING: Unrecognised distribution dist_type. Assuming uniform (min, max)."
         print "If this is not correct, halt the program and correct."
-        type = 'uniform'
+        dist_type = 'uniform'
         params = (float(params_line.split()[-2]),
                   float(params_line.split()[-1]))
         
@@ -974,7 +973,7 @@ def get_dist(type_line   ,
         print "halt the program and correct."
         mode = 'stamp'
         
-    return (type, params, mode)
+    return (dist_type, params, mode)
 
 
 def get_rand_from_dist(dist, last_deviate=None):
@@ -988,7 +987,7 @@ def get_rand_from_dist(dist, last_deviate=None):
     # Magic numbers
     attempt_max = 10000 # Maximum number of attempts allowed to generate a random number
                         # within truncation boundaries before the algorithm gives up and
-                        # returns (min+max)/2
+                        # returns (min_val+max_val)/2
     
     mode = dist[0]
     if(mode.lower() == 'fixed'):
@@ -1004,15 +1003,15 @@ def get_rand_from_dist(dist, last_deviate=None):
         # Setup
         mean   = dist[1][0]
         stddev = dist[1][1]
-        min    = dist[1][2]
-        max    = dist[1][3]
+        min_val    = dist[1][2]
+        max_val    = dist[1][3]
         
         # Sanity checks
-        if(min > max):
-            swap(min, max)
+        if(min_val > max_val):
+            min_val, max_val = max_val, min_val
             
-        if(min == max):
-            return min
+        if(min_val == max_val):
+            return min_val
         
         # Try values until one works
         good_value = False
@@ -1020,22 +1019,22 @@ def get_rand_from_dist(dist, last_deviate=None):
         
         while((not good_value)and(attempt_counter < attempt_max)):
             test_result = np.random.randn() * stddev + mean
-            if((test_result >= min)and(test_result <= max)):
+            if((test_result >= min_val)and(test_result <= max_val)):
                 good_value = True
             else:
                 attempt_counter += 1
                 
         if(good_value):
-            # We found a value between min and max
+            # We found a value between min_val and max_val
             return test_result
         else:
             # Failsafe so the program won't crash. This will generally only happen for either extreme
-            # min and max values, for which the user should have chosen a better distribution to model
-            # it, or for very small (max-min), for which the below is a decent return value. Even in
+            # min_val and max_val values, for which the user should have chosen a better distribution to model
+            # it, or for very small (max_val-min_val), for which the below is a decent return value. Even in
             # the latter case, the user probably should have chosen a better distribution.
             print "WARNING: Failsafe for truncated Gaussian triggered. If this is happening"
             print "frequently, consider using a different distribution."
-            return (min + max) / 2  
+            return (min_val + max_val) / 2  
         
     elif(mode.lower() == 'lognormal-peak'):
         mean   = dist[1][0]
@@ -1054,42 +1053,42 @@ def get_rand_from_dist(dist, last_deviate=None):
         return np.random.rayleigh(sigma)
     elif(mode.lower() == 'truncated_rayleigh'):
         sigma = dist[1][0]
-        min   = dist[1][1]
-        max   = dist[1][2]
-        if(min > max):
-            swap(min, max)
-        if(min == max):
-            return min
+        min_val   = dist[1][1]
+        max_val   = dist[1][2]
+        if(min_val > max_val):
+            min_val, max_val = max_val, min_val
+        if(min_val == max_val):
+            return min_val
         good_value = False
         attempt_counter = 0
         while((not good_value) and (attempt_counter < attempt_max)):
             test_result = np.random.rayleigh(sigma)
-            if((test_result >= min)and(test_result <= max)):
+            if((test_result >= min_val)and(test_result <= max_val)):
                 good_value = True
             else:
                 attempt_counter += 1
         if(good_value):
-            # We found a value between min and max
+            # We found a value between min_val and max_val
             return test_result
         else:
             # Failsafe so the program won't crash. This will generally only happen for either extreme
-            # min and max values, for which the user should have chosen a better distribution to model
-            # it, or for very small (max-min), for which the below is a decent return value. Even in
+            # min_val and max_val values, for which the user should have chosen a better distribution to model
+            # it, or for very small (max_val-min_val), for which the below is a decent return value. Even in
             # the latter case, the use probably should have chosen a better distribution.
             print "WARNING: Failsafe for truncated Rayleigh triggered. If this is happening"
             print "frequently, consider using a different distribution."
-            return (min + max) / 2  
+            return (min_val + max_val) / 2  
         
     elif(mode.lower() == 'contracted_rayleigh'):
         sigma = dist[1][0]
-        max   = dist[1][1]
+        max_val   = dist[1][1]
         p     = dist[1][2]
         
         # Generate an initial random Rayleigh variable
         first_result = np.random.rayleigh(sigma)
         
-        # Transform it via Bryan's formula to rein in large values to be less than the max
-        return (first_result / np.power(1 + np.power(first_result / max, p), 1.0 / p))
+        # Transform it via Bryan's formula to rein in large values to be less than the max_val
+        return (first_result / np.power(1 + np.power(first_result / max_val, p), 1.0 / p))
     
     elif(mode.lower() == 'softened_rayleigh'):
         sigma        = dist[1][0]
@@ -1129,7 +1128,7 @@ def get_rand_from_dist(dist, last_deviate=None):
         return 10 ** (np.random.random() * (dist_max - dist_min) + dist_min)
     
     else:  # Assume uniform
-        print "WARNING: Unrecognized distribution mode. Assuming uniform (min, max)."
+        print "WARNING: Unrecognized distribution mode. Assuming uniform (min_val, max_val)."
         dist_min = dist[1][0]
         dist_max = dist[1][1]
         return np.random.random() * (dist_max - dist_min) + dist_min
@@ -1596,7 +1595,7 @@ def load_back_config_1_0(config_dict):
     """Function to load configuration settings that were introduced after version 1.0
     """
     
-    config_dict['shear_type']                  = default_config_dict['shear_type']
+    config_dict['shear_type']                  = default_shear_type
     config_dict['image_type']                  = default_image_type
     config_dict['read_noise']             = 0
     config_dict['sky_level_unsubtracted'] = 0
