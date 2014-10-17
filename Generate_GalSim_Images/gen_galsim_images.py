@@ -2,6 +2,8 @@
    Created by Bryan Gillis, March 2014
    Last edited by brg, 21 April 2014
    
+   Contact: brg@roe.ac.uk
+   
    Requirements: GalSim toolkit (and its requirements).
    GalSim can be downloaded from https://github.com/GalSim-developers/GalSim, and see
    https://github.com/GalSim-developers/GalSim/wiki/Installation-Instructions for its
@@ -379,9 +381,7 @@ def generator(config_dict, thread_num=0):
                           config_dict['stamp_padding_y_pix'] * (config_dict['num_per_col'] - 1)
             
             # Create the image object, using the appropriate method for the image type
-            if(config_dict['image_type'] == '16i'):
-                full_image = galsim.ImageC(full_x_size , full_y_size, scale=config_dict['sample_scale'])
-            elif(config_dict['image_type'] == '32i'):
+            if(config_dict['image_type'] == '32i'):
                 full_image = galsim.ImageI(full_x_size , full_y_size, scale=config_dict['sample_scale'])
             elif(config_dict['image_type'] == '32f'):
                 full_image = galsim.ImageF(full_x_size , full_y_size, scale=config_dict['sample_scale'])
@@ -661,12 +661,7 @@ def generator(config_dict, thread_num=0):
             if(config_dict['grid_or_cube'] == 'cube'):
                 # For generating a datacube, set up the image to draw now
                 
-                if(config_dict['image_type'] == '16i'):
-                    gal_image = galsim.ImageC(config_dict['image_size_x_pix'],
-                                              config_dict['image_size_y_pix'],
-                                              scale=config_dict['sample_scale'])
-                    
-                elif(config_dict['image_type'] == '32i'):
+                if(config_dict['image_type'] == '32i'):
                     gal_image = galsim.ImageI(config_dict['image_size_x_pix'],
                                               config_dict['image_size_y_pix'],
                                               scale=config_dict['sample_scale'])
