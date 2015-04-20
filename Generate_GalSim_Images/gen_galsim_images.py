@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """gen_galsim_images.py
    Created by Bryan Gillis, March 2014
    Last edited by brg, 21 April 2014
@@ -36,11 +38,15 @@ import galsim
 import multiprocessing as mtp
 import subprocess
     
-# Default values
+# Magic values
 default_random_seed = 8241573
 default_shear_type =   'shear'
 default_image_type =   '32f'
 default_gain = 1.7
+
+fpack_lossless_command = "fpack -g2 -q 0.0 "
+fpack_lossy_command = "fpack -g2 -q 0.0 "
+rm_command = "rm -f "
 
 def load_default_configurations(config_dict):
     """This function loads a default set of configuration parameters. If you wish to run
@@ -81,6 +87,7 @@ def load_default_configurations(config_dict):
     config_dict['init_random_seed_factor'] =   0
     config_dict['suppress_noise']          =   0
     config_dict['shape_noise_cancellation']=   1
+    config_dict['compress_images']         =   0
     
     # Check if other parameters are consistent with shape noise cancellation if it's enabled
     if((config_dict['shape_noise_cancellation']!=0) and
@@ -239,6 +246,10 @@ def main(argv):
             elif(version == '1.3'): 
                 
                 if(load_config_1_3(config_dict, config_lines)): return
+                
+            elif(version == '1.4'): 
+                
+                if(load_config_1_4(config_dict, config_lines)): return
                 
             else:
                 print "ERROR: Unsupported config file version or improperly formatted"
@@ -692,10 +703,12 @@ def generator(config_dict, thread_num=0):
                     ix = 0
                     iy += 1
                     
-            # Draw the image. Note the commented out version - for some reason GalSim installed differently on a remote machine
-            # I used. If this part spits out an error, try switching which of the following two lines is commented out.
-            final.draw(gal_image, dx=config_dict['sample_scale'])
-            # final.draw(image, scale=config_dict['sample_scale'])
+            # Draw the image. Note "try" command here - different versions of Galsim have different
+            # interfaces here. This will attempt both.
+            try:
+                final.draw(gal_image, dx=config_dict['sample_scale'])
+            except Exception, _:
+                final.draw(gal_image, scale=config_dict['sample_scale'])
             
             if(config_dict['grid_or_cube'] == 'cube'):
                 # If we're doing a datacube, we'll apply the unsubtracted sky level and noise to each image here
@@ -746,6 +759,18 @@ def generator(config_dict, thread_num=0):
                                         sky_level=sky_level_subtracted_pixel)
                 full_image.addNoise(noise)
             galsim.fits.write(full_image, image_file_name)
+            
+        # Compress the image if necessary
+        if(config_dict['compress_images'] >= 1):
+            if(config_dict['grid_or_cube'] == 'cube'):
+                compress_image(image_file_name,
+                               lossy=(config_dict['compress_images'] > 1))
+            else:
+                compress_image(image_file_name,
+                               np=(config_dict['image_size_x_pix']+config_dict['stamp_padding_x_pix'],
+                                   config_dict['image_size_y_pix']+config_dict['stamp_padding_y_pix']),
+                               lossy=(config_dict['compress_images'] > 1))
+                
         
         # Output the datafile
         text_file_name = file_name_base + str(i) + '.dat'
@@ -1128,6 +1153,23 @@ def get_rand_from_dist(dist, last_deviate=None):
         dist_max = dist[1][1]
         return np.random.random() * (dist_max - dist_min) + dist_min
     
+def compress_image(image_name,np=None,lossy=False):
+    
+    cmd = rm_command + image_name + ".fz"
+    subprocess.call(cmd,shell=True)
+    
+    if(lossy):
+        cmd = fpack_lossy_command + image_name
+    else:        
+        if(np==None):
+            cmd = fpack_lossless_command + image_name + image_name
+        else:
+            cmd = fpack_lossless_command + "-t " + str(np[0])+","+str(np[1]) + " " + image_name
+        
+    subprocess.call(cmd,shell=True)
+    cmd = rm_command + image_name
+    subprocess.call(cmd,shell=True)
+    
     
 def load_config_1_0(config_dict, config_lines):
     """Function to load configuration settings for a version 1.0 config file.
@@ -1403,7 +1445,7 @@ def load_config_1_3(config_dict, config_lines):
     config_distribution_length_1_3 = 60
     config_min_length_1_3          = 34
             
-    new_config_version('1.3')
+    old_config_version('1.3')
     
     # Check that it meets the minimum length requirement for this version
     if(len(config_lines) < config_min_length_1_3):
@@ -1584,6 +1626,204 @@ def load_config_1_3(config_dict, config_lines):
                                                   config_dict['galaxy_shape_2_dist'][1],
                                                   'file')
     else:
+        return bad_config_format() 
+    
+    # Fill in values unsupported by this version
+    load_back_config_1_3(config_dict)
+    
+    
+def load_config_1_4(config_dict, config_lines):
+    """Function to load configuration settings for a version 1.3 config file.
+    """
+    
+    # Magic numbers for minimum lengths
+    config_simple_length_1_4       = 35
+    config_distribution_length_1_4 = 61
+    config_min_length_1_4          = 35
+            
+    new_config_version('1.4')
+    
+    # Check that it meets the minimum length requirement for this version
+    if(len(config_lines) < config_min_length_1_4):
+        return bad_config_format()
+    
+    # Initialize counter for which line we're on
+    # This is used to make it easier to add lines in future versions
+    lc = 1
+    
+    # Read in bookkeeping parameters
+    config_dict['config_mode']             =   str(config_lines[lc].split()[-1]).lower()
+    lc += 1
+    config_dict['output_folder_name']      =   str(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['thread_folder_name_base'] =   str(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['output_name_base']        =   str(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['num_threads']             =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['num_files']               =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['grid_or_cube']            =   str(config_lines[lc].split()[-1]).lower()
+    lc += 1
+    if(config_dict['grid_or_cube'] == 'cube'):
+        config_dict['num_per_file']        =   int(config_lines[lc].split()[-1])
+    elif(config_dict['grid_or_cube'] == 'grid'):
+        config_dict['num_per_row']         =   int(config_lines[lc].split()[-2])
+        config_dict['num_per_col']         =   int(config_lines[lc].split()[-1])
+        config_dict['num_per_file']        =   config_dict['num_per_row'] * config_dict['num_per_col']
+    else:
+        return bad_config_format()
+    lc += 1
+    config_dict['pixel_scale']             = float(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['sample_scale']            = float(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['image_size_x_pix']        =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['image_size_y_pix']        =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['stamp_padding_x_pix']     =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['stamp_padding_y_pix']     =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['image_type']              =   str(config_lines[lc].split()[-1]).lower()
+    lc += 1
+    config_dict['shear_type']              =   str(config_lines[lc].split()[-1]).lower()
+    lc += 1
+    config_dict['use_flux_or_s/n']         =   str(config_lines[lc].split()[-1]).lower()
+    lc += 1
+    config_dict['init_random_seed_factor'] =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['suppress_noise']          =   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['shape_noise_cancellation']=   int(config_lines[lc].split()[-1])
+    lc += 1
+    config_dict['compress_images']         =   int(config_lines[lc].split()[-1])
+    lc += 1
+    
+    # Check if other parameters are consistent with shape noise cancellation if it's enabled
+    if((config_dict['shape_noise_cancellation']!=0) and
+       (config_dict['shear_type']!='shear-angle') and 
+       (config_dict['shear_type']!='ellipticity-angle') ):
+        if(config_dict['shear_type']!='ellipticity'):
+            config_dict['shear_type'] = 'ellipticity-angle'
+        else:
+            config_dict['shear_type'] = 'shear-angle'
+        print("ERROR: Shear type is incompatible with shape noise cancellation.")
+        print("It has been changed to " +  config_dict['shear_type'] + ". Be warned that this")
+        print("will likely result in improper values for shapes and shears. Either disable")
+        print("shape noise cancellation or correct it to one of the '-angle' types.")
+        
+    if((config_dict['shape_noise_cancellation']!=0) and
+       (config_dict['num_per_file'] % 2 == 1)):
+        print("WARNING: Shape noise cancellation requires an even number of images per")
+        print("file. The number of images per file has been doubled to compensate.")
+        if(config_dict['grid_or_cube'] == 'cube'):
+            config_dict['num_per_file'] *= 2
+        elif(config_dict['grid_or_cube'] == 'grid'):
+            config_dict['num_per_row'] *= 2
+            config_dict['num_per_file'] *= 2
+        
+        
+    # Check whether we're using the simple or complex config_dict['config_mode']
+    if(config_dict['config_mode'] == 'simple'):
+        if(len(config_lines) < config_simple_length_1_4):
+            return bad_config_format()
+        
+        # Using simple mode, so we'll just use fixed values for all parameters.
+        # Only the noise realisation will differ between images.
+        
+        config_dict['psf_stddev_arcsec']      = float(config_lines[21].split()[-1])
+        lc += 1
+        config_dict['psf_shape_1']            = float(config_lines[22].split()[-1])
+        lc += 1
+        config_dict['psf_shape_2']            = float(config_lines[23].split()[-1])
+        lc += 1
+        config_dict['galaxy_stddev_arcsec']   = float(config_lines[24].split()[-1])
+        lc += 1
+        config_dict['galaxy_flux_or_SN']      = float(config_lines[25].split()[-1])
+        lc += 1
+        config_dict['galaxy_shape_1']         = float(config_lines[26].split()[-1])
+        lc += 1
+        config_dict['galaxy_shape_2']         = float(config_lines[27].split()[-1])
+        lc += 1
+        config_dict['galaxy_shear_1']         = float(config_lines[28].split()[-1])
+        lc += 1
+        config_dict['galaxy_shear_2']         = float(config_lines[29].split()[-1])
+        lc += 1
+        config_dict['sky_level_subtracted']   = float(config_lines[30].split()[-1])
+        lc += 1
+        config_dict['sky_level_unsubtracted'] = float(config_lines[31].split()[-1])
+        lc += 1
+        config_dict['read_noise']             = float(config_lines[32].split()[-1])
+        lc += 1
+        config_dict['gain']                   = float(config_lines[33].split()[-1])
+        lc += 1
+        
+    elif(config_dict['config_mode'] == 'distribution'):
+        if(len(config_lines) < config_distribution_length_1_4):
+            return bad_config_format()
+        
+        # Using distribution mode, so we'll read in using the get_dist function,
+        # which determines the distribution type from the first line and the
+        # parameters for it from the second.
+        
+        config_dict['psf_stddev_arcsec_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['psf_shape_1_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['psf_shape_2_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_stddev_arcsec_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_SN_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_shape_1_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_shape_2_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_shear_1_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['galaxy_shear_2_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['sky_level_subtracted_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['sky_level_unsubtracted_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['read_noise_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+        config_dict['gain_dist'] = \
+            get_dist(config_lines[lc+1], config_lines[lc+2], config_lines[lc])
+        lc += 3
+            
+        if(config_dict['shape_noise_cancellation']!=0):
+            # Enforce that galaxy and psf shape are generated once per file
+            config_dict['psf_shape_1_dist'] = (config_dict['psf_shape_1_dist'][0],
+                                                  config_dict['psf_shape_1_dist'][1],
+                                                  'file')
+            config_dict['psf_shape_2_dist'] = (config_dict['psf_shape_2_dist'][0],
+                                                  config_dict['psf_shape_2_dist'][1],
+                                                  'file')
+            config_dict['galaxy_shape_1_dist'] = (config_dict['galaxy_shape_1_dist'][0],
+                                                  config_dict['galaxy_shape_1_dist'][1],
+                                                  'file')
+            config_dict['galaxy_shape_2_dist'] = (config_dict['galaxy_shape_2_dist'][0],
+                                                  config_dict['galaxy_shape_2_dist'][1],
+                                                  'file')
+    else:
         return bad_config_format()   
     
 def load_back_config_1_0(config_dict):
@@ -1633,6 +1873,14 @@ def load_back_config_1_2(config_dict):
     
 def load_back_config_1_3(config_dict):
     """Function to load configuration settings that were introduced after version 1.3
+    """
+    config_dict['compress_images'] = 0
+    load_back_config_1_4(config_dict)
+    return
+    
+    
+def load_back_config_1_4(config_dict):
+    """Function to load configuration settings that were introduced after version 1.4
     """
     return
     
