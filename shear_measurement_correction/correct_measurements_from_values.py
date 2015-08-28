@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-""" @file get_corrected_measurement.py
+""" @file correct_measurements_from_values.py
 
     Created 13 Aug 2015
 
-    A script for generating a corrected shear measurement based on the
-    results of calibration. Run this script with the --help option to see
+    A script for generating a corrected shear measurement based on given
+    m and c values. Run this script with the --help option to see
     available options.
 
     ---------------------------------------------------------------------
