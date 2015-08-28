@@ -35,12 +35,18 @@ from shear_calibration.calibrate_results import calibrate_all_results
 @click.command()
 @click.option("--path", default=".", help="Root path where shear measurement data is contained.")
 
-@click.option("--m", default=0., help="Best-guess multiplicative bias parameter.")
-@click.option("--c", default=0., help="Best-guess additive bias parameter.")
-@click.option("--delta-m", "delta_m", default=0.,
-              help="Error on estimate of multiplicative bias parameter.")
-@click.option("--delta-c", "delta_c", default=0.,
-              help="Error on estimate of additive bias parameter.")
+@click.option("--m1", default=0., help="Best-guess multiplicative bias parameter, first component.")
+@click.option("--m2", default=0., help="Best-guess multiplicative bias parameter, second component.")
+@click.option("--c1", default=0., help="Best-guess additive bias parameter, first component.")
+@click.option("--c2", default=0., help="Best-guess additive bias parameter, second component.")
+@click.option("--delta-m1", "delta_m", default=0.,
+              help="Error on estimate of multiplicative bias parameter, first component.")
+@click.option("--delta-m2", "delta_m", default=0.,
+              help="Error on estimate of multiplicative bias parameter, second component.")
+@click.option("--delta-c1", "delta_c", default=0.,
+              help="Error on estimate of additive bias parameter, first component.")
+@click.option("--delta-c2", "delta_c", default=0.,
+              help="Error on estimate of additive bias parameter, second component.")
 
 @click.option("--tag", default="_calibrated", help="Extra label to add to calibrated results files.")
 
