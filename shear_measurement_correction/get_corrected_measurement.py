@@ -26,19 +26,26 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import multiprocessing as mtp
 import click
 
 from common.get_filenames import get_filenames
 from common import magic_values as mv
 
+from shear_calibration.calibrate_results import calibrate_results
+
 @click.command()
 @click.option("--path", default=".", help="Root path where shear measurement data is contained.")
+
 @click.option("--m", default=0., help="Best-guess multiplicative bias parameter.")
 @click.option("--c", default=0., help="Best-guess additive bias parameter.")
 @click.option("--delta-m", "delta_m", default=0.,
               help="Error on estimate of multiplicative bias parameter.")
 @click.option("--delta-c", "delta_c", default=0.,
               help="Error on estimate of additive bias parameter.")
+
+@click.option("--tag", default="_calibrated", help="Extra label to add to calibrated results files.")
+
 @click.option("--processes", default=mv.max_num_threads, help="Number of parallel processes to use.")
 def main(**kwargs):
     """ Main function for generating corrected shear estimates. Run this script with the
@@ -47,6 +54,20 @@ def main(**kwargs):
     
     # Get the filenames in the path
     filename_tuples = get_filenames(kwargs['path'])
+    
+    # Define a wrapper function for calibrating results
+    def calibrate_results_wrapper(filename_tuple):
+        return calibrate_results(filename_tuple, **kwargs)
+    
+    # Do the shape estimation in parallel if more than one file
+    if((len(filename_tuples)>1) and (kwargs['processes']>1)):
+        pool = mtp.Pool(processes=kwargs['processes'])
+        pool.map(calibrate_results_wrapper, filename_tuples)
+    else:
+        for filename_tuple in filename_tuples:
+            calibrate_results_wrapper(filename_tuple)
+
+    print("Finished calibrating shear measurements.")
 
 if __name__ == "__main__":
     main()
