@@ -31,7 +31,8 @@ from shear_calibration.calibrate_results import calibrate_all_results
 def calibrate_from_regression(**kwargs):
     """ Calls calibrate_all_results using the measured m and c data from a regression.
     
-        Required kwargs: reg_file <string> (filename of regression data file)
+        Required kwargs: path <string> (path where measurements are located)
+                         reg_file <string> (filename of regression data file)
                          tag <string> (Extra label to add to calibrated results files.)
                          processes <int>
     """
