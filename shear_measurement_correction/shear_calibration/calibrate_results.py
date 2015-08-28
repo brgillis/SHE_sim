@@ -2,8 +2,8 @@
 
     Created 13 Aug 2015
 
-    Function to calibrate the shear measurements in a single measurements
-    file.
+    Functions to calibrate the shear measurements in a single measurements
+    file or in all measurements files.
 
     ---------------------------------------------------------------------
 
@@ -34,7 +34,17 @@ from common.get_filenames import get_filenames
 from calibrate_shear import calibrate_shear, get_error_of_calibrated_shear
 
 def calibrate_results(filename_tuple, **kwargs):
-    """ TODO: Docstring
+    """ Calibrate the results in a single measurements file.
+    
+        Required kwargs: m1 <float>
+                         m2 <float>
+                         c1 <float>
+                         c2 <float>
+                         delta_m1 <float>
+                         delta_m2 <float>
+                         delta_c1 <float>
+                         delta_c2 <float>
+                         tag <string>
     """
     
     results_filename = filename_tuple[mv.rf_tuple_index]
@@ -49,37 +59,50 @@ def calibrate_results(filename_tuple, **kwargs):
     
     # Calibrate the shear and error columns
     fits_result_table[sff.gal_g1_colname] = calibrate_shear(fits_result_table[sff.gal_g1_colname],
-                                                            m=kwargs['m'], c=kwargs['c'],
-                                                            delta_m=kwargs['delta_m'],
-                                                            delta_c=kwargs['delta_c'])
+                                                            m=kwargs['m1'], c=kwargs['c1'],
+                                                            delta_m=kwargs['delta_m1'],
+                                                            delta_c=kwargs['delta_c1'])
     fits_result_table[sff.gal_g2_colname] = calibrate_shear(fits_result_table[sff.gal_g2_colname],
-                                                            m=kwargs['m'], c=kwargs['c'],
-                                                            delta_m=kwargs['delta_m'],
-                                                            delta_c=kwargs['delta_c'])
+                                                            m=kwargs['m2'], c=kwargs['c2'],
+                                                            delta_m=kwargs['delta_m2'],
+                                                            delta_c=kwargs['delta_c2'])
     fits_result_table[sff.gal_g1_err_colname] = get_error_of_calibrated_shear(
                                                             fits_result_table[sff.gal_g1_err_colname],
-                                                            m=kwargs['m'], c=kwargs['c'],
-                                                            delta_m=kwargs['delta_m'],
-                                                            delta_c=kwargs['delta_c'])
+                                                            m=kwargs['m1'], c=kwargs['c1'],
+                                                            delta_m=kwargs['delta_m1'],
+                                                            delta_c=kwargs['delta_c1'])
     fits_result_table[sff.gal_g1_err_colname] = get_error_of_calibrated_shear(
                                                             fits_result_table[sff.gal_g1_err_colname],
-                                                            m=kwargs['m'], c=kwargs['c'],
-                                                            delta_m=kwargs['delta_m'],
-                                                            delta_c=kwargs['delta_c'])
+                                                            m=kwargs['m2'], c=kwargs['c2'],
+                                                            delta_m=kwargs['delta_m2'],
+                                                            delta_c=kwargs['delta_c2'])
     
     # Output the calibrated shears to a new file
     calibrated_results_filename = results_filename.replace(mv.fits_table_extension,
-                                                           kwargs['tag'] + mv.fits_table_extension)
+                                                           kwargs['tag'] + "_" +
+                                                             mv.fits_table_extension)
     fits_result_HDUlist.writeto(calibrated_results_filename, clobber=True)
     
     return
 
 def calibrate_all_results(**kwargs):
-    """ TODO: Docstring
+    """ Calibrate the results in a single measurements file.
+    
+        Required kwargs: path <string>
+                         m1 <float>
+                         m2 <float>
+                         c1 <float>
+                         c2 <float>
+                         delta_m1 <float>
+                         delta_m2 <float>
+                         delta_c1 <float>
+                         delta_c2 <float>
+                         tag <string>
+                         processes <int>
     """
     
     # Get the filenames in the path
-    filename_tuples = get_filenames(kwargs['path'])
+    filename_tuples = get_filenames(kwargs['path'],kwargs['tag'])
     
     # Define a wrapper function for calibrating results
     def calibrate_results_wrapper(filename_tuple):
