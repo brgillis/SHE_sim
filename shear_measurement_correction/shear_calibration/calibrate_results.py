@@ -23,14 +23,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import multiprocessing as mtp
+
 import astropy.io.fits as fits
 
 from common import magic_values as mv
 from common import SHE_fits_format as sff
+from common.get_filenames import get_filenames
 
 from calibrate_shear import calibrate_shear, get_error_of_calibrated_shear
 
 def calibrate_results(filename_tuple, **kwargs):
+    """ TODO: Docstring
+    """
     
     results_filename = filename_tuple[mv.rf_tuple_index]
     
@@ -68,3 +73,24 @@ def calibrate_results(filename_tuple, **kwargs):
     fits_result_HDUlist.writeto(calibrated_results_filename, clobber=True)
     
     return
+
+def calibrate_all_results(**kwargs):
+    """ TODO: Docstring
+    """
+    
+    # Get the filenames in the path
+    filename_tuples = get_filenames(kwargs['path'])
+    
+    # Define a wrapper function for calibrating results
+    def calibrate_results_wrapper(filename_tuple):
+        return calibrate_results(filename_tuple, **kwargs)
+    
+    # Do the shape estimation in parallel if more than one file
+    if((len(filename_tuples)>1) and (kwargs['processes']>1)):
+        pool = mtp.Pool(processes=kwargs['processes'])
+        pool.map(calibrate_results_wrapper, filename_tuples)
+    else:
+        for filename_tuple in filename_tuples:
+            calibrate_results_wrapper(filename_tuple)
+
+    print("Finished calibrating shear measurements.")

@@ -26,13 +26,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import multiprocessing as mtp
 import click
 
-from common.get_filenames import get_filenames
 from common import magic_values as mv
 
-from shear_calibration.calibrate_results import calibrate_results
+from shear_calibration.calibrate_results import calibrate_all_results
 
 @click.command()
 @click.option("--path", default=".", help="Root path where shear measurement data is contained.")
@@ -52,22 +50,7 @@ def main(**kwargs):
         --help option to see available options.
     """
     
-    # Get the filenames in the path
-    filename_tuples = get_filenames(kwargs['path'])
-    
-    # Define a wrapper function for calibrating results
-    def calibrate_results_wrapper(filename_tuple):
-        return calibrate_results(filename_tuple, **kwargs)
-    
-    # Do the shape estimation in parallel if more than one file
-    if((len(filename_tuples)>1) and (kwargs['processes']>1)):
-        pool = mtp.Pool(processes=kwargs['processes'])
-        pool.map(calibrate_results_wrapper, filename_tuples)
-    else:
-        for filename_tuple in filename_tuples:
-            calibrate_results_wrapper(filename_tuple)
-
-    print("Finished calibrating shear measurements.")
+    calibrate_all_results(**kwargs)
 
 if __name__ == "__main__":
     main() # click will handle arguments
