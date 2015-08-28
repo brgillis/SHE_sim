@@ -78,9 +78,12 @@ def calibrate_results(filename_tuple, **kwargs):
                                                             delta_c=kwargs['delta_c2'])
     
     # Output the calibrated shears to a new file
+    if(kwargs['tag'] is None):
+        my_tag = ""
+    else:
+        my_tag = kwargs['tag'] + "_"
     calibrated_results_filename = results_filename.replace(mv.fits_table_extension,
-                                                           kwargs['tag'] + "_" +
-                                                             mv.fits_table_extension)
+                                                           my_tag + mv.fits_table_extension)
     fits_result_HDUlist.writeto(calibrated_results_filename, clobber=True)
     
     return
