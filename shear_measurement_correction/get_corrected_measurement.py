@@ -70,4 +70,4 @@ def main(**kwargs):
     print("Finished calibrating shear measurements.")
 
 if __name__ == "__main__":
-    main()
+    main() # click will handle arguments
