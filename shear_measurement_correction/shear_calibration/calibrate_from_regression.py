@@ -33,7 +33,7 @@ def calibrate_from_regression(**kwargs):
     
         Required kwargs: path <string> (path where measurements are located)
                          reg_file <string> (filename of regression data file)
-                         tag <string> (Extra label to add to calibrated results files.)
+                         tag_ <string> (Extra label to add to calibrated results files.)
                          processes <int>
     """
     

@@ -44,7 +44,7 @@ def calibrate_results(filename_tuple, **kwargs):
                          delta_m2 <float>
                          delta_c1 <float>
                          delta_c2 <float>
-                         tag <string>
+                         tag_ <string>
     """
     
     results_filename = filename_tuple[mv.rf_tuple_index]
@@ -78,12 +78,8 @@ def calibrate_results(filename_tuple, **kwargs):
                                                             delta_c=kwargs['delta_c2'])
     
     # Output the calibrated shears to a new file
-    if(kwargs['tag'] is None):
-        my_tag = ""
-    else:
-        my_tag = kwargs['tag'] + "_"
     calibrated_results_filename = results_filename.replace(mv.fits_table_extension,
-                                                           my_tag + mv.fits_table_extension)
+                                                           kwargs['tag_'] + mv.fits_table_extension)
     fits_result_HDUlist.writeto(calibrated_results_filename, clobber=True)
     
     return
@@ -100,7 +96,7 @@ def calibrate_all_results(**kwargs):
                          delta_m2 <float>
                          delta_c1 <float>
                          delta_c2 <float>
-                         tag <string>
+                         tag_ <string>
                          processes <int>
     """
     
