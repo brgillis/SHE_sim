@@ -56,6 +56,14 @@ def main(**kwargs):
         --help option to see available options.
     """
     
+    if(kwargs['tag'] is None):
+        kwargs['tag_'] = ""
+    else:
+        if(len(kwargs['tag'])==0):
+            kwargs['tag_'] = ""
+        else:
+            kwargs['tag_'] = "_" + kwargs['tag']
+            
     calibrate_all_results(**kwargs)
 
 if __name__ == "__main__":
