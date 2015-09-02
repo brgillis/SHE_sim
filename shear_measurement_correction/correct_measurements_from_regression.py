@@ -34,8 +34,10 @@ from shear_calibration.calibrate_from_regression import calibrate_from_regressio
 
 @click.command()
 @click.option("--path", default=".", help="Root path where shear measurement data is contained.")
+@click.option("--reg_file",default="stored_data.fits",
+              help="'stored_data' file which contains regression data.")
 
-@click.option("--tag", default="_calibrated", help="Extra label to add to calibrated results files.")
+@click.option("--tag", default="calibrated", help="Extra label to add to calibrated results files.")
 
 @click.option("--processes", default=mv.max_num_threads, help="Number of parallel processes to use.")
 def main(**kwargs):
