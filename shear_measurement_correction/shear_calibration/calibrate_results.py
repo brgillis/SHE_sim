@@ -23,7 +23,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import multiprocessing as mtp
+from common.parmap import parmap
 
 import astropy.io.fits as fits
 
@@ -78,8 +78,8 @@ def calibrate_results(filename_tuple, **kwargs):
                                                             delta_c=kwargs['delta_c2'])
     
     # Output the calibrated shears to a new file
-    calibrated_results_filename = results_filename.replace(mv.fits_table_extension,
-                                                           kwargs['tag_'] + mv.fits_table_extension)
+    calibrated_results_filename = results_filename.replace(mv.result_tail,
+                                                           kwargs['tag_'] + mv.result_tail)
     fits_result_HDUlist.writeto(calibrated_results_filename, clobber=True)
     
     return
@@ -109,8 +109,7 @@ def calibrate_all_results(**kwargs):
     
     # Do the shape estimation in parallel if more than one file
     if((len(filename_tuples)>1) and (kwargs['processes']>1)):
-        pool = mtp.Pool(processes=kwargs['processes'])
-        pool.map(calibrate_results_wrapper, filename_tuples)
+        parmap(calibrate_results_wrapper, filename_tuples, nprocs=kwargs['processes'])
     else:
         for filename_tuple in filename_tuples:
             calibrate_results_wrapper(filename_tuple)
