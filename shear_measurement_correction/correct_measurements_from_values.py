@@ -48,7 +48,7 @@ from shear_calibration.calibrate_results import calibrate_all_results
 @click.option("--delta-c2", "delta_c", default=0.,
               help="Error on estimate of additive bias parameter, second component.")
 
-@click.option("--tag", default="_calibrated", help="Extra label to add to calibrated results files.")
+@click.option("--tag", default="calibrated", help="Extra label to add to calibrated results files.")
 
 @click.option("--processes", default=mv.max_num_threads, help="Number of parallel processes to use.")
 def main(**kwargs):
