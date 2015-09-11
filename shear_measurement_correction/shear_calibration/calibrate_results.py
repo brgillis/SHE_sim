@@ -98,10 +98,12 @@ def calibrate_all_results(**kwargs):
                          delta_c2 <float>
                          tag_ <string>
                          processes <int>
+                         strict <bool>
     """
     
     # Get the filenames in the path
-    filename_tuples = get_filenames(kwargs['path'],kwargs['tag'])
+    filename_tuples = get_filenames(kwargs['path'],output_pattern=kwargs['input_tag'],
+                                    strict=kwargs['strict'])
     
     # Define a wrapper function for calibrating results
     def calibrate_results_wrapper(filename_tuple):
