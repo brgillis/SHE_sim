@@ -48,21 +48,23 @@ from shear_calibration.calibrate_results import calibrate_all_results
 @click.option("--delta-c2", "delta_c", default=0.,
               help="Error on estimate of additive bias parameter, second component.")
 
-@click.option("--tag", default="calibrated", help="Extra label to add to calibrated results files.")
+@click.option("--input_tag", default="calibrated", help="Required pattern for input files")
+@click.option("--output_tag", default="calibrated", help="Extra label to add to calibrated results files.")
 
 @click.option("--processes", default=mv.max_num_threads, help="Number of parallel processes to use.")
+@click.option("--strict", default=False, help="Whether or not to require tag to be in the expected place.")
 def main(**kwargs):
     """ Main function for generating corrected shear estimates. Run this script with the
         --help option to see available options.
     """
     
-    if(kwargs['tag'] is None):
+    if(kwargs['output_tag'] is None):
         kwargs['tag_'] = ""
     else:
-        if(len(kwargs['tag'])==0):
+        if(len(kwargs['output_tag'])==0):
             kwargs['tag_'] = ""
         else:
-            kwargs['tag_'] = "_" + kwargs['tag']
+            kwargs['tag_'] = "_" + kwargs['output_tag']
             
     calibrate_all_results(**kwargs)
 
