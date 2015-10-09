@@ -33,7 +33,8 @@ import numpy as np
 
 from astropy.io import ascii
 
-from find_data_dir import determine_data_dir, fields_list_filename
+from find_data_dir import determine_data_dir
+from get_fields import get_fields
 
 def main(argv):
     """ @TODO main docstring
@@ -50,19 +51,10 @@ def main(argv):
     desired_data_dir = args.data_dir
     
     data_dir = determine_data_dir(desired_data_dir)
-    
-    qualified_fields_list_filename = join(data_dir,fields_list_filename)
             
     print("Using " + data_dir + " as data directory.")
-            
-    field_filenames = []
-    field_names = []
-            
-    with open(qualified_fields_list_filename) as fields_list:
-        for line in fields_list:
-            for field_name in line.split():
-                field_filenames.append(join(data_dir,"full_tables",field_name + ".dat"))
-                field_names.append(field_name)
+    
+    field_filenames, field_names = get_fields(data_dir)
     
     # Loop through tables and add each to the output table
     for field_filename, field_name in zip(field_filenames,field_names):

@@ -24,11 +24,7 @@
 
 from os.path import join, isfile
 
-# Magic values
-primary_data_dir = "./Data/"
-secondary_data_dir = "../Data/"
-
-fields_list_filename = "fields_list.txt"
+from magic_values import primary_data_directory, secondary_data_directory, fields_list_filename
 
 def determine_data_dir(data_dir):
     
