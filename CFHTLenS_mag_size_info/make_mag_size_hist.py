@@ -39,7 +39,7 @@ num_size_bins = 40
 mag_range = [18.,24.7]
 log_size_range = [-0.3,1.]
 
-from magic_values import hist_image_filename
+from magic_values import mag_size_subdir, hist_image_filename
 
 def main(argv):
     parser = argparse.ArgumentParser()
@@ -100,7 +100,7 @@ def main(argv):
     hist_hdu.header['SIZE_MAX'] = log_size_range[1]
     
     # Save it
-    hist_hdu.writeto(join(data_dir,hist_image_filename),clobber=True)
+    hist_hdu.writeto(join(data_dir,mag_size_subdir,hist_image_filename),clobber=True)
     
     print("Done!")
 

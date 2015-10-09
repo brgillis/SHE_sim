@@ -26,6 +26,8 @@
 primary_data_dir = "./Data/"
 secondary_data_dir = "../Data/"
 
+mag_size_subdir = "mag_size"
+
 # Normal fields list filename
 fields_list_filename = "fields_list.txt"
 
