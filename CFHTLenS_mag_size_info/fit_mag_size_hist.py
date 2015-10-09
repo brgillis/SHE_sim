@@ -28,6 +28,7 @@ import sys
 import argparse
 import numpy as np
 from os.path import join
+from os import remove
 from astropy.io import fits
 from astropy.table import Table
 from scipy.stats import norm
@@ -87,12 +88,23 @@ def main(argv):
                 0.5*(size_max-size_min)/size_nbins
                 
     # Initialize an output table
-    fit_table = Table(names=["mag_mid","size_mean","size_stddev","size_skew"])
+    fit_table = Table(names=["mag_mid",
+                             "size_p_mean",
+                             "size_p_stddev",
+                             "size_p_skew",
+                             "size_s_mean",
+                             "size_s_stddev",
+                             "size_s_skew",
+                             "size_ps_ratio"])
     
     # Initial parameter guess
-    params_guess = np.array([(size_min+size_max)/2., # Mean
-                             (size_min+size_max)/4., # Stddev
-                             4.]) # Skew
+    params_guess = np.array([0.17, # Primary mean
+                             0.11, # Primary stddev
+                             0.67, # Primary Skew
+                             0.33, # Secondary mean
+                             0.18, # Secondary stddev
+                             0.94, # Secondary Skew
+                             1.3]) # Primary-secondary scale
     
     # Loop through each magnitude bin, and fit a model to the size data for it
     for mag_index in xrange(mag_nbins):
@@ -102,12 +114,26 @@ def main(argv):
         p_vals = mag_size_hist.data[mag_index,:]/mag_size_hist.data[mag_index,:].sum()/size_binsize
         
         def get_uChi_squared(params):
-            mean = params[0]
-            stddev = params[1]
-            skew = params[2]
             
-            xs = (sizes-mean)/stddev
-            p_predictions = skewed_norm(xs, skew)/stddev
+            ratio = params[6]
+            
+            p_mean = params[0]
+            p_stddev = params[1]
+            p_skew = params[2]
+            
+            p_xs = (sizes-p_mean)/p_stddev
+            
+            p_ps = skewed_norm(p_xs, p_skew)/p_stddev * (ratio/(1.+ratio))
+            
+            s_mean = params[3]
+            s_stddev = params[4]
+            s_skew = params[5]
+            
+            s_xs = (sizes-s_mean)/s_stddev
+            
+            s_ps = skewed_norm(s_xs, s_skew)/s_stddev * (1./(1.+ratio))
+            
+            p_predictions = p_ps + s_ps
             
             square_diffs = np.square((p_predictions - p_vals))
             
@@ -116,18 +142,37 @@ def main(argv):
             return uChi_squared
         
         
-        best_params = fmin(get_uChi_squared,params_guess)
+        params = fmin(get_uChi_squared,params_guess,maxiter=5000,maxfun=10000)
+    
+        ratio = params[6]
         
-        # Use these params as the next guess
-        params_guess = best_params
+        p_mean = params[0]
+        p_stddev = params[1]
+        p_skew = params[2]
         
-        p_predictions = skewed_norm((sizes-best_params[0])/best_params[1], best_params[2])/best_params[1]
+        p_xs = (sizes-p_mean)/p_stddev
+        
+        p_ps = skewed_norm(p_xs, p_skew)/p_stddev * (ratio/(1.+ratio))
+        
+        s_mean = params[3]
+        s_stddev = params[4]
+        s_skew = params[5]
+        
+        s_xs = (sizes-s_mean)/s_stddev
+        
+        s_ps = skewed_norm(s_xs, s_skew)/s_stddev * (1./(1.+ratio))
+        
+        p_predictions = p_ps + s_ps
         
         # Add these params to the output table
         fit_table.add_row({"mag_mid": mag_mid,
-                           "size_mean": best_params[0],
-                           "size_stddev": best_params[1],
-                           "size_skew": best_params[2]})
+                           "size_p_mean": params[0],
+                           "size_p_stddev": params[1],
+                           "size_p_skew": params[2],
+                           "size_s_mean": params[3],
+                           "size_s_stddev": params[4],
+                           "size_s_skew": params[5],
+                           "size_ps_ratio": params[6]})
         # Setup the figure
         fig = pyplot.figure()
         fig.subplots_adjust(wspace=0, hspace=0, bottom=0.1, right=0.95, top=0.95, left=0.12)
@@ -142,7 +187,7 @@ def main(argv):
         
         mag_label = "mag_" + str(mag_mid+0.05)[0:4]
         
-        ax.set_title("MAG\_i = " + mag_label[5:])
+        ax.set_title("MAG\_i = " + mag_label[4:])
         
         plot_filename = join(data_dir,mag_size_subdir,mag_label.replace(".","_") + "_size_pdf.eps")
         
@@ -150,7 +195,12 @@ def main(argv):
         fig.show()
         
     # Output the fits table
-    fit_table.write(join(data_dir,mag_size_subdir,fit_filename),format="fits")
+    output_filename = join(data_dir,mag_size_subdir,fit_filename)
+    try:
+        remove(output_filename)
+    except:
+        pass
+    fit_table.write(output_filename,format="fits")
             
 
 if __name__ == "__main__":
