@@ -24,7 +24,7 @@
 
 from os.path import join, isfile
 
-from magic_values import primary_data_directory, secondary_data_directory, fields_list_filename
+from magic_values import primary_data_dir, secondary_data_dir, fields_list_filename
 
 def determine_data_dir(data_dir):
     

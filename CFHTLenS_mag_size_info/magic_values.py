@@ -28,3 +28,6 @@ secondary_data_dir = "../Data/"
 
 # Normal fields list filename
 fields_list_filename = "fields_list.txt"
+
+# Histogram image filename
+hist_image_filename = "size_mag_hist.fits"

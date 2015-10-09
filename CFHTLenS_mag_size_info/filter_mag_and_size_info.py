@@ -54,10 +54,12 @@ def main(argv):
             
     print("Using " + data_dir + " as data directory.")
     
-    field_filenames, field_names = get_fields(data_dir)
+    field_names = get_fields(data_dir)
     
     # Loop through tables and add each to the output table
-    for field_filename, field_name in zip(field_filenames,field_names):
+    for field_name in field_names:
+        
+        field_filename = join(data_dir,"full_tables",field_name + ".dat")
         
         field_table = ascii.read(field_filename)
         

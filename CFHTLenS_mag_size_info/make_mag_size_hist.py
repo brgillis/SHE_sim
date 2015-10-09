@@ -24,22 +24,22 @@
 
 import sys
 import argparse
-from os.path import join
 import numpy as np
+from os.path import join
 
 from astropy.io import fits
 
 from find_data_dir import determine_data_dir
+from get_fields import get_fields
 
 # Magic values
-table_filename = "filtered_tables/W_all_mag_size.fits"
 num_mag_bins = 20
 num_size_bins = 40
 
-mag_range = [15.,25.]
-size_range = [-2.,1.]
+mag_range = [18.,24.7]
+log_size_range = [-0.3,1.]
 
-hist_image_filename = "size_mag_hist.fits"
+from magic_values import hist_image_filename
 
 def main(argv):
     parser = argparse.ArgumentParser()
@@ -54,27 +54,55 @@ def main(argv):
     # Get the data directory to use
     desired_data_dir = args.data_dir
     data_dir = determine_data_dir(desired_data_dir)
+    print("Using " + data_dir + " as data directory.")
     
-    # Open the data table and get its data
-    qualified_table_filename = join(data_dir,table_filename)
-    data = fits.open(qualified_table_filename).data
+    # Init empty combined hist
+    combined_hist2D = None
     
-    mags = data['MAG_i']
-    sizes = data['sigma_arcsec']
-    log_sizes = np.log10(sizes)
+    # Loop through all tables in this directory
+    field_names = get_fields(data_dir)
     
-    hist2D, _xedges, _yedges = np.histogram2d(mags, log_sizes,
-                                            bins=[num_mag_bins,num_size_bins],
-                                            range=[mag_range,size_range],
-                                            normed=False)
+    for field_name in field_names:
+        # Get the table name
+        table_filename = join(data_dir,"filtered_tables",field_name[0:-2] + "_mag_size.fits")
+    
+        # Load in the data
+        data = fits.open(table_filename)[1].data
+        
+        mags = data['MAG_i']
+        sizes = data['sigma_arcsec']
+        log_sizes = np.log10(sizes)
+        
+        # Get the histogram
+        hist2D, _xedges, _yedges = np.histogram2d(mags, log_sizes,
+                                                bins=[num_mag_bins,num_size_bins],
+                                                range=[mag_range,log_size_range],
+                                                normed=False)
+        
+        # Add to combined data (or overwrite if the first)
+        if combined_hist2D is None:
+            combined_hist2D = hist2D
+        else:
+            combined_hist2D += hist2D
+            
+        print("Added data from file " + table_filename + ".")
     
     # Normalize the histogram
-    hist2D /= hist2D.sum()
+    combined_hist2D /= combined_hist2D.sum()
     
-    # Output it as a fits image
-    hist_hdu = fits.PrimaryHDU(hist2D)
+    # Make it a fits image
+    hist_hdu = fits.PrimaryHDU(combined_hist2D)
     
-    hist_hdu.writeto(hist_image_filename)
+    # Add min/max data to the header
+    hist_hdu.header['MAG_MIN'] = mag_range[0]
+    hist_hdu.header['MAG_MAX'] = mag_range[1]
+    hist_hdu.header['SIZE_MIN'] = log_size_range[0]
+    hist_hdu.header['SIZE_MAX'] = log_size_range[1]
+    
+    # Save it
+    hist_hdu.writeto(join(data_dir,hist_image_filename),clobber=True)
+    
+    print("Done!")
 
 if __name__ == "__main__":
     main(sys.argv)

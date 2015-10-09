@@ -30,13 +30,11 @@ def get_fields(data_dir):
     
     qualified_fields_list_filename = join(data_dir, fields_list_filename)
     
-    field_filenames = []
     field_names = []
     
     with open(qualified_fields_list_filename) as fields_list:
         for line in fields_list:
             for field_name in line.split():
-                field_filenames.append(join(data_dir, "full_tables", field_name + ".dat"))
                 field_names.append(field_name)
     
-    return field_filenames, field_names
+    return field_names
