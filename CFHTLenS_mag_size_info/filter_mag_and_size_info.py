@@ -64,7 +64,8 @@ def main(argv):
         field_table = ascii.read(field_filename)
         
         # Discard bad rows
-        bad = np.logical_or(field_table['Z_B']<0.2,field_table['fitclass']>=1)
+        bad = np.logical_or(np.logical_or(field_table['Z_B']<0.2,field_table['fitclass']>=1),
+                            field_table['CLASS_STAR']>0.7)
         field_table.remove_rows(np.where(bad))
         
         # Get some derived data

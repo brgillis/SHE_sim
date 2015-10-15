@@ -35,8 +35,11 @@ from scipy.stats import norm
 from scipy.optimize import fmin
 from copy import deepcopy
 
+from mag_size_model.mag_size_corr_model import default_fit_params, mag_size_corr_model
+
 import matplotlib
 from matplotlib import pyplot
+from mag_size_model.size_dist_model import size_dist_model
 matplotlib.rcParams['ps.useafm'] = True
 matplotlib.rcParams['pdf.use14corefonts'] = True
 matplotlib.rcParams['text.usetex'] = True
@@ -60,30 +63,7 @@ def skewed_norm(x, a):
 def skewed_norm_mean(loc, scale, skew):
     return loc + scale*np.sqrt(2./np.pi)*skew/np.sqrt(1.+np.square(skew))
     
-params_guess = [-8.15189167e-02, # 0: p_mean_log_slope
-                7.30317554e-01, # 1: p_mean_log_intercept
-                1.03156870e-01, # 2: p_stddev
-                1.24490509e+00, # 3: p_skew
-                -1.90804758e-01, # 4: ps_ratio_log_slope
-                3.67507714e+00, # 5: ps_ratio_log_intercept
-                4.58263408e+01, # 6: s_mean_pow
-                2.28830774e+01, # 7: s_mean_knee
-                -7.50196950e-02, # 8: s_mean_log_slope_low
-                9.70583289e-01, # 9: s_mean_log_intercept_low
-                -2.37784554e-01, # 10: s_mean_log_slope_high
-                4.88726191e+00, # 11: s_mean_log_intercept_high
-                5.13142587e+01, # 12: s_stddev_pow
-                2.29953184e+01, # 13: s_stddev_knee
-                -6.96087917e-01, # 14: s_stddev_log_low
-                -3.82344399e-02, # 15: s_stddev_log_slope_high
-                -2.57460848e-02, # 16: s_stddev_log_intercept_high
-                1.53110775e+00, # 17: s_skew
-                -1.01327579e+00, # 18: st_ratio_log_slope
-                2.41047904e+01, # 19: st_ratio_log_intercept
-                -1.70988798e-01, # 20: t_mean_log_slope
-                4.56528741e+00, # 21: t_mean_log_intercept
-                1.68014695e-01, # 22: t_stddev
-                -3.37760457e+00] # 23: t_skew
+params_guess = default_fit_params[:-2]
     
 params_lower = [-0.5, # 0: p_mean_log_slope
                 0., # 1: p_mean_log_intercept
@@ -135,92 +115,30 @@ params_upper = [0., # 0: p_mean_log_slope
                 0.3, # 22: t_stddev
                 10.] # 23: t_skew
 
-def estimate_pdf_parameters(params, mag_mid):
+def save_fit_parameters(size_dist_model,
+                        mag_mid,
+                        fit_table,
+                        fit_q):
     
-    p_mean = 10.**(params[0]*mag_mid + params[1])
-    p_stddev = params[2]*np.ones_like(mag_mid)
-    p_skew = params[3]*np.ones_like(mag_mid)
-    ps_ratio = 10.**(params[4]*mag_mid + params[5])
-    
-    s_mean_pow = params[6]*np.ones_like(mag_mid)
-    xp = (mag_mid/params[7])**s_mean_pow
-    s_mean = 10.**((params[8]*mag_mid + params[9])/(1+xp) + 
-                     (params[10]*mag_mid + params[11])*xp/(1+xp))
-    
-    s_stddev_pow = params[12]*np.ones_like(mag_mid)
-    xp = (mag_mid/params[13])**s_stddev_pow
-    s_stddev = 10.**(params[14]/(1+xp) + 
-                     (params[15]*mag_mid + params[16])*xp/(1+xp))
-    s_skew = params[17]*np.ones_like(mag_mid)
-    
-    st_ratio = 10.**(params[18]*mag_mid + params[19])
-    
-    t_mean = (params[20]*mag_mid + params[21])
-    t_stddev = params[22]*np.ones_like(mag_mid)
-    t_skew = params[23]*np.ones_like(mag_mid)
-        
-    return p_mean, p_stddev, p_skew, ps_ratio, \
-        s_mean, s_stddev, s_skew, st_ratio, \
-        t_mean, t_stddev, t_skew
-    
-
-def estimate_size_pdf(sizes,
-                      p_loc,
-                      p_scale,
-                      p_skew,
-                      ps_ratio,
-                      s_loc,
-                      s_scale,
-                      s_skew,
-                      st_ratio,
-                      t_loc,
-                      t_scale,
-                      t_skew,
-                      mag_mid=None,
-                      fit_table=None,
-                      fit_q=0.):
-    
-    p_xs = (sizes - p_loc) / p_scale
-    p_ps = skewed_norm(p_xs, p_skew) / p_scale * (ps_ratio / (1. + ps_ratio))
-    s_xs = (sizes - s_loc) / s_scale
-    s_ps = skewed_norm(s_xs, s_skew) / s_scale * (1. / (1. + ps_ratio)) * (st_ratio / (1. + st_ratio))
-    t_xs = (sizes - t_loc) / t_scale
-    t_ps = skewed_norm(t_xs, t_skew) / t_scale * (1. / (1. + ps_ratio)) * (1. / (1. + st_ratio))
-    p_predictions = p_ps + s_ps + t_ps
-    
-    p_mean = skewed_norm_mean(p_loc,p_scale,p_skew)
-    s_mean = skewed_norm_mean(s_loc,s_scale,s_skew)
-    t_mean = skewed_norm_mean(t_loc,t_scale,t_skew)
-    
-    p_fraction = ps_ratio/(1.+ps_ratio)
-    st_fraction = 1.-p_fraction
-    s_fraction = st_fraction*st_ratio/(1.+st_ratio)
-    t_fraction = 1.-p_fraction-s_fraction
-    
-    st_mean = (s_fraction*s_mean + t_fraction*t_mean)/st_fraction
-    
-    # Add these params to the output table if desired
-    if fit_table is not None:
-        fit_table.add_row({"mag_mid":mag_mid,
-                            "size_p_loc":p_loc,
-                            "size_p_scale":p_scale,
-                            "size_p_skew":p_skew,
-                            "size_p_mean":p_mean,
-                            "size_ps_ratio":ps_ratio,
-                            "size_p_fraction":p_fraction,
-                            "size_s_loc":s_loc,
-                            "size_s_scale":s_scale,
-                            "size_s_skew":s_skew,
-                            "size_s_mean":s_mean,
-                            "size_t_loc":t_loc,
-                            "size_t_scale":t_scale,
-                            "size_t_skew":t_skew,
-                            "size_t_mean":t_mean,
-                            "size_st_ratio":st_ratio,
-                            "size_st_fraction":st_fraction,
-                            "size_st_mean":st_mean,
-                            "fit_q":fit_q})
-    return p_predictions
+    fit_table.add_row({"mag_mid":mag_mid,
+                        "size_p_loc":size_dist_model.p_loc(),
+                        "size_p_scale":size_dist_model.p_scale(),
+                        "size_p_a":size_dist_model.p_a(),
+                        "size_p_mean":size_dist_model.p_mean(),
+                        "size_ps_ratio":size_dist_model.ps_ratio(),
+                        "size_p_fraction":size_dist_model.p_fraction(),
+                        "size_s_loc":size_dist_model.s_loc(),
+                        "size_s_scale":size_dist_model.s_scale(),
+                        "size_s_a":size_dist_model.s_a(),
+                        "size_s_mean":size_dist_model.s_mean(),
+                        "size_t_loc":size_dist_model.t_loc(),
+                        "size_t_scale":size_dist_model.t_scale(),
+                        "size_t_a":size_dist_model.t_a(),
+                        "size_t_mean":size_dist_model.t_mean(),
+                        "size_st_ratio":size_dist_model.st_ratio(),
+                        "size_st_fraction":size_dist_model.st_fraction(),
+                        "size_st_mean":size_dist_model.st_mean(),
+                        "fit_q":fit_q})
 
 def main(argv):
     parser = argparse.ArgumentParser()
@@ -275,17 +193,17 @@ def main(argv):
     fit_table = Table(names=["mag_mid",
                              "size_p_loc",
                              "size_p_scale",
-                             "size_p_skew",
+                             "size_p_a",
                              "size_p_mean",
                              "size_ps_ratio",
                              "size_p_fraction",
                              "size_s_loc",
                              "size_s_scale",
-                             "size_s_skew",
+                             "size_s_a",
                              "size_s_mean",
                              "size_t_loc",
                              "size_t_scale",
-                             "size_t_skew",
+                             "size_t_a",
                              "size_t_mean",
                              "size_st_ratio",
                              "size_st_fraction",
@@ -294,70 +212,79 @@ def main(argv):
     fit_table_with_penalty = deepcopy(fit_table)
     free_fit_table = deepcopy(fit_table)
     
-    def get_uChi_squared_for_row(params,
+    def get_uChi_squared_for_row(corr_model=None,
+                                 size_dist_model=None,
                                  mag_index=None,
                                  p_mean_penalty=0.,
                                  st_mean_penalty=0.,
                                  p_fraction_penalty=0.,
                                  mean_penalty=0.):
         
-        p_predictions = estimate_size_pdf(sizes,
-                  *params,
-                  fit_table=None)
+        if(mag_index is None):
+            mag_index = np.array([range(mag_nbins)]).transpose()
+            
+        mag_mid = mag_min + (mag_max-mag_min)*(mag_index+0.5)/float(mag_nbins)
+        
+        if size_dist_model is None:
+            size_dist_model = corr_model.get_size_dist_model(mag_mid)
+        
+        p_predictions = size_dist_model.pdf(sizes)
         
         # Check for zero p values
         p_predictions += 1e-9 # Impose floor
-            
-        # Determine the means of this estimate        
-        p_mean = skewed_norm_mean(params[0],params[1],params[2])
-        s_mean = skewed_norm_mean(params[4],params[5],params[6])
-        t_mean = skewed_norm_mean(params[8],params[9],params[10])
-        ps_ratio = params[3]
-        st_ratio = params[7]
         
-        p_fraction = ps_ratio/(1.+ps_ratio)
-        s_fraction = (1.-p_fraction)*st_ratio/(1.+st_ratio)
-        t_fraction = (1.-p_fraction-s_fraction)
-        
-        st_fraction = s_fraction + t_fraction
-        st_mean = (s_fraction*s_mean + t_fraction*t_mean)/st_fraction
-        mean = p_fraction*p_mean + st_fraction*st_mean
-        
-        if(mag_index is None):
+        if(type(mag_index) is not int):
             square_diffs = np.square((p_predictions - normed_mag_size_hist))
-            p_mean_offset_penalty = (p_mean_penalty*np.abs(p_mean-free_p_means)).transpose()[0]
-            st_mean_offset_penalty = (st_mean_penalty*np.abs(st_mean-free_st_means)).transpose()[0]
-            p_fraction_offset_penalty = (p_fraction_penalty*np.abs(p_fraction-free_p_fractions)).transpose()[0]
-            mean_offset_penalty = (mean_penalty*np.abs(mean-free_means)).transpose()[0]
+            p_mean_offset_penalty = (p_mean_penalty*np.abs(size_dist_model.p_mean()
+                                                           -free_p_means))
+            st_mean_offset_penalty = (st_mean_penalty*np.abs(size_dist_model.st_mean()-free_st_means))
+            p_fraction_offset_penalty = (p_fraction_penalty*np.abs(size_dist_model.p_fraction()-free_p_fractions))
+            mean_offset_penalty = (mean_penalty*np.abs(size_dist_model.mean()-free_means))
             
-            axis = 1
+            uChi_squared =  np.array([np.sum(square_diffs/np.abs(p_predictions),axis=1)]).transpose()
         else:
             square_diffs = np.square((p_predictions - normed_mag_size_hist[mag_index]))
-            p_mean_offset_penalty = p_mean_penalty*np.abs(p_mean-free_p_means[mag_index])
-            st_mean_offset_penalty = st_mean_penalty*np.abs(st_mean-free_st_means[mag_index])
-            p_fraction_offset_penalty = p_fraction_penalty*np.abs(p_fraction-free_p_fractions[mag_index])
-            mean_offset_penalty = mean_penalty*np.abs(mean-free_means[mag_index])
+            p_mean_offset_penalty = p_mean_penalty*np.abs(size_dist_model.p_mean()-free_p_means[mag_index])
+            st_mean_offset_penalty = st_mean_penalty*np.abs(size_dist_model.st_mean()-free_st_means[mag_index])
+            p_fraction_offset_penalty = p_fraction_penalty*np.abs(size_dist_model.p_fraction()-free_p_fractions[mag_index])
+            mean_offset_penalty = mean_penalty*np.abs(size_dist_model.mean()-free_means[mag_index])
             
-            axis = None
+            uChi_squared =  np.sum(square_diffs/np.abs(p_predictions))
             
-        uChi_squared =  np.sum(square_diffs/np.abs(p_predictions),axis=axis)
 
-        return uChi_squared + p_fraction*p_mean_offset_penalty + st_fraction*st_mean_offset_penalty + \
+        return uChi_squared + size_dist_model.p_fraction()*p_mean_offset_penalty + \
+            size_dist_model.st_fraction()*st_mean_offset_penalty + \
             p_fraction_offset_penalty + mean_offset_penalty
+            
+    def get_uChi_squared_for_row_from_params(row_params,
+                                             mag_index=None,
+                                             p_mean_penalty=0.,
+                                             st_mean_penalty=0.,
+                                             p_fraction_penalty=0.,
+                                             mean_penalty=0.):
+        return get_uChi_squared_for_row(size_dist_model=size_dist_model(*row_params),
+                                             mag_index=mag_index,
+                                             p_mean_penalty=p_mean_penalty,
+                                             st_mean_penalty=st_mean_penalty,
+                                             p_fraction_penalty=p_fraction_penalty,
+                                             mean_penalty=mean_penalty)
     
     def get_total_uChi_squared(fit_params, *params):
         
-        row_params = estimate_pdf_parameters(fit_params, mag_mids)
+        corr_model = mag_size_corr_model(fit_params)
         
-        row_uChi_squareds = np.array([get_uChi_squared_for_row(row_params,*params)]).transpose()
+        row_uChi_squareds = get_uChi_squared_for_row(corr_model,None,*params)
         
         total_uChi_squared = (row_uChi_squareds*mag_row_sums).sum()/total_mag_row_sum
+
+#         total_uChi_squared = row_uChi_squareds.sum()
         
         return total_uChi_squared
     
     # Fit the best set of parameters without testing against mean/fraction offsets
     # best_fit_params = params_guess
     best_fit_params = fmin(get_total_uChi_squared,params_guess,maxiter=50000,maxfun=100000)
+    best_corr_model = mag_size_corr_model(best_fit_params)
     
     free_row_params_list = []
     
@@ -366,31 +293,24 @@ def main(argv):
         
         mag_mid = mag_mids[mag_index]
         
-        row_params = np.array(estimate_pdf_parameters(best_fit_params, mag_mid)).transpose()[0]
-        free_row_params = fmin(get_uChi_squared_for_row,row_params,
+        row_model = best_corr_model.get_size_dist_model(mag_mid)
+        row_params = np.array(row_model.model_params())
+        
+        free_row_params = fmin(get_uChi_squared_for_row_from_params,row_params,
                                args=(mag_index,),maxfun=100000,maxiter=50000)
+        free_row_params = row_params
+
         
         free_row_params_list.append(free_row_params)
         
+        free_row_model = size_dist_model(*free_row_params)
+        
         # Append these results to the free parameter arrays
-        free_p_mean = free_row_params[0]
-        free_s_mean = free_row_params[4]
-        free_t_mean = free_row_params[8]
-        free_ps_ratio = free_row_params[3]
-        free_st_ratio = free_row_params[7]
         
-        free_p_fraction = free_ps_ratio/(1.+free_ps_ratio)
-        free_s_fraction = (1.-free_p_fraction)*free_st_ratio/(1.+free_st_ratio)
-        free_t_fraction = (1.-free_p_fraction-free_s_fraction)
-        
-        free_st_fraction = free_s_fraction + free_t_fraction
-        free_st_mean = (free_s_fraction*free_s_mean + free_t_fraction*free_t_mean)/free_st_fraction
-        free_mean = free_p_fraction*free_p_mean + free_st_fraction*free_st_mean
-        
-        free_p_means[mag_index] = free_p_mean
-        free_st_means[mag_index] = free_st_mean
-        free_p_fractions[mag_index] = free_p_fraction
-        free_means[mag_index] = free_mean
+        free_p_means[mag_index] = free_row_model.p_mean()
+        free_st_means[mag_index] = free_row_model.st_mean()
+        free_p_fractions[mag_index] = free_row_model.p_fraction()
+        free_means[mag_index] = free_row_model.mean()
         
     # Now that we have the means and fractions from the free fits, fit the overall model again,
     # now with a penalty for offsets in these
@@ -399,6 +319,8 @@ def main(argv):
     
     best_fit_params_with_penalty = fmin(get_total_uChi_squared,params_guess,maxiter=50000,maxfun=100000,
                                         args=penalty_params)
+#     best_fit_params_with_penalty = best_fit_params
+    best_corr_model_with_penalty = mag_size_corr_model(best_fit_params_with_penalty)
     
     print("Guess cost w/o penalty: " + str(get_total_uChi_squared(params_guess)))
     print("Initial fit cost w/o penalty: " + str(get_total_uChi_squared(best_fit_params)))
@@ -418,24 +340,27 @@ def main(argv):
         
         mag_mid = mag_mids[mag_index]
         
-        row_params = np.array(estimate_pdf_parameters(best_fit_params, mag_mid)).transpose()[0]
-        row_params_with_penalty = np.array(estimate_pdf_parameters(best_fit_params_with_penalty,
-                                                                   mag_mid)).transpose()[0]
+        row_dist_model = best_corr_model.get_size_dist_model(mag_mid)
+        
+        row_dist_model_with_penalty = best_corr_model_with_penalty.get_size_dist_model(mag_mid)
+        
         free_row_params = free_row_params_list[mag_index]
+        free_row_dist_model = size_dist_model(*free_row_params)
         
-        fit_q = get_uChi_squared_for_row(row_params,mag_index)
-        fit_q_with_penalty = get_uChi_squared_for_row(row_params,*penalty_params)
-        free_fit_q = get_uChi_squared_for_row(free_row_params,mag_index)
+        fit_q = get_uChi_squared_for_row(None,row_dist_model,mag_index=mag_index)
+        fit_q_with_penalty = get_uChi_squared_for_row(None,row_dist_model_with_penalty,*penalty_params)
+        free_fit_q = get_uChi_squared_for_row(None,free_row_dist_model,mag_index)
         
-        p_vals = mag_size_hist.data[mag_index,:]/mag_size_hist.data[mag_index,:].sum()/size_binsize
+        p_vals = normed_mag_size_hist[mag_index,:]
         
-        p_predictions = estimate_size_pdf(sizes, *row_params, fit_table=fit_table, fit_q=fit_q,
-                                          mag_mid=mag_mid)
-        p_predictions_with_penalty = estimate_size_pdf(sizes, *row_params_with_penalty,
-                                                       fit_table=fit_table_with_penalty, fit_q=fit_q_with_penalty,
-                                                       mag_mid=mag_mid)
-        free_p_predictions = estimate_size_pdf(sizes, *free_row_params, fit_table=free_fit_table,
-                                               fit_q=free_fit_q, mag_mid=mag_mid)
+        save_fit_parameters(row_dist_model, mag_mid, fit_table, fit_q)
+        save_fit_parameters(row_dist_model_with_penalty, mag_mid, fit_table_with_penalty,
+                            fit_q_with_penalty)
+        save_fit_parameters(free_row_dist_model, mag_mid, free_fit_table, free_fit_q)
+        
+        p_predictions = row_dist_model.pdf(sizes)
+        p_predictions_with_penalty = row_dist_model_with_penalty.pdf(sizes)
+        free_p_predictions = free_row_dist_model.pdf(sizes)
         
         # Set up the figure
         fig = pyplot.figure()
