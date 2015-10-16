@@ -254,7 +254,7 @@ def main(argv):
 
         return uChi_squared + size_dist_model.p_fraction()*p_mean_offset_penalty + \
             size_dist_model.st_fraction()*st_mean_offset_penalty + \
-            p_fraction_offset_penalty + mean_offset_penalty
+            p_fraction_offset_penalty*mean_offset_penalty
             
     def get_uChi_squared_for_row_from_params(row_params,
                                              mag_index=None,
@@ -276,8 +276,6 @@ def main(argv):
         row_uChi_squareds = get_uChi_squared_for_row(corr_model,None,*params)
         
         total_uChi_squared = (row_uChi_squareds*mag_row_sums).sum()/total_mag_row_sum
-
-#         total_uChi_squared = row_uChi_squareds.sum()
         
         return total_uChi_squared
     
@@ -298,7 +296,7 @@ def main(argv):
         
         free_row_params = fmin(get_uChi_squared_for_row_from_params,row_params,
                                args=(mag_index,),maxfun=100000,maxiter=50000)
-        free_row_params = row_params
+        # free_row_params = row_params
 
         
         free_row_params_list.append(free_row_params)
