@@ -28,7 +28,7 @@
 
 import click
 
-from common import magic_values as mv
+from SHE_SBE_common import magic_values as mv
 
 from shear_calibration.calibrate_from_regression import calibrate_from_regression
 

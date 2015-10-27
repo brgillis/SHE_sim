@@ -25,7 +25,7 @@
 
 from astropy.io import fits
 
-from common import magic_values as mv
+from SHE_SBE_common import magic_values as mv
 from shear_calibration.calibrate_results import calibrate_all_results
 
 def calibrate_from_regression(**kwargs):

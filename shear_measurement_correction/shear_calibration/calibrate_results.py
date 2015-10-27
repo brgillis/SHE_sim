@@ -23,13 +23,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from common.parmap import parmap
-
 import astropy.io.fits as fits
 
-from common import magic_values as mv
-from common import SHE_fits_format as sff
-from common.get_filenames import get_filenames
+from SHE_SBE_common.get_filenames import get_filenames
+from SHE_SBE_common.parmap import parmap
+from SHE_SBE_common import magic_values as mv
+from SHE_SBE_common import SHE_fits_format as sff
 
 from calibrate_shear import calibrate_shear, get_error_of_calibrated_shear
 
