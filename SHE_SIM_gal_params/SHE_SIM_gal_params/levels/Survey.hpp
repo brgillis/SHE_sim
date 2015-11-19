@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_SURVEY_HPP_
-#define SHE_SIM_GAL_PARAMS_SURVEY_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_
+#define SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_
 
 #include <utility>
 
@@ -36,7 +36,7 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class Survey: public ParamHierarchyLevel<0>
+class Survey: public ParamHierarchyLevel
 {
 private:
 
@@ -45,6 +45,12 @@ private:
 public:
 	Survey();
 	virtual ~Survey();
+
+	/**
+	 * Get the hierarchy level for this class.
+	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
+	 */
+	virtual int_t get_hierarchy_level() const override {return 0;}
 
 	// Methods for interacting with the generation level map
 
@@ -62,4 +68,4 @@ public:
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_SURVEY_HPP_
+#endif // SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_

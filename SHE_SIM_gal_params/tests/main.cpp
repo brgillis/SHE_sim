@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file Survey_test.cpp
+ @file main.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -21,15 +21,12 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
- \**********************************************************************/
+\**********************************************************************/
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "/disk2/brg/Program_Files/workspace/SHE_SIM_gal_params/SHE_SIM_gal_params/Survey.hpp"
-
-namespace SHE_SIM
-{
-
-} // namespace SHE_SIM
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE IceBRG_test
+#include <boost/test/unit_test.hpp>

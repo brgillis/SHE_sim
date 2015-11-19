@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file Survey.cpp
+ @file ExposureTime.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,45 +23,54 @@
 
  \**********************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_
 
-#include <utility>
-#include "SHE_SIM_gal_params/Survey.hpp"
+#include <cassert>
+#include <vector>
+
+#include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM
 {
 
-Survey::Survey()
-: _generation_level_map(_survey_generation_level_map)
+/**
+ * TODO Auto-generated comment stub
+ */
+class ExposureTime : public ParamGenerator
 {
-}
+private:
 
-Survey::~Survey()
-{
-}
+	flt_t _exp_time;
 
-const Survey::generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
-{
-	return _survey_generation_level_map;
-}
+	virtual void _generate() override
+	{
+		ParamGenerator::_cached_value = _exp_time;
+	}
 
-void Survey::set_survey_generation_level_map(
-		const Survey::generation_level_map_t & survey_generation_level_map)
-{
-	_survey_generation_level_map = survey_generation_level_map;
-}
+	virtual void _set_params(const std::vector<flt_t> & v) override
+	{
+		assert(v[0]>0.);
+		_exp_time = v[0];
+	}
 
-void Survey::set_survey_generation_level_map(
-		Survey::generation_level_map_t && survey_generation_level_map)
-{
-	_survey_generation_level_map = std::move(survey_generation_level_map);
-}
+public:
+	ExposureTime( owner_t & owner, const flt_t & exp_time = 1.)
+	: ParamGenerator(owner),
+	  _exp_time(exp_time)
+	{
+	}
 
-void Survey::set_generation_level( const Survey::param_name_t & name, const int_t & generation_level )
-{
-	_survey_generation_level_map[name] = generation_level;
-}
+	virtual ~ExposureTime()
+	{
+	}
+
+	virtual ParamGenerator::name_t name() const override
+	{
+		return "exp_time";
+	}
+};
 
 } // namespace SHE_SIM
+
+#endif // SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_

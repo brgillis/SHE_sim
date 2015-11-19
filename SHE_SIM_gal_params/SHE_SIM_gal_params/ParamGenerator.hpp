@@ -26,82 +26,59 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_
 
-#include <limits>
 #include <unordered_map>
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
-#define UNCACHED_VALUE std::numeric_limits<flt_t>::infinity()
-
 namespace SHE_SIM
 {
+
+// Forward-declare ParamHierarchyLevel
+class ParamHierarchyLevel;
 
 /**
  * An abstract base class representing a generator for a certain type of parameter.
  */
-template< int_t HierarchyLevel >
 class ParamGenerator
 {
 public:
 	// Public typedefs
-	typedef ParamHierarchyLevel<HierarchyLevel> owner_t;
-	typedef std::string name_t;
+	typedef ParamHierarchyLevel owner_t;
+	typedef str_t name_t;
 	typedef std::unordered_map<name_t,int_t> generation_level_map_t;
+
+protected:
+
+	// Protected members
+	flt_t _cached_value;
 
 private:
 
 	// Private members
 	owner_t & _owner;
-	const int_t _level_generated_at;
-	flt_t _cached_value;
 
 	// Private methods
 
-	bool _is_cached() const
-	{
-		return _cached_value == UNCACHED_VALUE;
-	}
+	bool _is_cached() const;
 
-	void _clear_cache()
-	{
-		_cached_value = UNCACHED_VALUE;
-	}
+	void _clear_cache();
 
 	virtual void _generate() = 0;
 
-	bool _generated_at_this_level() const
-	{
-		return HierarchyLevel <= _level_generated_at;
-	}
+	bool _generated_at_this_level() const;
 
-	void _determine_value()
-	{
-		if(_generated_at_this_level())
-		{
-			_generate();
-		}
-		else
-		{
-			_cached_value = _parent_version()->get();
-		}
-	}
+	void _determine_value();
 
-	void _determine_new_value()
-	{
-		_clear_cache();
-		this->_determine_value();
-	}
+	void _determine_new_value();
 
-	ParamGenerator<HierarchyLevel-1> & _parent_version()
-	{
-		return _owner.parent()->param(name());
-	}
+	virtual void _set_params(const std::vector<flt_t> & v) = 0;
 
-	const ParamGenerator<HierarchyLevel-1> & _parent_version() const
-	{
-		return _owner.parent()->param(name());
-	}
+	virtual void _set_params(std::vector<flt_t> && v) {set_params(v);};
+
+	ParamGenerator & _parent_version();
+
+	const ParamGenerator & _parent_version() const;
 
 public:
 
@@ -110,39 +87,27 @@ public:
 	 *
 	 * @param level_determined_at Which level of the hierarchy this will be generated at.
 	 */
-	ParamGenerator( owner_t & owner,
-					const generation_level_map_t & generation_level_map = owner.get_generation_level_map() )
-	: _owner(owner),
-	  _cached_value(UNCACHED_VALUE)
-	{
-		_level_generated_at = generation_level_map.at(name());
-	}
+	ParamGenerator( owner_t & owner, const int_t & level_generated_at = -1 );
 
 	/**
 	 * Virtual destructor.
 	 */
 	virtual ~ParamGenerator() {}
 
-	virtual const name_t & name() const = 0;
+	virtual name_t name() const = 0;
 
-	const flt_t & get()
-	{
-		if(!_is_cached())
-		{
-			_generate();
-		}
-		return _cached_value;
-	}
+	void set_params(const std::vector<flt_t> & v);
 
-	const flt_t & get_new()
-	{
-		_determine_new_value();
-		return _cached_value;
-	}
-};
+	void set_params(std::vector<flt_t> && v);
+
+	const flt_t & get();
+
+	const flt_t & get_new();
+
+	const int_t & level_generated_at() const;
+
+}; // ParamGenerator
 
 } // namespace SHE_SIM
-
-#undef UNCACHED_VALUE
 
 #endif // SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_

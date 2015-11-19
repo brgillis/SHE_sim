@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ParamGenerator_test.cpp
+ @file Survey.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -27,9 +27,46 @@
 #include "config.h"
 #endif
 
-#include "/disk2/brg/Program_Files/workspace/SHE_SIM_gal_params/SHE_SIM_gal_params/ParamGenerator.hpp"
+#include <utility>
+
+#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/params_list.hpp"
 
 namespace SHE_SIM
 {
+
+Survey::Survey()
+: ParamHierarchyLevel(0,
+		nullptr,
+		&_survey_generation_level_map,
+		get_full_params_map(*this))
+{
+}
+
+Survey::~Survey()
+{
+}
+
+const Survey::generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
+{
+	return _survey_generation_level_map;
+}
+
+void Survey::set_survey_generation_level_map(
+		const Survey::generation_level_map_t & survey_generation_level_map)
+{
+	_survey_generation_level_map = survey_generation_level_map;
+}
+
+void Survey::set_survey_generation_level_map(
+		Survey::generation_level_map_t && survey_generation_level_map)
+{
+	_survey_generation_level_map = std::move(survey_generation_level_map);
+}
+
+void Survey::set_generation_level( const Survey::param_name_t & name, const int_t & generation_level )
+{
+	_survey_generation_level_map[name] = generation_level;
+}
 
 } // namespace SHE_SIM

@@ -30,42 +30,58 @@
 #include <memory>
 #include <set>
 #include <utility>
+#include <vector>
 
 #include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM
 {
 
+// Forward declare ParamGenerator
+class ParamGenerator;
+
 /**
  * An abstract base class template for a level in the hierarchy of parameter generation (eg. per-image, per-galaxy, etc.)
  */
-template< int_t HierachyLevel >
 class ParamHierarchyLevel
 {
 public:
 
 	// Public typedefs
 
-	typedef ParamHierarchyLevel<HierachyLevel-1> * parent_ptr_t;
+	typedef ParamHierarchyLevel parent_t;
+	typedef parent_t * parent_ptr_t;
 
-	typedef std::unique_ptr<ParamHierarchyLevel<HierachyLevel-1>> child_ptr_t;
+	typedef ParamHierarchyLevel child_t;
+	typedef std::unique_ptr<child_t> child_ptr_t;
 	typedef std::vector<child_ptr_t> children_t;
 
-	typedef ParamGenerator<HierachyLevel> param_t;
-	typedef typename param_t::name_t param_name_t;
+	typedef ParamGenerator param_t;
+	typedef str_t param_name_t;
 	typedef std::unique_ptr<param_t> param_ptr_t;
-	typedef std::unordered_map<param_name_t, param_ptr_t> params_t;
+	typedef std::unordered_map<param_name_t,param_ptr_t> params_t;
 
-	typedef typename param_t::generation_level_map_t generation_level_map_t;
+	typedef std::unordered_map<param_name_t,int_t> generation_level_map_t;
 
 private:
 
 	// Private members
 	parent_ptr_t _p_parent;
 	children_t _children;
+
+	// Private methods
+	void _update_parent(parent_ptr_t const & new_p_parent);
+
+	// Private methods
+	void _update_child(child_t * const & old_p_child, child_t * const & new_p_child);
+
+protected:
+
+	// Protected members
 	params_t _params;
-	const generation_level_map_t & _generation_level_map;
+	const generation_level_map_t * _generation_level_map;
 
 public:
 
@@ -74,12 +90,10 @@ public:
 	 *
 	 * @param p_parent Pointer to the parent of this object, defaulting to nullptr
 	 */
-	ParamHierarchyLevel(parent_ptr_t const & p_parent = nullptr,
-			const generation_level_map_t & generation_level_map = p_parent->get_generation_level_map())
-	: _p_parent(p_parent),
-	  _generation_level_map(generation_level_map)
-	{
-	}
+	ParamHierarchyLevel(int_t const & l = -1,
+			parent_ptr_t const & p_parent = nullptr,
+			const generation_level_map_t * p_generation_level_map = nullptr,
+			params_t && params = params_t());
 
 	/**
 	 * Copy constructor is deleted. There's no logical way to handle the question of what
@@ -87,30 +101,14 @@ public:
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel(const ParamHierarchyLevel<HierachyLevel> & other) = delete;
+	ParamHierarchyLevel(const ParamHierarchyLevel & other) = delete;
 
 	/**
 	 * Move constructor.
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel(ParamHierarchyLevel<HierachyLevel> && other)
-	: _p_parent(std::move(other._p_parent)),
-	  _children(std::move(other._children)),
-	  _generation_level_map(other._generation_level_map)
-	{
-		// Update parent's pointer to this
-		if(_p_parent != nullptr)
-		{
-			_p_parent->_update_child(&other,this);
-		}
-
-		// Update children's pointers to this
-		for( auto & child : _children )
-		{
-			child->_update_parent(this);
-		}
-	}
+	ParamHierarchyLevel(ParamHierarchyLevel && other);
 
 	/**
 	 * Copy assigmnet is deleted. There's no logical way to handle the question of what
@@ -118,99 +116,62 @@ public:
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel & operator=(const ParamHierarchyLevel<HierachyLevel> & other) = delete;
+	ParamHierarchyLevel & operator=(const ParamHierarchyLevel & other) = delete;
 
 	/**
 	 * Move assignment.
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel & operator=(ParamHierarchyLevel<HierachyLevel> && other)
-	: _p_parent(std::move(other._p_parent)),
-	  _children(std::move(other._children))
-	{
-		// Update parent's pointer to this
-		if(_p_parent != nullptr)
-		{
-			_p_parent->_update_child(&other,this);
-		}
-
-		// Update children's pointers to this
-		for( auto & child : _children )
-		{
-			child->_update_parent(this);
-		}
-
-		return *this;
-	}
+	ParamHierarchyLevel & operator=(ParamHierarchyLevel && other);
 
 	/**
 	 * Deconstructor - virtual to ensure this isn't instantiated itself.
 	 */
-	virtual ~ParamHierarchyLevel() = 0;
+	virtual ~ParamHierarchyLevel() {};
 
-	// Public class methods
+	// Public methods
 
 	/**
 	 * Get the hierarchy level for this class.
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
-	static int_t get_hierarchy_level() const
-	{
-		return HierachyLevel;
-	}
-
-	// Public methods
+	virtual int_t get_hierarchy_level() const = 0;
 
 	/**
 	 * Get the number of children of this object.
 	 *
 	 * @return Number of children.
 	 */
-	int_t num_children() const
-	{
-		return _children.size();
-	}
+	int_t num_children() const;
 
 	/**
 	 * Get a pointer to this object's parent.
 	 *
 	 * @return A pointer to this object's parent.
 	 */
-	parent_ptr_t const & get_parent() noexcept
-	{
-		return _p_parent;
-	}
+	parent_t * const & get_parent() noexcept;
 
 	/**
 	 * Get a pointer to this object's parent.
 	 *
 	 * @return A pointer to this object's parent.
 	 */
-	const parent_ptr_t const & get_parent() const noexcept
-	{
-		return _p_parent;
-	}
+	const parent_t * get_parent() const;
 
 	/**
 	 * Get a vector of this object's children.
 	 *
 	 * @return A vector of this object's children.
 	 */
-	children_t const & get_children() noexcept
-	{
-		return _children;
-	}
+	children_t const & get_children() noexcept;
 
 	/**
 	 * Get a vector of this object's children.
 	 *
 	 * @return A vector of this object's children.
 	 */
-	const children_t const & get_children() const noexcept
-	{
-		return _children;
-	}
+	children_t const & get_children() const noexcept;
 
 	/**
 	 * Get a pointer to a specific child. Will throw an exception if no child with that index exists.
@@ -219,10 +180,7 @@ public:
 	 *
 	 * @return A pointer to the desired child.
 	 */
-	child_ptr_t const & get_child(const int & i)
-	{
-		return _children.at(i);
-	}
+	child_t * get_child(const int & i);
 
 	/**
 	 * Get a pointer to a specific child. Will throw an exception if no child with that index exists.
@@ -231,10 +189,7 @@ public:
 	 *
 	 * @return A pointer to the desired child.
 	 */
-	const child_ptr_t const & get_child(const int & i) const
-	{
-		return _children.at(i);
-	}
+	const child_t * get_child(const int & i) const;
 
 	/**
 	 * Get a pointer to the parameter generator with a given name. Will throw an exception if none
@@ -243,10 +198,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	param_ptr_t const & get_param(const param_name_t & name)
-	{
-		return _params.at(name);
-	}
+	const param_t * get_param(const param_name_t & name) const;
 
 	/**
 	 * Get a pointer to the parameter generator with a given name. Will throw an exception if none
@@ -255,10 +207,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	const param_ptr_t const & get_param(const param_name_t & name) const
-	{
-		return _params.at(name);
-	}
+	param_t * get_param(const param_name_t & name);
 
 	/**
 	 * Get the value for a parameter with a given name. Will throw an exception if none
@@ -267,23 +216,29 @@ public:
 	 * @param name Name of the desired parameter.
 	 * @return The value of the desired parameter.
 	 */
-	param_t const & get_param_value(const param_name_t & name)
-	{
-		return _params.at(name)->get();
-	}
+	flt_t const & get_param_value(const param_name_t & name);
 
 	/**
 	 * Get the generation level map used by this object.
 	 *
 	 * @return The generation level map.
 	 */
-	generation_level_map_t const & get_generation_level_map() const noexcept
-	{
-		return _generation_level_map;
-	}
+	const generation_level_map_t * get_generation_level_map() const noexcept;
 
+	/**
+	 * Get the level at which a parameter should be generated
+	 *
+	 * @param name The name of the parameter
+	 *
+	 * @return The level it's generated at
+	 */
+	const int & get_generation_level( const str_t & name) const;
 
-};
+	void set_param_params(const param_name_t & name, const std::vector<flt_t> & params);
+
+	void set_param_params(const param_name_t & name, std::vector<flt_t> && params);
+
+}; // ParamHierarchyLevel
 
 } // namespace SHE_SIM
 
