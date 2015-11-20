@@ -45,8 +45,6 @@ class ParamGenerator
 public:
 	// Public typedefs
 	typedef ParamHierarchyLevel owner_t;
-	typedef str_t name_t;
-	typedef std::unordered_map<name_t,int_t> generation_level_map_t;
 
 protected:
 

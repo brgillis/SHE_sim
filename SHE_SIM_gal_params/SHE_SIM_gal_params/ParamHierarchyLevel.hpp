@@ -62,8 +62,6 @@ public:
 	typedef std::unique_ptr<param_t> param_ptr_t;
 	typedef std::unordered_map<param_name_t,param_ptr_t> params_t;
 
-	typedef std::unordered_map<param_name_t,int_t> generation_level_map_t;
-
 private:
 
 	// Private members

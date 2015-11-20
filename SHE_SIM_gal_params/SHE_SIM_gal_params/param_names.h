@@ -1,8 +1,9 @@
 /**********************************************************************\
- @file common.h
+ @file param_names.h
  ------------------
 
- TODO <Insert file description here>
+ Names of the parameters, stored as variables to help avoid errors from
+ refactoring.
 
  **********************************************************************
 
@@ -23,20 +24,13 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_COMMON_H_
-#define SHE_SIM_GAL_PARAMS_COMMON_H_
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_
+#define SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_
 
-#include <string>
-#include <unordered_map>
+constexpr const char * exp_time_name = "exp_time";
+constexpr const char * mag_vis_inst_zp_name = "mag_vis_inst_zp";
+constexpr const char * mag_i_inst_zp_name = "mag_i_inst_zp";
+constexpr const char * mag_vis_zp_name = "mag_vis_zp";
+constexpr const char * mag_i_zp_name = "mag_i_zp";
 
-// General typedefs
-
-typedef int int_t;
-typedef double flt_t;
-typedef std::string str_t;
-typedef str_t name_t;
-typedef std::unordered_map<name_t,int_t> generation_level_map_t;
-
-
-
-#endif // SHE_SIM_GAL_PARAMS_COMMON_H_
+#endif // SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_

@@ -30,8 +30,10 @@
 #include <cmath>
 #include <vector>
 
-#include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/default_values.h"
+#include "SHE_SIM_gal_params/param_names.h"
+#include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM
 {
@@ -45,8 +47,8 @@ private:
 
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _owner.get_param_value("mag_vis_inst_zp")
-				+ 2.5* std::log10(_owner.get_param_value("exp_time"));
+		ParamGenerator::_cached_value = _owner.get_param_value(mag_vis_inst_zp_name)
+				+ 2.5* std::log10(_owner.get_param_value(exp_time_name));
 	}
 
 	virtual void _set_params(const std::vector<flt_t> & v) override
@@ -64,9 +66,9 @@ public:
 	{
 	}
 
-	virtual ParamGenerator::name_t name() const override
+	virtual name_t name() const override
 	{
-		return "mag_vis_zp";
+		return mag_vis_zp_name;
 	}
 
 	virtual ParamGenerator * clone() const override

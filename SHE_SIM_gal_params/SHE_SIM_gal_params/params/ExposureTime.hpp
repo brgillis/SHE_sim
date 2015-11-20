@@ -29,8 +29,10 @@
 #include <cassert>
 #include <vector>
 
-#include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/default_values.h"
+#include "SHE_SIM_gal_params/param_names.h"
+#include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM
 {
@@ -67,9 +69,9 @@ public:
 	{
 	}
 
-	virtual ParamGenerator::name_t name() const override
+	virtual name_t name() const override
 	{
-		return "exp_time";
+		return exp_time_name;
 	}
 
 	virtual ParamGenerator * clone() const override

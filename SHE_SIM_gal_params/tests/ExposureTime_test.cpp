@@ -31,6 +31,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/param_names.h"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
@@ -39,8 +40,6 @@ namespace SHE_SIM
 struct exp_time_fixture {
 
 	Survey survey;
-
-	const str_t exp_time_name = "exp_time";
 
 	const flt_t exp_time1 = 1234.5;
 

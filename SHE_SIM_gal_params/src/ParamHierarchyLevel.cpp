@@ -204,7 +204,7 @@ flt_t const & ParamHierarchyLevel::get_param_value(const param_name_t & name)
 	return _params.at(name).get()->get();
 }
 
-const ParamHierarchyLevel::generation_level_map_t * ParamHierarchyLevel::get_generation_level_map() const noexcept
+const generation_level_map_t * ParamHierarchyLevel::get_generation_level_map() const noexcept
 {
 	return _generation_level_map;
 }

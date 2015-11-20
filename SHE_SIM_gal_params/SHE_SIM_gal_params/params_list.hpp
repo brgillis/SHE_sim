@@ -54,9 +54,9 @@ void insert_param(T_map & res, ParamHierarchyLevel & owner)
 	res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
 }
 
-inline std::unordered_map<str_t,std::unique_ptr<ParamGenerator>> get_full_params_map(ParamHierarchyLevel & owner)
+inline ParamHierarchyLevel::params_t get_full_params_map(ParamHierarchyLevel & owner)
 {
-	std::unordered_map<str_t,std::unique_ptr<ParamGenerator>> res;
+	ParamHierarchyLevel::params_t res;
 
 	// Insert all params here
 	insert_param<ExposureTime>(res, owner);

@@ -46,19 +46,19 @@ Survey::~Survey()
 {
 }
 
-const Survey::generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
+const generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
 {
 	return _survey_generation_level_map;
 }
 
 void Survey::set_survey_generation_level_map(
-		const Survey::generation_level_map_t & survey_generation_level_map)
+		const generation_level_map_t & survey_generation_level_map)
 {
 	_survey_generation_level_map = survey_generation_level_map;
 }
 
 void Survey::set_survey_generation_level_map(
-		Survey::generation_level_map_t && survey_generation_level_map)
+		generation_level_map_t && survey_generation_level_map)
 {
 	_survey_generation_level_map = std::move(survey_generation_level_map);
 }
