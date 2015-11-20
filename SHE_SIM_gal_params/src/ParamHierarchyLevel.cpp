@@ -176,12 +176,12 @@ int_t ParamHierarchyLevel::num_children() const
 	return _children.size();
 }
 
-ParamHierarchyLevel::parent_t * const & ParamHierarchyLevel::get_parent() noexcept
+ParamHierarchyLevel::parent_t * ParamHierarchyLevel::get_parent()
 {
 	return _p_parent;
 }
 
-const ParamHierarchyLevel::parent_t * ParamHierarchyLevel::get_parent() const
+ParamHierarchyLevel::parent_t const * ParamHierarchyLevel::get_parent() const
 {
 	return _p_parent;
 }
@@ -201,9 +201,14 @@ ParamHierarchyLevel::child_t * ParamHierarchyLevel::get_child(const int & i)
 	return _children.at(i).get();
 }
 
-const ParamHierarchyLevel::child_t * ParamHierarchyLevel::get_child(const int & i) const
+ParamHierarchyLevel::child_t const * ParamHierarchyLevel::get_child(const int & i) const
 {
 	return _children.at(i).get();
+}
+
+void ParamHierarchyLevel::adopt_child(child_t * const & p_child)
+{
+	_children.push_back( child_ptr_t(p_child) );
 }
 
 ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const name_t & name)

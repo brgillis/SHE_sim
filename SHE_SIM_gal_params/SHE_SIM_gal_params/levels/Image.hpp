@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file Survey.hpp
+ @file Image.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_
-#define SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
+#define SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
 
 #include <utility>
 
@@ -35,56 +35,22 @@
 namespace SHE_SIM
 {
 
-// Forward declare possible children
-class ImageGroup;
-class Image;
-
 /**
  * TODO Auto-generated comment stub
  */
-class Survey: public ParamHierarchyLevel
+class Image: public ParamHierarchyLevel
 {
-private:
-
-	generation_level_map_t _survey_generation_level_map;
 
 public:
-	Survey();
-	virtual ~Survey();
+	Image(ParamHierarchyLevel * const & parent = nullptr,
+			generation_level_map_t * const & p_generation_level_map = nullptr);
+	virtual ~Image();
 
 	/**
 	 * Get the hierarchy level for this class.
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
-	virtual int_t get_hierarchy_level() const override {return dv::survey_level;}
-
-	// Methods for interacting with the generation level map
-#if(1)
-
-	const generation_level_map_t & get_survey_generation_level_map() const noexcept;
-
-	void set_survey_generation_level_map(
-			const generation_level_map_t & survey_generation_level_map);
-
-	void set_survey_generation_level_map(
-			generation_level_map_t && survey_generation_level_map);
-
-	void set_generation_level( const name_t & name, const int_t & generation_level );
-
-#endif
-
-	// Methods to add children
-#if(1)
-
-	ImageGroup * add_image_group();
-
-	void add_image_groups(int_t const & N);
-
-	Image * add_image();
-
-	void add_images(int_t const & N);
-
-#endif
+	virtual int_t get_hierarchy_level() const override {return dv::image_level;}
 
 	virtual ParamHierarchyLevel * clone() const override;
 
@@ -92,4 +58,4 @@ public:
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_LEVELS_SURVEY_HPP_
+#endif // SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_

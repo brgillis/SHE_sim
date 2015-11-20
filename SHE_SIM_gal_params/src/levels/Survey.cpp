@@ -32,6 +32,8 @@
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/levels/Image.hpp"
+#include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 
 namespace SHE_SIM
 {
@@ -46,6 +48,9 @@ Survey::Survey()
 Survey::~Survey()
 {
 }
+
+// Methods for interacting with the generation_level_map
+#if(1)
 
 const generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
 {
@@ -67,7 +72,35 @@ void Survey::set_survey_generation_level_map(
 void Survey::set_generation_level( const name_t & name, const int_t & generation_level )
 {
 	_survey_generation_level_map[name] = generation_level;
+	_clear_param_cache(name);
 }
+
+#endif
+
+// Methods to add children
+#if(1)
+
+ImageGroup * Survey::add_image_group()
+{
+	return static_cast<ImageGroup *>(ParamHierarchyLevel::spawn_child<ImageGroup>());
+}
+
+void Survey::add_image_groups(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<ImageGroup>(N);
+}
+
+Image * Survey::add_image()
+{
+	return static_cast<Image *>(ParamHierarchyLevel::spawn_child<Image>());
+}
+
+void Survey::add_images(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Image>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * Survey::clone() const
 {

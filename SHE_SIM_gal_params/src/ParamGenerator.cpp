@@ -52,8 +52,14 @@ void ParamGenerator::_clear_cache()
 {
 	_cached_value = UNCACHED_VALUE;
 
+	// Uncache for any children
+	for( auto const & child : _owner._children )
+	{
+		child->_clear_param_cache(name());
+	}
+
 	// Uncache any dependants as well
-	for( const auto & dependant_name : _dependant_names )
+	for( auto const & dependant_name : _dependant_names )
 	{
 		_owner._clear_param_cache(dependant_name);
 	}
@@ -121,7 +127,7 @@ const flt_t & ParamGenerator::get()
 {
 	if(!_is_cached())
 	{
-		_generate();
+		_determine_value();
 	}
 	return _cached_value;
 }

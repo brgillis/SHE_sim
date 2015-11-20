@@ -26,9 +26,10 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 
-#include <unordered_map>
+#include <cassert>
 #include <memory>
 #include <set>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -85,14 +86,6 @@ private:
 	 */
 	flt_t const & _request_param_value(const name_t & name, const name_t & requester_name);
 
-	/**
-	 * Clears the cache of the parameter with the specified name, for both this and all its
-	 * children.
-	 *
-	 * @param name The name of the parameters whose cache is to be cleared.
-	 */
-	void _clear_param_cache(const name_t & name);
-
 	friend class ParamGenerator; // So ParamGenerators can access _request_param_value and _clear_param_cache
 
 protected:
@@ -100,6 +93,15 @@ protected:
 	// Protected members
 	params_t _params;
 	const generation_level_map_t * _generation_level_map;
+
+	// Protected methods
+	/**
+	 * Clears the cache of the parameter with the specified name, for both this and all its
+	 * children.
+	 *
+	 * @param name The name of the parameters whose cache is to be cleared.
+	 */
+	void _clear_param_cache(const name_t & name);
 
 public:
 
@@ -153,6 +155,9 @@ public:
 
 	// Public methods
 
+	// Get details on this object
+#if(1)
+
 	/**
 	 * Get the hierarchy level for this class.
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
@@ -167,18 +172,35 @@ public:
 	int_t num_children() const;
 
 	/**
-	 * Get a pointer to this object's parent.
+	 * Get the generation level map used by this object.
 	 *
-	 * @return A pointer to this object's parent.
+	 * @return The generation level map.
 	 */
-	parent_t * const & get_parent() noexcept;
+	const generation_level_map_t * get_generation_level_map() const noexcept;
+
+#endif // Get details on this object
+
+	// Parent-related methods
+#if(1)
 
 	/**
 	 * Get a pointer to this object's parent.
 	 *
 	 * @return A pointer to this object's parent.
 	 */
-	const parent_t * get_parent() const;
+	parent_t * get_parent();
+
+	/**
+	 * Get a pointer to this object's parent.
+	 *
+	 * @return A pointer to this object's parent.
+	 */
+	parent_t const * get_parent() const;
+
+#endif
+
+	// Child-related methods
+#if(1)
 
 	/**
 	 * Get a vector of this object's children.
@@ -213,6 +235,49 @@ public:
 	const child_t * get_child(const int & i) const;
 
 	/**
+	 * Create a new child with the specified arguments passed to its constructor.
+	 *
+	 * @param args Arguments to be passed to the child's constructor after the pointer to this.
+	 *
+	 * @return Pointer to the new child.
+	 */
+	template< typename T_child, typename... Args >
+	child_t * spawn_child(Args... args)
+	{
+		_children.push_back(child_ptr_t( new T_child(this, args...) ));
+		return _children.back().get();
+	}
+
+	/**
+	 * Create multiple new children, each with the specified arguments pass to its constructor.
+	 *
+	 * @param N The number of children to be created.
+	 * @param args The arguments to be passed to each child's constructor after the pointer to this.
+	 */
+	template< typename T_child, typename... Args >
+	void spawn_children( int_t const & N, Args... args)
+	{
+		assert(N>=0);
+
+		for( int_t i=0; i<N; ++i )
+			_children.push_back(child_ptr_t( new T_child(this, args...) ));
+
+		return;
+	}
+
+	/**
+	 * Take ownership of a pre-existing child.
+	 *
+	 * @param p_child Pointer to the child to take ownership of.
+	 */
+	void adopt_child(child_t * const & p_child);
+
+#endif
+
+	// Parameter-related methods
+#if(1)
+
+	/**
 	 * Get a pointer to the parameter generator with a given name. Will throw an exception if none
 	 * by that name exists.
 	 *
@@ -240,13 +305,6 @@ public:
 	flt_t const & get_param_value(const name_t & name);
 
 	/**
-	 * Get the generation level map used by this object.
-	 *
-	 * @return The generation level map.
-	 */
-	const generation_level_map_t * get_generation_level_map() const noexcept;
-
-	/**
 	 * Get the level at which a parameter should be generated
 	 *
 	 * @param name The name of the parameter
@@ -258,6 +316,8 @@ public:
 	void set_param_params(const name_t & name, const std::vector<flt_t> & params);
 
 	void set_param_params(const name_t & name, std::vector<flt_t> && params);
+
+#endif
 
 	virtual ParamHierarchyLevel * clone() const = 0;
 
