@@ -89,19 +89,21 @@ public:
 	 * Constructor, creates with no children and (by default) no parent.
 	 *
 	 * @param p_parent Pointer to the parent of this object, defaulting to nullptr
+	 * @param p_generation_level_map Pointer to the generation level map this will use.
+	 * @param params Parameters map.
 	 */
-	ParamHierarchyLevel(int_t const & l = -1,
-			parent_ptr_t const & p_parent = nullptr,
+	ParamHierarchyLevel(parent_ptr_t const & p_parent = nullptr,
 			const generation_level_map_t * p_generation_level_map = nullptr,
 			params_t && params = params_t());
 
 	/**
-	 * Copy constructor is deleted. There's no logical way to handle the question of what
-	 * to do if a child is copied. Do you copy the parent as well?
+	 * Copy constructor. Note that the copied object will maintain a pointer
+	 * to the parent (by necessity), but the parent won't automatically be updated to
+	 * manage the copied object.
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel(const ParamHierarchyLevel & other) = delete;
+	ParamHierarchyLevel(const ParamHierarchyLevel & other);
 
 	/**
 	 * Move constructor.
@@ -111,12 +113,13 @@ public:
 	ParamHierarchyLevel(ParamHierarchyLevel && other);
 
 	/**
-	 * Copy assigmnet is deleted. There's no logical way to handle the question of what
-	 * to do if a child is copied. Do you copy the parent as well?
+	 * Copy assignment. Note that the copied object will maintain a pointer
+	 * to the parent (by necessity), but the parent won't automatically be updated to
+	 * manage the copied object.
 	 *
 	 * @param other
 	 */
-	ParamHierarchyLevel & operator=(const ParamHierarchyLevel & other) = delete;
+	ParamHierarchyLevel & operator=(const ParamHierarchyLevel & other);
 
 	/**
 	 * Move assignment.
@@ -237,6 +240,8 @@ public:
 	void set_param_params(const param_name_t & name, const std::vector<flt_t> & params);
 
 	void set_param_params(const param_name_t & name, std::vector<flt_t> && params);
+
+	virtual ParamHierarchyLevel * clone() const = 0;
 
 }; // ParamHierarchyLevel
 

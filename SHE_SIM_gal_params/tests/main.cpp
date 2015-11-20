@@ -28,5 +28,5 @@
 #endif
 
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE IceBRG_test
+#define BOOST_TEST_MODULE SHE_SIM_gal_params
 #include <boost/test/unit_test.hpp>

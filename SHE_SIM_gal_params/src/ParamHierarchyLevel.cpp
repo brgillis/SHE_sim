@@ -52,8 +52,7 @@ void ParamHierarchyLevel::_update_child(child_t * const & old_p_child, child_t *
 
 // Public methods
 
-ParamHierarchyLevel::ParamHierarchyLevel(int_t const & l,
-		parent_ptr_t const & p_parent,
+ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 		const generation_level_map_t * p_generation_level_map,
 		params_t && params)
 : _p_parent(p_parent),
@@ -69,6 +68,23 @@ ParamHierarchyLevel::ParamHierarchyLevel(int_t const & l,
 	}
 }
 
+ParamHierarchyLevel::ParamHierarchyLevel(const ParamHierarchyLevel & other)
+: _p_parent(other._p_parent),
+  _generation_level_map(other._generation_level_map)
+{
+	// Deep-copy _params and _children
+	for( auto const & param_name_and_ptr : other._params )
+	{
+		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
+	}
+	for( auto const & child_ptr : other._children )
+	{
+		_children.push_back( child_ptr_t( child_ptr->clone() ) );
+		_children.back()->_update_parent(this);
+	}
+}
+
+
 /**
  * Move constructor.
  *
@@ -77,6 +93,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(int_t const & l,
 ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
 : _p_parent(std::move(other._p_parent)),
   _children(std::move(other._children)),
+  _params(std::move(other._params)),
   _generation_level_map(std::move(other._generation_level_map))
 {
 	// Update parent's pointer to this
@@ -92,14 +109,31 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
 	}
 }
 
-/**
- * Move assignment.
- *
- * @param other
- */
+ParamHierarchyLevel & ParamHierarchyLevel::operator=(const ParamHierarchyLevel & other)
+{
+	_p_parent = other._p_parent;
+	_generation_level_map = other._generation_level_map;
+
+	// Deep-copy _params and _children
+	_params.clear();
+	for( auto const & param_name_and_ptr : other._params )
+	{
+		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
+	}
+	_children.clear();
+	for( auto const & child_ptr : other._children )
+	{
+		_children.push_back( child_ptr_t( child_ptr->clone() ) );
+		_children.back()->_update_parent(this);
+	}
+
+	return *this;
+}
+
 ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && other)
 {
 	_p_parent = std::move(other._p_parent);
+	_params = std::move(other._params);
 	_children = std::move(other._children);
 	_generation_level_map = std::move(other._generation_level_map);
 

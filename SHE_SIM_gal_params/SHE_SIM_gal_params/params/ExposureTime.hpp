@@ -69,6 +69,11 @@ public:
 	{
 		return "exp_time";
 	}
+
+	virtual ParamGenerator * clone() const override
+	{
+		return new ExposureTime(*this);
+	}
 };
 
 } // namespace SHE_SIM

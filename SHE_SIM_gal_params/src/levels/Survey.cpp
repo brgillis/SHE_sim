@@ -36,8 +36,7 @@ namespace SHE_SIM
 {
 
 Survey::Survey()
-: ParamHierarchyLevel(0,
-		nullptr,
+: ParamHierarchyLevel(nullptr,
 		&_survey_generation_level_map,
 		get_full_params_map(*this))
 {
@@ -67,6 +66,11 @@ void Survey::set_survey_generation_level_map(
 void Survey::set_generation_level( const Survey::param_name_t & name, const int_t & generation_level )
 {
 	_survey_generation_level_map[name] = generation_level;
+}
+
+ParamHierarchyLevel * Survey::clone() const
+{
+	return new Survey(*this);
 }
 
 } // namespace SHE_SIM

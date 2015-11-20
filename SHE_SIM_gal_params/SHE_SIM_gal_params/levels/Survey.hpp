@@ -64,6 +64,8 @@ public:
 
 	void set_generation_level( const param_name_t & name, const int_t & generation_level );
 
+	virtual ParamHierarchyLevel * clone() const override;
+
 };
 
 } // namespace SHE_SIM

@@ -106,6 +106,8 @@ public:
 
 	const int_t & level_generated_at() const;
 
+	virtual ParamGenerator * clone() const = 0;
+
 }; // ParamGenerator
 
 } // namespace SHE_SIM
