@@ -35,6 +35,9 @@
 namespace SHE_SIM
 {
 
+// Forward-declare children
+class GalaxyDither;
+
 /**
  * TODO Auto-generated comment stub
  */
@@ -55,7 +58,7 @@ public:
 	// Methods to add children
 #if(1)
 
-	Image * add_galaxy_dither();
+	GalaxyDither * add_galaxy_dither();
 
 	void add_galaxy_dithers(int_t const & N);
 

@@ -31,6 +31,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
 
 namespace SHE_SIM
@@ -47,6 +48,21 @@ ClusterGroup::ClusterGroup(ParamHierarchyLevel * const & p_parent,
 ClusterGroup::~ClusterGroup()
 {
 }
+
+// Methods to add children
+#if(1)
+
+Cluster * ClusterGroup::add_cluster()
+{
+	return static_cast<Cluster *>(ParamHierarchyLevel::spawn_child<Cluster>());
+}
+
+void ClusterGroup::add_clusters(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Cluster>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * ClusterGroup::clone() const
 {

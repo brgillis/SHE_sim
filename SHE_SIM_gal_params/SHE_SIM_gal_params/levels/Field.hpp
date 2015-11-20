@@ -35,6 +35,10 @@
 namespace SHE_SIM
 {
 
+// Forward-declare children
+class GalaxyGroup;
+class Galaxy;
+
 /**
  * TODO Auto-generated comment stub
  */
@@ -55,11 +59,11 @@ public:
 	// Methods to add children
 #if(1)
 
-	ImageGroup * add_galaxy_group();
+	GalaxyGroup * add_galaxy_group();
 
 	void add_galaxy_groups(int_t const & N);
 
-	Image * add_galaxy();
+	Galaxy * add_galaxy();
 
 	void add_galaxies(int_t const & N);
 

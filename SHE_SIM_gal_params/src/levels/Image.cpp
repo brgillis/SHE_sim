@@ -31,6 +31,10 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Cluster.hpp"
+#include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Field.hpp"
+#include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
 
 namespace SHE_SIM
@@ -47,6 +51,51 @@ Image::Image(ParamHierarchyLevel * const & p_parent,
 Image::~Image()
 {
 }
+
+// Methods to add children
+#if(1)
+
+ClusterGroup * Image::add_cluster_group()
+{
+	return static_cast<ClusterGroup *>(ParamHierarchyLevel::spawn_child<ClusterGroup>());
+}
+
+void Image::add_cluster_groups(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<ClusterGroup>(N);
+}
+
+Cluster * Image::add_cluster()
+{
+	return static_cast<Cluster *>(ParamHierarchyLevel::spawn_child<Cluster>());
+}
+
+void Image::add_clusters(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Cluster>(N);
+}
+
+FieldGroup * Image::add_field_group()
+{
+	return static_cast<FieldGroup *>(ParamHierarchyLevel::spawn_child<FieldGroup>());
+}
+
+void Image::add_field_groups(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<FieldGroup>(N);
+}
+
+Field * Image::add_field()
+{
+	return static_cast<Field *>(ParamHierarchyLevel::spawn_child<Field>());
+}
+
+void Image::add_fields(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Field>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * Image::clone() const
 {

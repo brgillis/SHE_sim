@@ -35,6 +35,9 @@
 namespace SHE_SIM
 {
 
+// Forward-declare children
+class Cluster;
+
 /**
  * TODO Auto-generated comment stub
  */
@@ -57,7 +60,7 @@ public:
 	// Methods to add children
 #if(1)
 
-	Image * add_cluster();
+	Cluster * add_cluster();
 
 	void add_clusters(int_t const & N);
 

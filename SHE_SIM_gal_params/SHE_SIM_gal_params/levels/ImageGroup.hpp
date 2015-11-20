@@ -35,6 +35,9 @@
 namespace SHE_SIM
 {
 
+// Forward-declare children
+class Image;
+
 /**
  * TODO Auto-generated comment stub
  */

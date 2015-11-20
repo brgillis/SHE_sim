@@ -35,7 +35,7 @@
 namespace SHE_SIM
 {
 
-// Forward declare possible children
+// Forward-declare children
 class ImageGroup;
 class Image;
 

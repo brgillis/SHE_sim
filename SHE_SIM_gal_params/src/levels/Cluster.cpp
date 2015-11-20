@@ -32,6 +32,8 @@
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/levels/Cluster.hpp"
+#include "SHE_SIM_gal_params/levels/Galaxy.hpp"
+#include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
 
 namespace SHE_SIM
 {
@@ -47,6 +49,31 @@ Cluster::Cluster(ParamHierarchyLevel * const & p_parent,
 Cluster::~Cluster()
 {
 }
+
+// Methods to add children
+#if(1)
+
+GalaxyGroup * Cluster::add_galaxy_group()
+{
+	return static_cast<GalaxyGroup *>(ParamHierarchyLevel::spawn_child<GalaxyGroup>());
+}
+
+void Cluster::add_galaxy_groups(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<GalaxyGroup>(N);
+}
+
+Galaxy * Cluster::add_galaxy()
+{
+	return static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+}
+
+void Cluster::add_galaxies(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Galaxy>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * Cluster::clone() const
 {

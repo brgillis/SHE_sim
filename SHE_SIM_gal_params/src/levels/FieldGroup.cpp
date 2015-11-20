@@ -31,6 +31,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Field.hpp"
 #include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
 
 namespace SHE_SIM
@@ -47,6 +48,21 @@ FieldGroup::FieldGroup(ParamHierarchyLevel * const & p_parent,
 FieldGroup::~FieldGroup()
 {
 }
+
+// Methods to add children
+#if(1)
+
+Field * FieldGroup::add_field()
+{
+	return static_cast<Field *>(ParamHierarchyLevel::spawn_child<Field>());
+}
+
+void FieldGroup::add_fields(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Field>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * FieldGroup::clone() const
 {

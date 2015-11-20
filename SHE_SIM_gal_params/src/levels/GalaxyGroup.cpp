@@ -31,6 +31,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 #include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
 
 namespace SHE_SIM
@@ -47,6 +48,21 @@ GalaxyGroup::GalaxyGroup(ParamHierarchyLevel * const & p_parent,
 GalaxyGroup::~GalaxyGroup()
 {
 }
+
+// Methods to add children
+#if(1)
+
+Galaxy * GalaxyGroup::add_galaxy()
+{
+	return static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+}
+
+void GalaxyGroup::add_galaxies(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Galaxy>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * GalaxyGroup::clone() const
 {

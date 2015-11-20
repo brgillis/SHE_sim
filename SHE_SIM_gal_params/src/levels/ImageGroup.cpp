@@ -31,6 +31,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Image.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 
 namespace SHE_SIM
@@ -47,6 +48,21 @@ ImageGroup::ImageGroup(ParamHierarchyLevel * const & p_parent,
 ImageGroup::~ImageGroup()
 {
 }
+
+// Methods to add children
+#if(1)
+
+Image * ImageGroup::add_image()
+{
+	return static_cast<Image *>(ParamHierarchyLevel::spawn_child<Image>());
+}
+
+void ImageGroup::add_images(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Image>(N);
+}
+
+#endif
 
 ParamHierarchyLevel * ImageGroup::clone() const
 {
