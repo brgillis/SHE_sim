@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ExposureTime.hpp
+ @file MagVisInstZp.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_
 
 #include <cassert>
 #include <vector>
@@ -38,46 +38,46 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class ExposureTime : public ParamGenerator
+class MagVisInstZp : public ParamGenerator
 {
 private:
 
-	flt_t _exp_time;
+	flt_t _mag_vis_inst_zp;
 
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _exp_time;
+		ParamGenerator::_cached_value = _mag_vis_inst_zp;
 	}
 
 	virtual void _set_params(const std::vector<flt_t> & v) override
 	{
 		assert(v.size()==1);
 		assert(v[0]>0.);
-		_exp_time = v[0];
+		_mag_vis_inst_zp = v[0];
 	}
 
 public:
-	ExposureTime( owner_t & owner, const flt_t & exp_time = dv::exp_time)
+	MagVisInstZp( owner_t & owner, const flt_t & mag_vis_inst_zp = dv::mag_vis_inst_zp)
 	: ParamGenerator(owner),
-	  _exp_time(exp_time)
+	  _mag_vis_inst_zp(mag_vis_inst_zp)
 	{
 	}
 
-	virtual ~ExposureTime()
+	virtual ~MagVisInstZp()
 	{
 	}
 
 	virtual ParamGenerator::name_t name() const override
 	{
-		return "exp_time";
+		return "mag_vis_inst_zp";
 	}
 
 	virtual ParamGenerator * clone() const override
 	{
-		return new ExposureTime(*this);
+		return new MagVisInstZp(*this);
 	}
 };
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAMS_EXPOSURETIME_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_

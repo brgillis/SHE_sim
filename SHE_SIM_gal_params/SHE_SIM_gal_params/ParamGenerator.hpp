@@ -52,11 +52,9 @@ protected:
 
 	// Protected members
 	flt_t _cached_value;
+	owner_t & _owner;
 
 private:
-
-	// Private members
-	owner_t & _owner;
 
 	// Private methods
 

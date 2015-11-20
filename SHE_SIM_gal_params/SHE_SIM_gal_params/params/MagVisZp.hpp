@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ExposureTime_test.cpp
+ @file MagVisZp.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,50 +23,58 @@
 
  \**********************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_
 
-#define BOOST_TEST_DYN_LINK
-#include <boost/test/unit_test.hpp>
+#include <cassert>
+#include <cmath>
+#include <vector>
 
-#include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/default_values.h"
 
 namespace SHE_SIM
 {
 
-struct exp_time_fixture {
+/**
+ * TODO Auto-generated comment stub
+ */
+class MagVisZp : public ParamGenerator
+{
+private:
 
-	Survey survey;
+	virtual void _generate() override
+	{
+		ParamGenerator::_cached_value = _owner.get_param_value("mag_vis_inst_zp")
+				+ 2.5* std::log10(_owner.get_param_value("exp_time"));
+	}
 
-	const str_t exp_time_name = "exp_time";
+	virtual void _set_params(const std::vector<flt_t> & v) override
+	{
+		assert(v.size()==0);
+	}
 
-	const flt_t exp_time1 = 1234.5;
+public:
+	MagVisZp( owner_t & owner)
+	: ParamGenerator(owner)
+	{
+	}
 
-	const flt_t exp_time2 = 2468.0;
+	virtual ~MagVisZp()
+	{
+	}
 
+	virtual ParamGenerator::name_t name() const override
+	{
+		return "mag_vis_zp";
+	}
+
+	virtual ParamGenerator * clone() const override
+	{
+		return new MagVisZp(*this);
+	}
 };
 
-
-BOOST_AUTO_TEST_SUITE (Exp_Time_Test)
-
-BOOST_FIXTURE_TEST_CASE(test_exp_time, exp_time_fixture) {
-
-	survey.set_generation_level(exp_time_name,0);
-
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time1}));
-
-	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time1);
-
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time2}));
-
-	BOOST_CHECK_NE(survey.get_param_value(exp_time_name),exp_time1);
-
-	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time2);
-
-}
-
-BOOST_AUTO_TEST_SUITE_END ()
-
 } // namespace SHE_SIM
+
+#endif // SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_

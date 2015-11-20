@@ -35,11 +35,11 @@
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
 #include "SHE_SIM_gal_params/params/ExposureTime.hpp"
+#include "SHE_SIM_gal_params/params/MagVisInstZp.hpp"
+#include "SHE_SIM_gal_params/params/MagVisZp.hpp"
 
 namespace SHE_SIM {
 
-// Forward-declare all params here
-class ExposureTime;
 class ParamGenerator;
 class ParamHierarchyLevel;
 
@@ -60,6 +60,8 @@ inline std::unordered_map<str_t,std::unique_ptr<ParamGenerator>> get_full_params
 
 	// Insert all params here
 	insert_param<ExposureTime>(res, owner);
+	insert_param<MagVisInstZp>(res, owner);
+	insert_param<MagVisZp>(res, owner);
 
 	return std::move(res);
 

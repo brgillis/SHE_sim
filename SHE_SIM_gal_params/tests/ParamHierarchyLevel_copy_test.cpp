@@ -31,7 +31,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/params/ExposureTime.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
@@ -50,7 +49,7 @@ struct PHL_copy_fixture {
 };
 
 
-BOOST_AUTO_TEST_SUITE (PHL_copy_test)
+BOOST_AUTO_TEST_SUITE (PHL_Copy_Test)
 
 BOOST_FIXTURE_TEST_CASE(test_PHL_copy_construct, PHL_copy_fixture) {
 

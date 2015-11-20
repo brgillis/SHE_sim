@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ExposureTime_test.cpp
+ @file MagVis_test.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -36,34 +36,37 @@
 namespace SHE_SIM
 {
 
-struct exp_time_fixture {
+struct mag_vis_fixture {
 
 	Survey survey;
 
-	const str_t exp_time_name = "exp_time";
-
 	const flt_t exp_time1 = 1234.5;
-
 	const flt_t exp_time2 = 2468.0;
+
+	const flt_t mag_vis_inst_zp = 25.0;
+
+	const flt_t expected_mag_vis_zp1 = 25 + 2.5 * std::log10(exp_time1);
+	const flt_t expected_mag_vis_zp2 = 25 + 2.5 * std::log10(exp_time2);
 
 };
 
 
-BOOST_AUTO_TEST_SUITE (Exp_Time_Test)
+BOOST_AUTO_TEST_SUITE (Mag_Vis_Test)
 
-BOOST_FIXTURE_TEST_CASE(test_exp_time, exp_time_fixture) {
+BOOST_FIXTURE_TEST_CASE(test_mag_vis, mag_vis_fixture) {
 
-	survey.set_generation_level(exp_time_name,0);
+	survey.set_generation_level("exp_time",0);
+	survey.set_generation_level("mag_vis_inst_zp",0);
+	survey.set_generation_level("mag_vis_zp",0);
 
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time1}));
+	survey.set_param_params("exp_time",std::vector<flt_t>({exp_time1}));
+	survey.set_param_params("mag_vis_inst_zp",std::vector<flt_t>({mag_vis_inst_zp}));
 
-	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time1);
+	BOOST_CHECK_EQUAL(survey.get_param_value("mag_vis_zp"),expected_mag_vis_zp1);
 
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time2}));
+	survey.set_param_params("exp_time",std::vector<flt_t>({exp_time2}));
 
-	BOOST_CHECK_NE(survey.get_param_value(exp_time_name),exp_time1);
-
-	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time2);
+	BOOST_CHECK_EQUAL(survey.get_param_value("mag_vis_zp"),expected_mag_vis_zp2);
 
 }
 

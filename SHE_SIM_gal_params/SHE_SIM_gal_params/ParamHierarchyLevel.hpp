@@ -33,7 +33,6 @@
 #include <vector>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM
