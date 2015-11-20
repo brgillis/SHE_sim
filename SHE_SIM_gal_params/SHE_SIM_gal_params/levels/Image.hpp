@@ -52,6 +52,27 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::image_level;}
 
+	// Methods to add children
+#if(1)
+
+	ImageGroup * add_cluster_group();
+
+	void add_cluster_groups(int_t const & N);
+
+	Image * add_cluster();
+
+	void add_clusters(int_t const & N);
+
+	ImageGroup * add_field_group();
+
+	void add_field_groups(int_t const & N);
+
+	Image * add_field();
+
+	void add_fields(int_t const & N);
+
+#endif
+
 	virtual ParamHierarchyLevel * clone() const override;
 
 };

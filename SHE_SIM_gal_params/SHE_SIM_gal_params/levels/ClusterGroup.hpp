@@ -54,6 +54,15 @@ public:
 
 	virtual ParamHierarchyLevel * clone() const override;
 
+	// Methods to add children
+#if(1)
+
+	Image * add_cluster();
+
+	void add_clusters(int_t const & N);
+
+#endif
+
 };
 
 } // namespace SHE_SIM

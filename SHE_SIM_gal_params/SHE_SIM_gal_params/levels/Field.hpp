@@ -52,6 +52,19 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::field_level;}
 
+	// Methods to add children
+#if(1)
+
+	ImageGroup * add_galaxy_group();
+
+	void add_galaxy_groups(int_t const & N);
+
+	Image * add_galaxy();
+
+	void add_galaxies(int_t const & N);
+
+#endif
+
 	virtual ParamHierarchyLevel * clone() const override;
 
 };

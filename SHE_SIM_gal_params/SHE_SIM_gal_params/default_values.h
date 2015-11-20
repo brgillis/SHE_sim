@@ -75,6 +75,10 @@ constexpr const int_t galaxy_group_level = 50;
 
 constexpr const int_t galaxy_level = 60;
 
+// GalaxyDither-level
+
+constexpr const int_t galaxy_dither_level = 70;
+
 } } // namespace SHE_SIM{ namespace dv{
 
 

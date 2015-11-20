@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file Cluster.hpp
+ @file GalaxyDither.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_LEVELS_CLUSTER_HPP_
-#define SHE_SIM_GAL_PARAMS_LEVELS_CLUSTER_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_LEVELS_GALAXYDITHER_HPP_
+#define SHE_SIM_GAL_PARAMS_LEVELS_GALAXYDITHER_HPP_
 
 #include <utility>
 
@@ -38,37 +38,24 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class Cluster: public ParamHierarchyLevel
+class GalaxyDither: public ParamHierarchyLevel
 {
 
 public:
-	Cluster(ParamHierarchyLevel * const & parent = nullptr,
+	GalaxyDither(ParamHierarchyLevel * const & parent = nullptr,
 			generation_level_map_t * const & p_generation_level_map = nullptr);
-	virtual ~Cluster();
+	virtual ~GalaxyDither();
 
 	/**
 	 * Get the hierarchy level for this class.
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
-	virtual int_t get_hierarchy_level() const override {return dv::cluster_level;}
+	virtual int_t get_hierarchy_level() const override {return dv::galaxy_dither_level;}
 
 	virtual ParamHierarchyLevel * clone() const override;
-
-	// Methods to add children
-#if(1)
-
-	ImageGroup * add_galaxy_group();
-
-	void add_galaxy_groups(int_t const & N);
-
-	Image * add_galaxy();
-
-	void add_galaxies(int_t const & N);
-
-#endif
 
 };
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_LEVELS_CLUSTER_HPP_
+#endif // SHE_SIM_GAL_PARAMS_LEVELS_GALAXYDITHER_HPP_
