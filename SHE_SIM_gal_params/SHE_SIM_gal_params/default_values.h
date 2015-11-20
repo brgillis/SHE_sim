@@ -31,15 +31,45 @@
 namespace SHE_SIM { namespace dv {
 
 // Survey-level
+
+constexpr const int_t survey_level = 0;
+
 constexpr const flt_t gain = 3.3; // e-/ADU
 constexpr const flt_t pixel_scale = 0.1; // arcsec/pixel
 constexpr const flt_t read_noise = 5.4; // e-/pixel
 constexpr const flt_t mag_vis_inst_zp = 25.6527; // Mag_vis instrumental zeropoint, from Lance's code
 constexpr const flt_t mag_i_inst_zp = 25.3884; // Mag_i instrumental zeropoint, from Lance's code
 
-// Observation-level
+// ImageGroup-level
+
+constexpr const int_t image_group_level = 10;
+
+// Image-level
+
+constexpr const int_t image_level = 20;
+
 constexpr const flt_t exp_time = 565.; // seconds
 constexpr const flt_t sky_level = 32570.; // ADU/arcsec
+
+// ClusterGroup-level
+
+constexpr const int_t cluster_group_level = 30;
+
+// FieldGroup-level
+
+constexpr const int_t field_group_level = 30;
+
+// Cluster-level
+
+constexpr const int_t cluster_level = 40;
+
+// Field-level
+
+constexpr const int_t field_level = 40;
+
+// Galaxy-level
+
+constexpr const int_t galaxy_level = 50;
 
 } } // namespace SHE_SIM{ namespace dv{
 

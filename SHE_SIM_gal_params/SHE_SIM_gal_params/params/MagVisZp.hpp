@@ -47,8 +47,8 @@ private:
 
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _owner.get_param_value(mag_vis_inst_zp_name)
-				+ 2.5* std::log10(_owner.get_param_value(exp_time_name));
+		ParamGenerator::_cached_value = _request_param_value(mag_vis_inst_zp_name)
+				+ 2.5* std::log10(_request_param_value(exp_time_name));
 	}
 
 	virtual void _set_params(const std::vector<flt_t> & v) override

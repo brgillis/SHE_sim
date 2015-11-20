@@ -29,8 +29,9 @@
 
 #include <utility>
 
-#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
 {
@@ -63,7 +64,7 @@ void Survey::set_survey_generation_level_map(
 	_survey_generation_level_map = std::move(survey_generation_level_map);
 }
 
-void Survey::set_generation_level( const Survey::param_name_t & name, const int_t & generation_level )
+void Survey::set_generation_level( const name_t & name, const int_t & generation_level )
 {
 	_survey_generation_level_map[name] = generation_level;
 }

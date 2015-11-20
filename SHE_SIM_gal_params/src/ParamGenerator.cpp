@@ -34,6 +34,15 @@
 namespace SHE_SIM
 {
 
+// Protected methods
+
+flt_t ParamGenerator::_request_param_value(const name_t & param_name)
+{
+	return _owner._request_param_value(param_name, name());
+}
+
+// Private methods
+
 bool ParamGenerator::_is_cached() const
 {
 	return _cached_value != UNCACHED_VALUE;
@@ -42,6 +51,19 @@ bool ParamGenerator::_is_cached() const
 void ParamGenerator::_clear_cache()
 {
 	_cached_value = UNCACHED_VALUE;
+
+	// Uncache any dependants as well
+	for( const auto & dependant_name : _dependant_names )
+	{
+		_owner._clear_param_cache(dependant_name);
+	}
+
+	_dependant_names.clear();
+}
+
+void ParamGenerator::_add_dependant(const name_t & dependant_name)
+{
+	_dependant_names.insert(dependant_name);
 }
 
 bool ParamGenerator::_generated_at_this_level() const
@@ -108,6 +130,18 @@ const flt_t & ParamGenerator::get_new()
 {
 	_determine_new_value();
 	return _cached_value;
+}
+
+const flt_t & ParamGenerator::request(const name_t & requester_name)
+{
+	_add_dependant(requester_name);
+	return get();
+}
+
+const flt_t & ParamGenerator::request_new(const name_t & requester_name)
+{
+	_add_dependant(requester_name);
+	return get_new();
 }
 
 const int_t & ParamGenerator::level_generated_at() const

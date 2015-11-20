@@ -50,6 +50,23 @@ void ParamHierarchyLevel::_update_child(child_t * const & old_p_child, child_t *
 	}
 }
 
+flt_t const & ParamHierarchyLevel::_request_param_value(const name_t & name, const name_t & requester_name)
+{
+	return _params.at(name)->request(requester_name);
+}
+
+void ParamHierarchyLevel::_clear_param_cache(const name_t & name)
+{
+	// Clear for this
+	_params.at(name)->_clear_cache();
+
+	// Clear for all children
+	for( auto & child : _children )
+	{
+		child->_clear_param_cache(name);
+	}
+}
+
 // Public methods
 
 ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
@@ -189,17 +206,17 @@ const ParamHierarchyLevel::child_t * ParamHierarchyLevel::get_child(const int & 
 	return _children.at(i).get();
 }
 
-ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const param_name_t & name)
+ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const name_t & name)
 {
 	return _params.at(name).get();
 }
 
-const ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const param_name_t & name) const
+const ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const name_t & name) const
 {
 	return _params.at(name).get();
 }
 
-flt_t const & ParamHierarchyLevel::get_param_value(const param_name_t & name)
+flt_t const & ParamHierarchyLevel::get_param_value(const name_t & name)
 {
 	return _params.at(name).get()->get();
 }
@@ -214,12 +231,12 @@ const int & ParamHierarchyLevel::get_generation_level( const str_t & name) const
 	return _generation_level_map->at(name);
 }
 
-void ParamHierarchyLevel::set_param_params(const param_name_t & name, const std::vector<flt_t> & params)
+void ParamHierarchyLevel::set_param_params(const name_t & name, const std::vector<flt_t> & params)
 {
 	get_param(name)->set_params(params);
 }
 
-void ParamHierarchyLevel::set_param_params(const param_name_t & name, std::vector<flt_t> && params)
+void ParamHierarchyLevel::set_param_params(const name_t & name, std::vector<flt_t> && params)
 {
 	get_param(name)->set_params(std::move(params));
 }

@@ -58,9 +58,8 @@ public:
 	typedef std::vector<child_ptr_t> children_t;
 
 	typedef ParamGenerator param_t;
-	typedef str_t param_name_t;
 	typedef std::unique_ptr<param_t> param_ptr_t;
-	typedef std::unordered_map<param_name_t,param_ptr_t> params_t;
+	typedef std::unordered_map<name_t,param_ptr_t> params_t;
 
 private:
 
@@ -73,6 +72,28 @@ private:
 
 	// Private methods
 	void _update_child(child_t * const & old_p_child, child_t * const & new_p_child);
+
+	/**
+	 * Get the value for a parameter with a given name. Will throw an exception if none
+	 * by that name exists. Will record the name of the requesting parameter so it can
+	 * be updated later if need be.
+	 *
+	 * @param name Name of the desired parameter.
+	 * @param name Name of the requesting parameter.
+	 *
+	 * @return The value of the desired parameter.
+	 */
+	flt_t const & _request_param_value(const name_t & name, const name_t & requester_name);
+
+	/**
+	 * Clears the cache of the parameter with the specified name, for both this and all its
+	 * children.
+	 *
+	 * @param name The name of the parameters whose cache is to be cleared.
+	 */
+	void _clear_param_cache(const name_t & name);
+
+	friend class ParamGenerator; // So ParamGenerators can access _request_param_value and _clear_param_cache
 
 protected:
 
@@ -198,7 +219,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	const param_t * get_param(const param_name_t & name) const;
+	const param_t * get_param(const name_t & name) const;
 
 	/**
 	 * Get a pointer to the parameter generator with a given name. Will throw an exception if none
@@ -207,7 +228,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	param_t * get_param(const param_name_t & name);
+	param_t * get_param(const name_t & name);
 
 	/**
 	 * Get the value for a parameter with a given name. Will throw an exception if none
@@ -216,7 +237,7 @@ public:
 	 * @param name Name of the desired parameter.
 	 * @return The value of the desired parameter.
 	 */
-	flt_t const & get_param_value(const param_name_t & name);
+	flt_t const & get_param_value(const name_t & name);
 
 	/**
 	 * Get the generation level map used by this object.
@@ -234,9 +255,9 @@ public:
 	 */
 	const int & get_generation_level( const str_t & name) const;
 
-	void set_param_params(const param_name_t & name, const std::vector<flt_t> & params);
+	void set_param_params(const name_t & name, const std::vector<flt_t> & params);
 
-	void set_param_params(const param_name_t & name, std::vector<flt_t> && params);
+	void set_param_params(const name_t & name, std::vector<flt_t> && params);
 
 	virtual ParamHierarchyLevel * clone() const = 0;
 

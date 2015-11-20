@@ -27,6 +27,7 @@
 #define SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
@@ -52,13 +53,21 @@ protected:
 	flt_t _cached_value;
 	owner_t & _owner;
 
+	// Protected methods
+	flt_t _request_param_value(const name_t & name);
+
 private:
+
+	// Private members
+	std::unordered_set<name_t> _dependant_names;
 
 	// Private methods
 
 	bool _is_cached() const;
 
 	void _clear_cache();
+
+	void _add_dependant(const name_t & dependant_name);
 
 	virtual void _generate() = 0;
 
@@ -75,6 +84,8 @@ private:
 	ParamGenerator & _parent_version();
 
 	const ParamGenerator & _parent_version() const;
+
+	friend class ParamHierarchyLevel; // So it can access _clear_cache
 
 public:
 
@@ -99,6 +110,10 @@ public:
 	const flt_t & get();
 
 	const flt_t & get_new();
+
+	const flt_t & request(const name_t & requester_name);
+
+	const flt_t & request_new(const name_t & requester_name);
 
 	const int_t & level_generated_at() const;
 

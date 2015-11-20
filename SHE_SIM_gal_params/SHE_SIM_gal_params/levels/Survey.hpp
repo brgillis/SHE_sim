@@ -28,6 +28,8 @@
 
 #include <utility>
 
+#include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/default_values.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
 namespace SHE_SIM
@@ -50,7 +52,7 @@ public:
 	 * Get the hierarchy level for this class.
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
-	virtual int_t get_hierarchy_level() const override {return 0;}
+	virtual int_t get_hierarchy_level() const override {return dv::survey_level;}
 
 	// Methods for interacting with the generation level map
 
@@ -62,7 +64,7 @@ public:
 	void set_survey_generation_level_map(
 			generation_level_map_t && survey_generation_level_map);
 
-	void set_generation_level( const param_name_t & name, const int_t & generation_level );
+	void set_generation_level( const name_t & name, const int_t & generation_level );
 
 	virtual ParamHierarchyLevel * clone() const override;
 
