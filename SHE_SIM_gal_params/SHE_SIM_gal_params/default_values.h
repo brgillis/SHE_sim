@@ -67,9 +67,13 @@ constexpr const int_t cluster_level = 40;
 
 constexpr const int_t field_level = 40;
 
+// GalaxyGroup-level
+
+constexpr const int_t galaxy_group_level = 50;
+
 // Galaxy-level
 
-constexpr const int_t galaxy_level = 50;
+constexpr const int_t galaxy_level = 60;
 
 } } // namespace SHE_SIM{ namespace dv{
 
