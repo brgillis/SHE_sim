@@ -61,6 +61,11 @@ public:
 	{
 		return drand(_min,_max,gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndUniform(*this);
+	}
 };
 
 } // namespace SHE_SIM

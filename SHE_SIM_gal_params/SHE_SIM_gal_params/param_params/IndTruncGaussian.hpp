@@ -64,6 +64,11 @@ public:
 	{
 		return trunc_Gaus_rand(_mean,_stddev,_min,_max,gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndTruncGaussian(*this);
+	}
 };
 
 } // namespace SHE_SIM

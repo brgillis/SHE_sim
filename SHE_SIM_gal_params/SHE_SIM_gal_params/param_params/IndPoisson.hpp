@@ -61,6 +61,11 @@ public:
 	{
 		return Pois_rand(_lambda, gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndPoisson(*this);
+	}
 };
 
 } // namespace SHE_SIM

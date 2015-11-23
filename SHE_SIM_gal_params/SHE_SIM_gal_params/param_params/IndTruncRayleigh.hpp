@@ -61,6 +61,11 @@ public:
 	{
 		return trunc_Rayleigh_rand(_sigma,_max,gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndTruncRayleigh(*this);
+	}
 };
 
 } // namespace SHE_SIM

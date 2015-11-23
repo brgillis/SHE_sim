@@ -111,6 +111,8 @@ public:
 
 	virtual name_t name() const = 0;
 
+	virtual ParamParam * clone() const = 0;
+
 };
 
 } // namespace SHE_SIM

@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file IndLogNormalMean.hpp
+ @file IndLogNormalPeak.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALMEAN_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALMEAN_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALPEAK_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALPEAK_HPP_
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
@@ -36,33 +36,38 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class IndLogNormalMean: public ParamParam
+class IndLogNormalPeak: public ParamParam
 {
 private:
 
-	flt_t _l10_mean, _l10_stddev;
+	flt_t _l10_peak, _l10_stddev;
 
 public:
 
 	// Constructor and destructor
-	IndLogNormalMean( flt_t const & l10_mean = 0., flt_t const & l10_stddev = 1. )
+	IndLogNormalPeak( flt_t const & l10_peak = 0., flt_t const & l10_stddev = 1. )
 	: ParamParam(ParamParam::INDEPENDENT),
-	  _l10_mean(l10_mean),
+	  _l10_peak(l10_peak),
 	  _l10_stddev(l10_stddev)
 	{
 	}
-	virtual ~IndLogNormalMean() {}
+	virtual ~IndLogNormalPeak() {}
 
 	// Get the name of this
-	virtual name_t name() const override { return "lognormal_peak"; };
+	virtual name_t name() const override { return "lognormal_mean"; };
 
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
 	{
-		return std::pow(10.,Gaus_rand(_l10_mean,_l10_stddev,gen));
+		return std::pow(10.,Gaus_rand(_l10_peak,_l10_stddev,gen));
+	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndLogNormalPeak(*this);
 	}
 };
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALMEAN_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDLOGNORMALPEAK_HPP_

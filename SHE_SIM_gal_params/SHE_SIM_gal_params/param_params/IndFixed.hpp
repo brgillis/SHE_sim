@@ -61,6 +61,11 @@ public:
 	{
 		return _value;
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndFixed(*this);
+	}
 };
 
 } // namespace SHE_SIM

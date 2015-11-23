@@ -61,6 +61,11 @@ public:
 	{
 		return Gaus_rand(_mean,_stddev,gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndGaussian(*this);
+	}
 };
 
 } // namespace SHE_SIM

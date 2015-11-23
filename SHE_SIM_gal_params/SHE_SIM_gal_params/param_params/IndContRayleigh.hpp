@@ -62,6 +62,11 @@ public:
 	{
 		return contracted_Rayleigh_rand(_sigma,_max,_p,gen);
 	}
+
+	virtual ParamParam * clone() const override
+	{
+		return new IndContRayleigh(*this);
+	}
 };
 
 } // namespace SHE_SIM
