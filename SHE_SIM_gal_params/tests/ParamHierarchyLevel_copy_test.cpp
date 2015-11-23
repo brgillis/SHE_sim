@@ -54,13 +54,13 @@ BOOST_FIXTURE_TEST_CASE(test_PHL_copy_construct, PHL_copy_fixture) {
 
 	survey1.set_generation_level(exp_time_name,0);
 
-	survey1.set_param_params(exp_time_name,&exp_time1);
+	survey1.set_p_param_params(exp_time_name,&exp_time1);
 
 	BOOST_CHECK_EQUAL(survey1.get_param_value(exp_time_name),exp_time1.get_independently());
 
 	Survey survey2(survey1);
 
-	survey1.set_param_params(exp_time_name,&exp_time2);
+	survey1.set_p_param_params(exp_time_name,&exp_time2);
 
 	BOOST_CHECK_EQUAL(survey1.get_param_value(exp_time_name),exp_time2.get_independently());
 
@@ -72,13 +72,13 @@ BOOST_FIXTURE_TEST_CASE(test_PHL_copy_assign, PHL_copy_fixture) {
 
 	survey1.set_generation_level(exp_time_name,0);
 
-	survey1.set_param_params(exp_time_name,&exp_time1);
+	survey1.set_p_param_params(exp_time_name,&exp_time1);
 
 	Survey survey2;
 
 	survey2 = survey1;
 
-	survey1.set_param_params(exp_time_name,&exp_time2);
+	survey1.set_p_param_params(exp_time_name,&exp_time2);
 
 	BOOST_CHECK_EQUAL(survey1.get_param_value(exp_time_name),exp_time2.get_independently());
 

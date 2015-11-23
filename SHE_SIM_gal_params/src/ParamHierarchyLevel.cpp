@@ -56,6 +56,28 @@ flt_t const & ParamHierarchyLevel::_request_param_value(const name_t & name, con
 	return _params.at(name)->request(requester_name);
 }
 
+void ParamHierarchyLevel::_drop_local_param_param(const name_t & name)
+{
+	if ( _local_param_params.find(name) == _local_param_params.end() )
+	{
+		// Key isn't in the map
+		return;
+	}
+	else
+	{
+		if(_local_param_params.at(name).get() == get_param_params(name))
+		{
+			// Don't drop if we're using it
+			return;
+		}
+		else
+		{
+			// Unused, so drop it
+			_local_param_params.erase(name);
+		}
+	}
+}
+
 void ParamHierarchyLevel::_clear_param_cache(const name_t & name)
 {
 	// Clear for this
@@ -246,15 +268,17 @@ const int & ParamHierarchyLevel::get_generation_level( const str_t & name) const
 	return _generation_level_map->at(name);
 }
 
-void ParamHierarchyLevel::set_param_params(const name_t & name, ParamParam const * const & params)
+void ParamHierarchyLevel::set_p_param_params(const name_t & name, ParamParam const * const & params)
 {
 	get_param(name)->set_params(params);
 
 	// Pass this along to all children
 	for( auto & child : _children )
 	{
-		child->set_param_params(name,params);
+		child->set_p_param_params(name,params);
 	}
+
+	_drop_local_param_param(name);
 }
 
 ParamParam const * const & ParamHierarchyLevel::get_param_params(const name_t & name) const

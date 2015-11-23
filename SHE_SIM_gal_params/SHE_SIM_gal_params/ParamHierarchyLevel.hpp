@@ -63,11 +63,16 @@ public:
 	typedef std::unique_ptr<param_t> param_ptr_t;
 	typedef std::unordered_map<name_t,param_ptr_t> params_t;
 
+	typedef ParamParam param_param_t;
+	typedef std::unique_ptr<param_param_t> param_param_ptr_t;
+	typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
+
 private:
 
 	// Private members
 	parent_ptr_t _p_parent;
 	children_t _children;
+	param_params_t _local_param_params;
 
 	// Private methods
 	void _update_parent(parent_ptr_t const & new_p_parent);
@@ -86,6 +91,8 @@ private:
 	 * @return The value of the desired parameter.
 	 */
 	flt_t const & _request_param_value(const name_t & name, const name_t & requester_name);
+
+	void _drop_local_param_param(const name_t & name);
 
 	friend class ParamGenerator; // So ParamGenerators can access _request_param_value and _clear_param_cache
 
@@ -314,7 +321,14 @@ public:
 	 */
 	const int & get_generation_level( const str_t & name) const;
 
-	void set_param_params(const name_t & name, ParamParam const * const & params);
+	void set_p_param_params(const name_t & name, ParamParam const * const & params);
+
+	template< typename T_pp, typename... Args >
+	void set_param_params(const name_t & name, Args... args)
+	{
+		_local_param_params[name] = param_param_ptr_t(new T_pp(args...));
+		set_p_param_params( name, _local_param_params.at(name).get() );
+	}
 
 	ParamParam const * const & get_param_params(const name_t & name) const;
 

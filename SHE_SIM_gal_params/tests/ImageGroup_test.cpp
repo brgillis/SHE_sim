@@ -71,8 +71,8 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	survey.set_generation_level(mag_vis_inst_zp_name,dv::survey_level);
 	survey.set_generation_level(mag_vis_zp_name,dv::survey_level);
 
-	survey.set_param_params(exp_time_name,&exp_time0);
-	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp1);
+	survey.set_p_param_params(exp_time_name,&exp_time0);
+	survey.set_p_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp1);
 
 	ImageGroup & image_group1 = *survey.add_image_group();
 	survey.add_image_groups(2);
@@ -83,9 +83,9 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	ImageGroup & image_group2 = *static_cast<ImageGroup *>(survey.get_child(1));
 	ImageGroup & image_group3 = *static_cast<ImageGroup *>(survey.get_child(2));
 
-	image_group1.set_param_params(exp_time_name,&exp_time1);
-	image_group2.set_param_params(exp_time_name,&exp_time2);
-	image_group3.set_param_params(exp_time_name,&exp_time3);
+	image_group1.set_p_param_params(exp_time_name,&exp_time1);
+	image_group2.set_p_param_params(exp_time_name,&exp_time2);
+	image_group3.set_p_param_params(exp_time_name,&exp_time3);
 
 	// Check that each image group gets the zp from the survey values
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp10,1e-9);
@@ -101,7 +101,7 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	BOOST_CHECK_CLOSE(image_group3.get_param_value(mag_vis_zp_name),expected_mag_vis_zp13,1e-9);
 
 	// Change the survey's inst zp
-	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp2);
+	survey.set_p_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp2);
 
 	// Check that each image group gets the correct new zp now
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);

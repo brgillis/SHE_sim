@@ -61,12 +61,12 @@ BOOST_FIXTURE_TEST_CASE(test_mag_vis, mag_vis_fixture) {
 	survey.set_generation_level(mag_vis_inst_zp_name,0);
 	survey.set_generation_level(mag_vis_zp_name,0);
 
-	survey.set_param_params(exp_time_name,&exp_time1);
-	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp);
+	survey.set_p_param_params(exp_time_name,&exp_time1);
+	survey.set_p_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp);
 
 	BOOST_CHECK_EQUAL(survey.get_param_value(mag_vis_zp_name),expected_mag_vis_zp1);
 
-	survey.set_param_params(exp_time_name,&exp_time2);
+	survey.set_p_param_params(exp_time_name,&exp_time2);
 
 	BOOST_CHECK_EQUAL(survey.get_param_value(mag_vis_zp_name),expected_mag_vis_zp2);
 
