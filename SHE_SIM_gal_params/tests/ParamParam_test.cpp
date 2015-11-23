@@ -81,8 +81,11 @@ BOOST_FIXTURE_TEST_CASE(test_param_param, param_param_fixture) {
 	flt_t seeded_uni_val_1 = p_param_param->get_independently(gen);
 	gen.seed(seed_2);
 	flt_t seeded_uni_val_2 = p_param_param->get_independently(gen);
+	gen.seed(seed_1);
+	flt_t seeded_uni_val_3 = p_param_param->get_independently(gen);
 
 	BOOST_CHECK_NE( seeded_uni_val_1, seeded_uni_val_2  );
+	BOOST_CHECK_EQUAL( seeded_uni_val_1, seeded_uni_val_3  );
 
 	BOOST_CHECK_GE( seeded_uni_val_1, uni_min );
 	BOOST_CHECK_LE( seeded_uni_val_1, uni_max );

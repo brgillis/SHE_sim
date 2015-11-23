@@ -53,6 +53,9 @@ public:
 	}
 	virtual ~IndFixed() {}
 
+	// Get the name of this
+	virtual name_t name() const override { return "fixed"; };
+
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
 	{

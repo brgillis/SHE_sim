@@ -109,6 +109,8 @@ public:
 
 	virtual flt_t get_independently( gen_t & gen=rng ) const = 0;
 
+	virtual name_t name() const = 0;
+
 };
 
 } // namespace SHE_SIM
