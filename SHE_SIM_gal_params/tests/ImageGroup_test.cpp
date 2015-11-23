@@ -32,6 +32,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/param_names.h"
+#include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 
@@ -42,22 +43,22 @@ struct image_group_fixture {
 
 	Survey survey;
 
-	const flt_t mag_vis_inst_zp1 = 25.0;
-	const flt_t mag_vis_inst_zp2 = 26.0;
+	const IndFixed mag_vis_inst_zp1 = IndFixed(25.0);
+	const IndFixed mag_vis_inst_zp2 = IndFixed(26.0);
 
-	const flt_t exp_time0 = 1.;
-	const flt_t exp_time1 = 1234.5;
-	const flt_t exp_time2 = 2468.0;
-	const flt_t exp_time3 = 3692.5;
+	const IndFixed exp_time0 = IndFixed(1);
+	const IndFixed exp_time1 = IndFixed(1234.5);
+	const IndFixed exp_time2 = IndFixed(2468.0);
+	const IndFixed exp_time3 = IndFixed(3451.1);
 
-	const flt_t expected_mag_vis_zp10 = mag_vis_inst_zp1 + 2.5 * std::log10(exp_time0);
-	const flt_t expected_mag_vis_zp11 = mag_vis_inst_zp1 + 2.5 * std::log10(exp_time1);
-	const flt_t expected_mag_vis_zp12 = mag_vis_inst_zp1 + 2.5 * std::log10(exp_time2);
-	const flt_t expected_mag_vis_zp13 = mag_vis_inst_zp1 + 2.5 * std::log10(exp_time3);
-	const flt_t expected_mag_vis_zp20 = mag_vis_inst_zp2 + 2.5 * std::log10(exp_time0);
-	const flt_t expected_mag_vis_zp21 = mag_vis_inst_zp2 + 2.5 * std::log10(exp_time1);
-	const flt_t expected_mag_vis_zp22 = mag_vis_inst_zp2 + 2.5 * std::log10(exp_time2);
-	const flt_t expected_mag_vis_zp23 = mag_vis_inst_zp2 + 2.5 * std::log10(exp_time3);
+	const flt_t expected_mag_vis_zp10 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time0.get_independently());
+	const flt_t expected_mag_vis_zp11 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time1.get_independently());
+	const flt_t expected_mag_vis_zp12 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time2.get_independently());
+	const flt_t expected_mag_vis_zp13 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time3.get_independently());
+	const flt_t expected_mag_vis_zp20 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time0.get_independently());
+	const flt_t expected_mag_vis_zp21 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time1.get_independently());
+	const flt_t expected_mag_vis_zp22 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time2.get_independently());
+	const flt_t expected_mag_vis_zp23 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time3.get_independently());
 
 };
 
@@ -70,8 +71,8 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	survey.set_generation_level(mag_vis_inst_zp_name,dv::survey_level);
 	survey.set_generation_level(mag_vis_zp_name,dv::survey_level);
 
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time0}));
-	survey.set_param_params(mag_vis_inst_zp_name,std::vector<flt_t>({mag_vis_inst_zp1}));
+	survey.set_param_params(exp_time_name,&exp_time0);
+	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp1);
 
 	ImageGroup & image_group1 = *survey.add_image_group();
 	survey.add_image_groups(2);
@@ -82,9 +83,9 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	ImageGroup & image_group2 = *static_cast<ImageGroup *>(survey.get_child(1));
 	ImageGroup & image_group3 = *static_cast<ImageGroup *>(survey.get_child(2));
 
-	image_group1.set_param_params(exp_time_name,std::vector<flt_t>({exp_time1}));
-	image_group2.set_param_params(exp_time_name,std::vector<flt_t>({exp_time2}));
-	image_group3.set_param_params(exp_time_name,std::vector<flt_t>({exp_time3}));
+	image_group1.set_param_params(exp_time_name,&exp_time1);
+	image_group2.set_param_params(exp_time_name,&exp_time2);
+	image_group3.set_param_params(exp_time_name,&exp_time3);
 
 	// Check that each image group gets the zp from the survey values
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp10,1e-9);
@@ -100,7 +101,7 @@ BOOST_FIXTURE_TEST_CASE(test_image_group, image_group_fixture) {
 	BOOST_CHECK_CLOSE(image_group3.get_param_value(mag_vis_zp_name),expected_mag_vis_zp13,1e-9);
 
 	// Change the survey's inst zp
-	survey.set_param_params(mag_vis_inst_zp_name,std::vector<flt_t>({mag_vis_inst_zp2}));
+	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp2);
 
 	// Check that each image group gets the correct new zp now
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);

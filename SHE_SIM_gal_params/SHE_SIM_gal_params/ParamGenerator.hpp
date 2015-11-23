@@ -31,6 +31,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
 {
@@ -52,6 +53,7 @@ protected:
 	// Protected members
 	flt_t _cached_value;
 	owner_t & _owner;
+	const ParamParam * _params;
 
 	// Protected methods
 	flt_t _request_param_value(const name_t & name);
@@ -77,9 +79,7 @@ private:
 
 	void _determine_new_value();
 
-	virtual void _set_params(const std::vector<flt_t> & v) = 0;
-
-	virtual void _set_params(std::vector<flt_t> && v) {set_params(v);};
+	void _set_params(ParamParam const * const & p);
 
 	ParamGenerator & _parent_version();
 
@@ -103,9 +103,9 @@ public:
 
 	virtual name_t name() const = 0;
 
-	void set_params(const std::vector<flt_t> & v);
+	void set_params(ParamParam const * const & p);
 
-	void set_params(std::vector<flt_t> && v);
+	ParamParam const * const & get_params() const noexcept;
 
 	const flt_t & get();
 

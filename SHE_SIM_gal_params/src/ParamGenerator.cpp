@@ -95,6 +95,11 @@ void ParamGenerator::_determine_new_value()
 	this->_determine_value();
 }
 
+void ParamGenerator::_set_params(ParamParam const * const & p)
+{
+	_params = p;
+}
+
 ParamGenerator & ParamGenerator::_parent_version()
 {
 	return *(_owner.get_parent()->get_param(name()));
@@ -107,20 +112,20 @@ const ParamGenerator & ParamGenerator::_parent_version() const
 
 ParamGenerator::ParamGenerator( owner_t & owner, const int_t & level_generated_at )
 : _cached_value(UNCACHED_VALUE),
-  _owner(owner)
+  _owner(owner),
+  _params(nullptr)
 {
 }
 
-void ParamGenerator::set_params(const std::vector<flt_t> & v)
+void ParamGenerator::set_params(ParamParam const * const & p)
 {
 	_clear_cache();
-	_set_params(v);
+	_set_params(p);
 }
 
-void ParamGenerator::set_params(std::vector<flt_t> && v)
+ParamParam const * const & ParamGenerator::get_params() const noexcept
 {
-	_clear_cache();
-	_set_params(std::move(v));
+	return _params;
 }
 
 const flt_t & ParamGenerator::get()

@@ -44,24 +44,14 @@ class ExposureTime : public ParamGenerator
 {
 private:
 
-	flt_t _exp_time;
-
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _exp_time;
-	}
-
-	virtual void _set_params(const std::vector<flt_t> & v) override
-	{
-		assert(v.size()==1);
-		assert(v[0]>0.);
-		_exp_time = v[0];
+		ParamGenerator::_cached_value = _params->get_independently();
 	}
 
 public:
-	ExposureTime( owner_t & owner, const flt_t & exp_time = dv::exp_time)
-	: ParamGenerator(owner),
-	  _exp_time(exp_time)
+	ExposureTime( owner_t & owner)
+	: ParamGenerator(owner)
 	{
 	}
 

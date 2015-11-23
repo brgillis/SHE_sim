@@ -35,6 +35,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
 {
@@ -313,9 +314,9 @@ public:
 	 */
 	const int & get_generation_level( const str_t & name) const;
 
-	void set_param_params(const name_t & name, const std::vector<flt_t> & params);
+	void set_param_params(const name_t & name, ParamParam const * const & params);
 
-	void set_param_params(const name_t & name, std::vector<flt_t> && params);
+	ParamParam const * const & get_param_params(const name_t & name) const;
 
 #endif
 

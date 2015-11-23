@@ -51,11 +51,6 @@ private:
 				+ 2.5* std::log10(_request_param_value(exp_time_name));
 	}
 
-	virtual void _set_params(const std::vector<flt_t> & v) override
-	{
-		assert(v.size()==0);
-	}
-
 public:
 	MagVisZp( owner_t & owner)
 	: ParamGenerator(owner)

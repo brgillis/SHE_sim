@@ -30,6 +30,7 @@
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
 {
@@ -82,6 +83,15 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 	else if(p_parent != nullptr)
 	{
 		_generation_level_map = p_parent->get_generation_level_map();
+	}
+
+	// Inherit parameters from parent if it exists
+	if(p_parent != nullptr)
+	{
+		for( auto const & param_name_and_ptr : _params )
+		{
+			param_name_and_ptr.second->set_params(p_parent->get_param_params(param_name_and_ptr.first));
+		}
 	}
 }
 
@@ -236,14 +246,20 @@ const int & ParamHierarchyLevel::get_generation_level( const str_t & name) const
 	return _generation_level_map->at(name);
 }
 
-void ParamHierarchyLevel::set_param_params(const name_t & name, const std::vector<flt_t> & params)
+void ParamHierarchyLevel::set_param_params(const name_t & name, ParamParam const * const & params)
 {
 	get_param(name)->set_params(params);
+
+	// Pass this along to all children
+	for( auto & child : _children )
+	{
+		child->set_param_params(name,params);
+	}
 }
 
-void ParamHierarchyLevel::set_param_params(const name_t & name, std::vector<flt_t> && params)
+ParamParam const * const & ParamHierarchyLevel::get_param_params(const name_t & name) const
 {
-	get_param(name)->set_params(std::move(params));
+	return get_param(name)->get_params();
 }
 
 } // namespace SHE_SIM

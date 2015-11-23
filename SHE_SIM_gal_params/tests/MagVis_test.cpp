@@ -32,6 +32,7 @@
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/param_names.h"
+#include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
@@ -41,13 +42,13 @@ struct mag_vis_fixture {
 
 	Survey survey;
 
-	const flt_t exp_time1 = 1234.5;
-	const flt_t exp_time2 = 2468.0;
+	const IndFixed exp_time1 = IndFixed(1234.5);
+	const IndFixed exp_time2 = IndFixed(2468.0);
 
-	const flt_t mag_vis_inst_zp = 25.0;
+	const IndFixed mag_vis_inst_zp = IndFixed(25.0);
 
-	const flt_t expected_mag_vis_zp1 = 25 + 2.5 * std::log10(exp_time1);
-	const flt_t expected_mag_vis_zp2 = 25 + 2.5 * std::log10(exp_time2);
+	const flt_t expected_mag_vis_zp1 = 25 + 2.5 * std::log10(exp_time1.get_independently());
+	const flt_t expected_mag_vis_zp2 = 25 + 2.5 * std::log10(exp_time2.get_independently());
 
 };
 
@@ -60,12 +61,12 @@ BOOST_FIXTURE_TEST_CASE(test_mag_vis, mag_vis_fixture) {
 	survey.set_generation_level(mag_vis_inst_zp_name,0);
 	survey.set_generation_level(mag_vis_zp_name,0);
 
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time1}));
-	survey.set_param_params(mag_vis_inst_zp_name,std::vector<flt_t>({mag_vis_inst_zp}));
+	survey.set_param_params(exp_time_name,&exp_time1);
+	survey.set_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp);
 
 	BOOST_CHECK_EQUAL(survey.get_param_value(mag_vis_zp_name),expected_mag_vis_zp1);
 
-	survey.set_param_params(exp_time_name,std::vector<flt_t>({exp_time2}));
+	survey.set_param_params(exp_time_name,&exp_time2);
 
 	BOOST_CHECK_EQUAL(survey.get_param_value(mag_vis_zp_name),expected_mag_vis_zp2);
 

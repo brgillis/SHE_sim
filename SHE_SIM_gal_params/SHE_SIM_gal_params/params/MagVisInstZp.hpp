@@ -44,24 +44,14 @@ class MagVisInstZp : public ParamGenerator
 {
 private:
 
-	flt_t _mag_vis_inst_zp;
-
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _mag_vis_inst_zp;
-	}
-
-	virtual void _set_params(const std::vector<flt_t> & v) override
-	{
-		assert(v.size()==1);
-		assert(v[0]>0.);
-		_mag_vis_inst_zp = v[0];
+		ParamGenerator::_cached_value = _params->get_independently();
 	}
 
 public:
-	MagVisInstZp( owner_t & owner, const flt_t & mag_vis_inst_zp = dv::mag_vis_inst_zp)
-	: ParamGenerator(owner),
-	  _mag_vis_inst_zp(mag_vis_inst_zp)
+	MagVisInstZp( owner_t & owner )
+	: ParamGenerator(owner)
 	{
 	}
 
