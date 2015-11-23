@@ -66,6 +66,11 @@ public:
 	{
 		return new IndUniform(*this);
 	}
+
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	{
+		return new IndUniform(params.at(0),params.at(1));
+	}
 };
 
 } // namespace SHE_SIM

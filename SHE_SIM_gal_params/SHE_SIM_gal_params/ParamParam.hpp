@@ -113,6 +113,8 @@ public:
 
 	virtual ParamParam * clone() const = 0;
 
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const = 0;
+
 };
 
 } // namespace SHE_SIM

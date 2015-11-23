@@ -66,6 +66,11 @@ public:
 	{
 		return new IndFixed(*this);
 	}
+
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	{
+		return new IndFixed(params.at(0));
+	}
 };
 
 } // namespace SHE_SIM

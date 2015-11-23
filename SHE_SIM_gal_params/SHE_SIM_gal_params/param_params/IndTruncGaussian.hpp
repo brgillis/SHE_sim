@@ -69,6 +69,11 @@ public:
 	{
 		return new IndTruncGaussian(*this);
 	}
+
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	{
+		return new IndTruncGaussian(params.at(0),params.at(1),params.at(2),params.at(3));
+	}
 };
 
 } // namespace SHE_SIM

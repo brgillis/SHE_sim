@@ -66,6 +66,11 @@ public:
 	{
 		return new IndRayleigh(*this);
 	}
+
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	{
+		return new IndRayleigh(params.at(0));
+	}
 };
 
 } // namespace SHE_SIM
