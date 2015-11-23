@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file common.h
+ @file IndFixed.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -21,26 +21,45 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-\**********************************************************************/
+ \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_COMMON_H_
-#define SHE_SIM_GAL_PARAMS_COMMON_H_
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDFIXED_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDFIXED_HPP_
 
-#include <random>
-#include <string>
-#include <unordered_map>
+#include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
-// General typedefs
+namespace SHE_SIM
+{
 
-typedef int int_t;
-typedef double flt_t;
+/**
+ * TODO Auto-generated comment stub
+ */
+class IndFixed: public ParamParam
+{
+private:
 
-typedef std::string str_t;
-typedef str_t name_t;
+	flt_t _value;
 
-typedef std::unordered_map<name_t,int_t> generation_level_map_t;
+public:
 
-typedef std::ranlux48 gen_t;
-typedef gen_t::result_type seed_t;
+	// Constructor and destructor
+	IndFixed( flt_t const & value )
+	: ParamParam(ParamParam::INDEPENDENT),
+	  _value(value)
 
-#endif // SHE_SIM_GAL_PARAMS_COMMON_H_
+	{
+	}
+	virtual ~IndFixed() {}
+
+	// Get the value
+	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	{
+		return _value;
+	}
+};
+
+} // namespace SHE_SIM
+
+#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDFIXED_HPP_

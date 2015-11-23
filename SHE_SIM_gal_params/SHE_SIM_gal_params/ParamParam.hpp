@@ -32,6 +32,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -106,7 +107,7 @@ public:
 		return _mode;
 	}
 
-	virtual flt_t const & get_independently() const = 0;
+	virtual flt_t get_independently( gen_t & gen=rng ) const = 0;
 
 };
 

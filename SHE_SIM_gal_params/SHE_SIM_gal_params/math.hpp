@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file common.h
+ @file math.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,24 +23,19 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_COMMON_H_
-#define SHE_SIM_GAL_PARAMS_COMMON_H_
+#ifndef MATH_HPP_
+#define MATH_HPP_
 
-#include <random>
-#include <string>
-#include <unordered_map>
+namespace SHE_SIM {
 
-// General typedefs
+template< typename T >
+decltype(T()*T()) square(const T & v1)
+{
+	return v1*v1;
+}
 
-typedef int int_t;
-typedef double flt_t;
+}
 
-typedef std::string str_t;
-typedef str_t name_t;
 
-typedef std::unordered_map<name_t,int_t> generation_level_map_t;
 
-typedef std::ranlux48 gen_t;
-typedef gen_t::result_type seed_t;
-
-#endif // SHE_SIM_GAL_PARAMS_COMMON_H_
+#endif // MATH_HPP_
