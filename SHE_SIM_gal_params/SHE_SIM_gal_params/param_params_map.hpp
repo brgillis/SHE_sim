@@ -23,15 +23,14 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_LIST_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_LIST_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_MAKE_PARAM_PARAMS_MAP_HPP_
+#define SHE_SIM_GAL_PARAMS_MAKE_PARAM_PARAMS_MAP_HPP_
 
 #include <memory>
 #include <unordered_map>
 #include <utility>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 // Include all param param headers here
@@ -39,8 +38,8 @@
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
-#include <SHE_SIM_gal_params/param_params/IndLogNormalPeak.hpp>
-#include <SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp>
+#include "SHE_SIM_gal_params/param_params/IndLogNormalPeak.hpp"
+#include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"
 #include "SHE_SIM_gal_params/param_params/IndPoisson.hpp"
 #include "SHE_SIM_gal_params/param_params/IndRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndTruncGaussian.hpp"
@@ -49,7 +48,11 @@
 
 namespace SHE_SIM {
 
-extern const ParamHierarchyLevel::param_params_t param_params_map;
+typedef ParamParam param_param_t;
+typedef std::unique_ptr<param_param_t> param_param_ptr_t;
+typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
+
+extern const param_params_t param_params_map;
 
 template<typename T_in, typename T_map>
 void insert_param_param(T_map & res)
@@ -61,9 +64,9 @@ void insert_param_param(T_map & res)
 }
 
 // Function to get a list of all params
-inline ParamHierarchyLevel::param_params_t get_full_param_params_map()
+inline param_params_t make_full_param_params_map()
 {
-	ParamHierarchyLevel::param_params_t res;
+	param_params_t res;
 
 	// Insert all param_params here
 	insert_param_param<IndFixed>(res);
@@ -83,4 +86,4 @@ inline ParamHierarchyLevel::param_params_t get_full_param_params_map()
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_LIST_HPP_
+#endif // SHE_SIM_GAL_PARAMS_MAKE_PARAM_PARAMS_MAP_HPP_

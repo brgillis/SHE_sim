@@ -36,6 +36,7 @@
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
+#include "SHE_SIM_gal_params/param_params_map.hpp"
 
 namespace SHE_SIM
 {
@@ -62,10 +63,6 @@ public:
 	typedef ParamGenerator param_t;
 	typedef std::unique_ptr<param_t> param_ptr_t;
 	typedef std::unordered_map<name_t,param_ptr_t> params_t;
-
-	typedef ParamParam param_param_t;
-	typedef std::unique_ptr<param_param_t> param_param_ptr_t;
-	typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
 
 private:
 
@@ -327,6 +324,13 @@ public:
 	void set_param_params(const name_t & name, Args... args)
 	{
 		_local_param_params[name] = param_param_ptr_t(new T_pp(args...));
+		set_p_param_params( name, _local_param_params.at(name).get() );
+	}
+
+	template< typename... Args >
+	void set_param_params(const name_t & name, const str_t & param_type, Args... args)
+	{
+		_local_param_params[name] = param_param_ptr_t(param_params_map.at(param_type)->recreate(std::vector<flt_t>({args...})));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
 

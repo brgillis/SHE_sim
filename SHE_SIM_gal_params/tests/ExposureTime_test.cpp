@@ -46,6 +46,8 @@ struct exp_time_fixture {
 
 	const flt_t exp_time2 = 2468.0;
 
+	const flt_t exp_time3 = 34151.1;
+
 };
 
 
@@ -64,6 +66,12 @@ BOOST_FIXTURE_TEST_CASE(test_exp_time, exp_time_fixture) {
 	BOOST_CHECK_NE(survey.get_param_value(exp_time_name),exp_time1_param.get_independently());
 
 	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time2);
+
+	survey.set_param_params(exp_time_name,"fixed",exp_time3);
+
+	BOOST_CHECK_NE(survey.get_param_value(exp_time_name),exp_time2);
+
+	BOOST_CHECK_EQUAL(survey.get_param_value(exp_time_name),exp_time3);
 
 }
 

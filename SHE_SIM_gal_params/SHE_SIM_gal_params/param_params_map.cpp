@@ -23,10 +23,10 @@
 
 \**********************************************************************/
 
-#include "SHE_SIM_gal_params/param_params_list.hpp"
+#include "SHE_SIM_gal_params/param_params_map.hpp"
 
 namespace SHE_SIM {
 
-const ParamHierarchyLevel::param_params_t param_params_map(get_full_param_params_map());
+const param_params_t param_params_map(make_full_param_params_map());
 
 }
