@@ -45,7 +45,7 @@ private:
 public:
 
 	// Constructor and destructor
-	IndPoisson( flt_t const & lambda )
+	IndPoisson( flt_t const & lambda = 1. )
 	: ParamParam(ParamParam::INDEPENDENT),
 	  _lambda(lambda)
 

@@ -63,7 +63,7 @@ inline ParamHierarchyLevel::params_t get_full_params_map(ParamHierarchyLevel & o
 	insert_param<MagVisInstZp>(res, owner);
 	insert_param<MagVisZp>(res, owner);
 
-	return std::move(res);
+	return res;
 
 } // params_t get_full_params_map()
 

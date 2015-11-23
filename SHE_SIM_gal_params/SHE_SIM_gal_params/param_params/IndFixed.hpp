@@ -45,7 +45,7 @@ private:
 public:
 
 	// Constructor and destructor
-	IndFixed( flt_t const & value )
+	IndFixed( flt_t const & value = 0. )
 	: ParamParam(ParamParam::INDEPENDENT),
 	  _value(value)
 

@@ -45,7 +45,7 @@ private:
 public:
 
 	// Constructor and destructor
-	IndTruncRayleigh( flt_t const & sigma = 0., flt_t const & max = 1. )
+	IndTruncRayleigh( flt_t const & sigma = 1., flt_t const & max = 1. )
 	: ParamParam(ParamParam::INDEPENDENT),
 	  _sigma(sigma),
 	  _max(max)

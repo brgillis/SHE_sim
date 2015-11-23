@@ -45,7 +45,7 @@ private:
 public:
 
 	// Constructor and destructor
-	IndRayleigh( flt_t const & sigma )
+	IndRayleigh( flt_t const & sigma = 1. )
 	: ParamParam(ParamParam::INDEPENDENT),
 	  _sigma(sigma)
 
