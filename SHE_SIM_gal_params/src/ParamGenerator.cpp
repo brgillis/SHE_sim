@@ -36,7 +36,7 @@ namespace SHE_SIM
 
 // Protected methods
 
-flt_t ParamGenerator::_request_param_value(const name_t & param_name)
+flt_t ParamGenerator::_request_param_value(name_t const & param_name)
 {
 	return _owner._request_param_value(param_name, name());
 }
@@ -67,7 +67,7 @@ void ParamGenerator::_clear_cache()
 	_dependant_names.clear();
 }
 
-void ParamGenerator::_add_dependant(const name_t & dependant_name)
+void ParamGenerator::_add_dependant(name_t const & dependant_name)
 {
 	_dependant_names.insert(dependant_name);
 }
@@ -95,11 +95,6 @@ void ParamGenerator::_determine_new_value()
 	this->_determine_value();
 }
 
-void ParamGenerator::_set_params(ParamParam const * const & p)
-{
-	_params = p;
-}
-
 ParamGenerator & ParamGenerator::_parent_version()
 {
 	return *(_owner.get_parent()->get_param(name()));
@@ -110,22 +105,49 @@ const ParamGenerator & ParamGenerator::_parent_version() const
 	return *(_owner.get_parent()->get_param(name()));
 }
 
-ParamGenerator::ParamGenerator( owner_t & owner, const int_t & level_generated_at )
+ParamGenerator::ParamGenerator( owner_t & owner, level_t const * const & p_generation_level )
 : _cached_value(UNCACHED_VALUE),
   _owner(owner),
-  _params(nullptr)
+  _params(nullptr),
+  _generation_level(p_generation_level)
 {
 }
 
-void ParamGenerator::set_params(ParamParam const * const & p)
+void ParamGenerator::set_p_params(ParamParam const * const & p)
 {
 	_clear_cache();
-	_set_params(p);
+	_params = p;
 }
 
-ParamParam const * const & ParamGenerator::get_params() const noexcept
+ParamParam const & ParamGenerator::get_params() const
+{
+	return *_params;
+}
+
+ParamParam const * const & ParamGenerator::get_p_params() const noexcept
 {
 	return _params;
+}
+
+level_t const & ParamGenerator::get_generation_level() const
+{
+	return *_generation_level;
+}
+
+level_t const * const & ParamGenerator::get_p_generation_level() const
+{
+	return _generation_level;
+}
+
+void ParamGenerator::set_generation_level( level_t const & level )
+{
+	_owner.set_generation_level(name(),level);
+}
+
+void ParamGenerator::set_p_generation_level( level_t const * const & p_level )
+{
+	_clear_cache();
+	_generation_level = p_level;
 }
 
 const flt_t & ParamGenerator::get()
@@ -143,19 +165,19 @@ const flt_t & ParamGenerator::get_new()
 	return _cached_value;
 }
 
-const flt_t & ParamGenerator::request(const name_t & requester_name)
+const flt_t & ParamGenerator::request(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get();
 }
 
-const flt_t & ParamGenerator::request_new(const name_t & requester_name)
+const flt_t & ParamGenerator::request_new(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get_new();
 }
 
-const int_t & ParamGenerator::level_generated_at() const
+const level_t & ParamGenerator::level_generated_at() const
 {
 	return _owner.get_generation_level(name());
 }

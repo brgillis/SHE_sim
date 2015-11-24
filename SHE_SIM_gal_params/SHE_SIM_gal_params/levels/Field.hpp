@@ -46,8 +46,7 @@ class Field: public ParamHierarchyLevel
 {
 
 public:
-	Field(ParamHierarchyLevel * const & parent = nullptr,
-			generation_level_map_t * const & p_generation_level_map = nullptr);
+	Field(ParamHierarchyLevel * const & parent = nullptr);
 	virtual ~Field();
 
 	/**

@@ -42,6 +42,14 @@ private:
 
 	flt_t _l10_mean, _l10_stddev;
 
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndLogNormalMean const * other_derived = dynamic_cast<IndLogNormalMean const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_l10_mean==other_derived->_l10_mean) and (_l10_stddev==other_derived->_l10_stddev);
+	}
+
 public:
 
 	// Constructor and destructor

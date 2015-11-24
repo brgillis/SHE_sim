@@ -38,9 +38,17 @@ namespace SHE_SIM
  */
 class IndFixed: public ParamParam
 {
-private:
+public:
 
 	flt_t _value;
+
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndFixed const * other_derived = dynamic_cast<IndFixed const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_value==other_derived->_value);
+	}
 
 public:
 

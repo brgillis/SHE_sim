@@ -51,12 +51,12 @@ void ParamHierarchyLevel::_update_child(child_t * const & old_p_child, child_t *
 	}
 }
 
-flt_t const & ParamHierarchyLevel::_request_param_value(const name_t & name, const name_t & requester_name)
+flt_t const & ParamHierarchyLevel::_request_param_value(name_t const & name, name_t const & requester_name)
 {
 	return _params.at(name)->request(requester_name);
 }
 
-void ParamHierarchyLevel::_drop_local_param_param(const name_t & name)
+void ParamHierarchyLevel::_drop_local_param_param(name_t const & name)
 {
 	if ( _local_param_params.find(name) == _local_param_params.end() )
 	{
@@ -65,7 +65,7 @@ void ParamHierarchyLevel::_drop_local_param_param(const name_t & name)
 	}
 	else
 	{
-		if(_local_param_params.at(name).get() == get_param_params(name))
+		if(_local_param_params.at(name).get() == get_p_param_params(name))
 		{
 			// Don't drop if we're using it
 			return;
@@ -78,7 +78,29 @@ void ParamHierarchyLevel::_drop_local_param_param(const name_t & name)
 	}
 }
 
-void ParamHierarchyLevel::_clear_param_cache(const name_t & name)
+void ParamHierarchyLevel::_drop_local_generation_level(name_t const & name)
+{
+	if ( _local_generation_levels.find(name) == _local_generation_levels.end() )
+	{
+		// Key isn't in the map
+		return;
+	}
+	else
+	{
+		if(_local_generation_levels.at(name).get() == get_p_generation_level(name))
+		{
+			// Don't drop if we're using it
+			return;
+		}
+		else
+		{
+			// Unused, so drop it
+			_local_generation_levels.erase(name);
+		}
+	}
+}
+
+void ParamHierarchyLevel::_clear_param_cache(name_t const & name)
 {
 	// Clear for this
 	_params.at(name)->_clear_cache();
@@ -93,43 +115,48 @@ void ParamHierarchyLevel::_clear_param_cache(const name_t & name)
 // Public methods
 
 ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
-		const generation_level_map_t * p_generation_level_map,
 		params_t && params)
 : _p_parent(p_parent),
   _params(std::move(params))
 {
-	if(p_generation_level_map!=nullptr)
-	{
-		_generation_level_map = p_generation_level_map;
-	}
-	else if(p_parent != nullptr)
-	{
-		_generation_level_map = p_parent->get_generation_level_map();
-	}
 
-	// Inherit parameters from parent if it exists
+	// Inherit parameters and generation_levels from parent if it exists
 	if(p_parent != nullptr)
 	{
 		for( auto const & param_name_and_ptr : _params )
 		{
-			param_name_and_ptr.second->set_params(p_parent->get_param_params(param_name_and_ptr.first));
+			param_name_and_ptr.second->set_p_params(p_parent->get_p_param_params(param_name_and_ptr.first));
+			param_name_and_ptr.second->set_p_generation_level(p_parent->get_p_generation_level(param_name_and_ptr.first));
 		}
 	}
 }
 
 ParamHierarchyLevel::ParamHierarchyLevel(const ParamHierarchyLevel & other)
-: _p_parent(other._p_parent),
-  _generation_level_map(other._generation_level_map)
+: _p_parent(other._p_parent)
 {
-	// Deep-copy _params and _children
-	for( auto const & param_name_and_ptr : other._params )
-	{
-		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
-	}
+	// Deep-copy maps
+
 	for( auto const & child_ptr : other._children )
 	{
 		_children.push_back( child_ptr_t( child_ptr->clone() ) );
 		_children.back()->_update_parent(this);
+	}
+
+	for( auto const & param_name_and_ptr : other._params )
+	{
+		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
+	}
+
+	for( auto const & param_param_name_and_ptr : other._local_param_params )
+	{
+		_local_param_params.insert( std::make_pair( param_param_name_and_ptr.first,
+				param_param_ptr_t( param_param_name_and_ptr.second->clone() ) ) );
+	}
+
+	for( auto const & gen_level_name_and_ptr : other._local_generation_levels )
+	{
+		_local_generation_levels.insert( std::make_pair( gen_level_name_and_ptr.first,
+				level_ptr_t( new level_t( *(gen_level_name_and_ptr.second.get()) ) ) ) );
 	}
 }
 
@@ -142,8 +169,9 @@ ParamHierarchyLevel::ParamHierarchyLevel(const ParamHierarchyLevel & other)
 ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
 : _p_parent(std::move(other._p_parent)),
   _children(std::move(other._children)),
-  _params(std::move(other._params)),
-  _generation_level_map(std::move(other._generation_level_map))
+  _local_param_params(std::move(other._local_param_params)),
+  _local_generation_levels(std::move(other._local_generation_levels)),
+  _params(std::move(other._params))
 {
 	// Update parent's pointer to this
 	if(_p_parent != nullptr)
@@ -161,19 +189,34 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
 ParamHierarchyLevel & ParamHierarchyLevel::operator=(const ParamHierarchyLevel & other)
 {
 	_p_parent = other._p_parent;
-	_generation_level_map = other._generation_level_map;
 
-	// Deep-copy _params and _children
-	_params.clear();
-	for( auto const & param_name_and_ptr : other._params )
-	{
-		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
-	}
+	// Deep-copy maps
+
 	_children.clear();
 	for( auto const & child_ptr : other._children )
 	{
 		_children.push_back( child_ptr_t( child_ptr->clone() ) );
 		_children.back()->_update_parent(this);
+	}
+
+	_params.clear();
+	for( auto const & param_name_and_ptr : other._params )
+	{
+		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
+	}
+
+	_local_param_params.clear();
+	for( auto const & param_param_name_and_ptr : other._local_param_params )
+	{
+		_local_param_params.insert( std::make_pair( param_param_name_and_ptr.first,
+				param_param_ptr_t( param_param_name_and_ptr.second->clone() ) ) );
+	}
+
+	_local_generation_levels.clear();
+	for( auto const & gen_level_name_and_ptr : other._local_generation_levels )
+	{
+		_local_generation_levels.insert( std::make_pair( gen_level_name_and_ptr.first,
+				level_ptr_t( new level_t( *(gen_level_name_and_ptr.second.get()) ) ) ) );
 	}
 
 	return *this;
@@ -184,7 +227,8 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && othe
 	_p_parent = std::move(other._p_parent);
 	_params = std::move(other._params);
 	_children = std::move(other._children);
-	_generation_level_map = std::move(other._generation_level_map);
+	_local_param_params = std::move(other._local_param_params);
+	_local_generation_levels = std::move(other._local_generation_levels);
 
 	// Update parent's pointer to this
 	if(_p_parent != nullptr)
@@ -243,34 +287,58 @@ void ParamHierarchyLevel::adopt_child(child_t * const & p_child)
 	_children.push_back( child_ptr_t(p_child) );
 }
 
-param_t * ParamHierarchyLevel::get_param(const name_t & name)
+param_t * ParamHierarchyLevel::get_param( name_t const & name )
 {
 	return _params.at(name).get();
 }
 
-const param_t * ParamHierarchyLevel::get_param(const name_t & name) const
+const param_t * ParamHierarchyLevel::get_param( name_t const & name) const
 {
 	return _params.at(name).get();
 }
 
-flt_t const & ParamHierarchyLevel::get_param_value(const name_t & name)
+flt_t const & ParamHierarchyLevel::get_param_value( name_t const & name )
 {
 	return _params.at(name).get()->get();
 }
 
-const generation_level_map_t * ParamHierarchyLevel::get_generation_level_map() const noexcept
+level_t const & ParamHierarchyLevel::get_generation_level( name_t const & name ) const
 {
-	return _generation_level_map;
+	return get_param(name)->get_generation_level();
 }
 
-const int & ParamHierarchyLevel::get_generation_level( const str_t & name) const
+level_t const * const & ParamHierarchyLevel::get_p_generation_level( name_t const & name ) const
 {
-	return _generation_level_map->at(name);
+	return get_param(name)->get_p_generation_level();
 }
 
-void ParamHierarchyLevel::set_p_param_params(const name_t & name, ParamParam const * const & params)
+void ParamHierarchyLevel::set_p_generation_level( name_t const & name, level_t const * const & p_level )
 {
-	get_param(name)->set_params(params);
+	get_param(name)->set_p_generation_level( p_level );
+
+	// Pass this along to all children
+	for( auto & child : _children )
+	{
+		child->set_p_generation_level( name, p_level );
+	}
+
+	_drop_local_generation_level(name);
+}
+
+void ParamHierarchyLevel::set_generation_level( name_t const & name, level_t const & level )
+{
+	_local_generation_levels[name] = level_ptr_t( new level_t(level) );
+	set_p_generation_level( name, _local_generation_levels.at(name).get() );
+}
+
+ParamParam const * const & ParamHierarchyLevel::get_p_param_params( name_t const & name ) const
+{
+	return get_param(name)->get_p_params();
+}
+
+void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam const * const & params )
+{
+	get_param(name)->set_p_params(params);
 
 	// Pass this along to all children
 	for( auto & child : _children )
@@ -279,11 +347,6 @@ void ParamHierarchyLevel::set_p_param_params(const name_t & name, ParamParam con
 	}
 
 	_drop_local_param_param(name);
-}
-
-ParamParam const * const & ParamHierarchyLevel::get_param_params(const name_t & name) const
-{
-	return get_param(name)->get_params();
 }
 
 } // namespace SHE_SIM

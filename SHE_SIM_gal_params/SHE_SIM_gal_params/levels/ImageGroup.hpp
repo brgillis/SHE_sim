@@ -45,8 +45,7 @@ class ImageGroup: public ParamHierarchyLevel
 {
 
 public:
-	ImageGroup(ParamHierarchyLevel * const & parent = nullptr,
-			generation_level_map_t * const & p_generation_level_map = nullptr);
+	ImageGroup(ParamHierarchyLevel * const & parent = nullptr);
 	virtual ~ImageGroup();
 
 	/**

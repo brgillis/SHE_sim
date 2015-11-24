@@ -40,7 +40,6 @@ namespace SHE_SIM
 
 Survey::Survey()
 : ParamHierarchyLevel(nullptr,
-		&_survey_generation_level_map,
 		get_full_params_map(*this))
 {
 }
@@ -48,34 +47,6 @@ Survey::Survey()
 Survey::~Survey()
 {
 }
-
-// Methods for interacting with the generation_level_map
-#if(1)
-
-const generation_level_map_t & Survey::get_survey_generation_level_map() const noexcept
-{
-	return _survey_generation_level_map;
-}
-
-void Survey::set_survey_generation_level_map(
-		const generation_level_map_t & survey_generation_level_map)
-{
-	_survey_generation_level_map = survey_generation_level_map;
-}
-
-void Survey::set_survey_generation_level_map(
-		generation_level_map_t && survey_generation_level_map)
-{
-	_survey_generation_level_map = std::move(survey_generation_level_map);
-}
-
-void Survey::set_generation_level( const name_t & name, const int_t & generation_level )
-{
-	_survey_generation_level_map[name] = generation_level;
-	_clear_param_cache(name);
-}
-
-#endif
 
 // Methods to add children
 #if(1)

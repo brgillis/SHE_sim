@@ -66,6 +66,7 @@ private:
 	parent_ptr_t _p_parent;
 	children_t _children;
 	param_params_t _local_param_params;
+	generation_level_map_t _local_generation_levels;
 
 	// Private methods
 	void _update_parent(parent_ptr_t const & new_p_parent);
@@ -83,9 +84,11 @@ private:
 	 *
 	 * @return The value of the desired parameter.
 	 */
-	flt_t const & _request_param_value(const name_t & name, const name_t & requester_name);
+	flt_t const & _request_param_value(name_t const & name, name_t const & requester_name);
 
-	void _drop_local_param_param(const name_t & name);
+	void _drop_local_param_param(name_t const & name);
+
+	void _drop_local_generation_level(name_t const & name);
 
 	friend class ParamGenerator; // So ParamGenerators can access _request_param_value and _clear_param_cache
 
@@ -93,7 +96,6 @@ protected:
 
 	// Protected members
 	params_t _params;
-	const generation_level_map_t * _generation_level_map;
 
 	// Protected methods
 	/**
@@ -102,7 +104,7 @@ protected:
 	 *
 	 * @param name The name of the parameters whose cache is to be cleared.
 	 */
-	void _clear_param_cache(const name_t & name);
+	void _clear_param_cache(name_t const & name);
 
 public:
 
@@ -114,7 +116,6 @@ public:
 	 * @param params Parameters map.
 	 */
 	ParamHierarchyLevel(parent_ptr_t const & p_parent = nullptr,
-			const generation_level_map_t * p_generation_level_map = nullptr,
 			params_t && params = params_t());
 
 	/**
@@ -171,13 +172,6 @@ public:
 	 * @return Number of children.
 	 */
 	int_t num_children() const;
-
-	/**
-	 * Get the generation level map used by this object.
-	 *
-	 * @return The generation level map.
-	 */
-	const generation_level_map_t * get_generation_level_map() const noexcept;
 
 #endif // Get details on this object
 
@@ -285,7 +279,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	const param_t * get_param(const name_t & name) const;
+	const param_t * get_param(name_t const & name) const;
 
 	/**
 	 * Get a pointer to the parameter generator with a given name. Will throw an exception if none
@@ -294,7 +288,7 @@ public:
 	 * @param name Name of the desired parameter generator.
 	 * @return Pointer to the the desired parameter generator.
 	 */
-	param_t * get_param(const name_t & name);
+	param_t * get_param(name_t const & name);
 
 	/**
 	 * Get the value for a parameter with a given name. Will throw an exception if none
@@ -303,7 +297,7 @@ public:
 	 * @param name Name of the desired parameter.
 	 * @return The value of the desired parameter.
 	 */
-	flt_t const & get_param_value(const name_t & name);
+	flt_t const & get_param_value(name_t const & name);
 
 	/**
 	 * Get the level at which a parameter should be generated
@@ -312,25 +306,38 @@ public:
 	 *
 	 * @return The level it's generated at
 	 */
-	const int & get_generation_level( const str_t & name) const;
+	level_t const & get_generation_level( name_t const & name ) const;
 
-	void set_p_param_params(const name_t & name, ParamParam const * const & params);
+	/**
+	 * Get a pointer to a value which contains the level at which a parameter should be generated
+	 *
+	 * @param name The name of the parameter
+	 *
+	 * @return Pointer to a value which contains the level it's generated at
+	 */
+	level_t const * const & get_p_generation_level( name_t const & name ) const;
+
+	void set_generation_level( name_t const & name, level_t const & level );
+
+	void set_p_generation_level( name_t const & name, level_t const * const & p_level );
+
+	ParamParam const * const & get_p_param_params(name_t const & name) const;
 
 	template< typename T_pp, typename... Args >
-	void set_param_params(const name_t & name, Args... args)
+	void set_param_params(name_t const & name, Args... args)
 	{
 		_local_param_params[name] = param_param_ptr_t(new T_pp(args...));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
 
 	template< typename... Args >
-	void set_param_params(const name_t & name, const str_t & param_type, Args... args)
+	void set_param_params(name_t const & name, str_t const & param_type, Args... args)
 	{
 		_local_param_params[name] = param_param_ptr_t(param_params_map.at(param_type)->recreate(std::vector<flt_t>({args...})));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
 
-	ParamParam const * const & get_param_params(const name_t & name) const;
+	void set_p_param_params( name_t const & name, ParamParam const * const & params );
 
 #endif
 

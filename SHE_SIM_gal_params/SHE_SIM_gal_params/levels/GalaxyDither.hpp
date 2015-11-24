@@ -42,8 +42,7 @@ class GalaxyDither: public ParamHierarchyLevel
 {
 
 public:
-	GalaxyDither(ParamHierarchyLevel * const & parent = nullptr,
-			generation_level_map_t * const & p_generation_level_map = nullptr);
+	GalaxyDither(ParamHierarchyLevel * const & parent = nullptr);
 	virtual ~GalaxyDither();
 
 	/**

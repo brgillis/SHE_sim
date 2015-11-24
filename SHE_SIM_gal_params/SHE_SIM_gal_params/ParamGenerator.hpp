@@ -54,9 +54,10 @@ protected:
 	flt_t _cached_value;
 	owner_t & _owner;
 	const ParamParam * _params;
+	const level_t * _generation_level;
 
 	// Protected methods
-	flt_t _request_param_value(const name_t & name);
+	flt_t _request_param_value(name_t const & name);
 
 private:
 
@@ -69,7 +70,7 @@ private:
 
 	void _clear_cache();
 
-	void _add_dependant(const name_t & dependant_name);
+	void _add_dependant(name_t const & dependant_name);
 
 	virtual void _generate() = 0;
 
@@ -78,8 +79,6 @@ private:
 	void _determine_value();
 
 	void _determine_new_value();
-
-	void _set_params(ParamParam const * const & p);
 
 	ParamGenerator & _parent_version();
 
@@ -94,7 +93,7 @@ public:
 	 *
 	 * @param level_determined_at Which level of the hierarchy this will be generated at.
 	 */
-	ParamGenerator( owner_t & owner, const int_t & level_generated_at = -1 );
+	ParamGenerator( owner_t & owner, level_t const * const & p_generation_level = nullptr );
 
 	/**
 	 * Virtual destructor.
@@ -103,19 +102,29 @@ public:
 
 	virtual name_t name() const = 0;
 
-	void set_params(ParamParam const * const & p);
+	ParamParam const & get_params() const;
 
-	ParamParam const * const & get_params() const noexcept;
+	ParamParam const * const & get_p_params() const noexcept;
+
+	void set_p_params(ParamParam const * const & p);
+
+	level_t const & get_generation_level() const;
+
+	level_t const * const & get_p_generation_level() const;
+
+	void set_generation_level( level_t const & level );
+
+	void set_p_generation_level( level_t const * const & p_level );
 
 	const flt_t & get();
 
 	const flt_t & get_new();
 
-	const flt_t & request(const name_t & requester_name);
+	const flt_t & request(name_t const & requester_name);
 
-	const flt_t & request_new(const name_t & requester_name);
+	const flt_t & request_new(name_t const & requester_name);
 
-	const int_t & level_generated_at() const;
+	const level_t & level_generated_at() const;
 
 	virtual ParamGenerator * clone() const = 0;
 

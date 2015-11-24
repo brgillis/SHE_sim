@@ -37,10 +37,8 @@
 namespace SHE_SIM
 {
 
-FieldGroup::FieldGroup(ParamHierarchyLevel * const & p_parent,
-		generation_level_map_t * const & p_generation_level_map)
+FieldGroup::FieldGroup(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
-		p_generation_level_map,
 		get_full_params_map(*this))
 {
 }

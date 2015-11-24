@@ -42,6 +42,14 @@ private:
 
 	flt_t _min, _max;
 
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndUniform const * other_derived = dynamic_cast<IndUniform const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_min==other_derived->_min) and (_max==other_derived->_max);
+	}
+
 public:
 
 	// Constructor and destructor

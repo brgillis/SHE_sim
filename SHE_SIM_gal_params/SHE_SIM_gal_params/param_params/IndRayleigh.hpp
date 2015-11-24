@@ -42,6 +42,14 @@ private:
 
 	flt_t _sigma;
 
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndRayleigh const * other_derived = dynamic_cast<IndRayleigh const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_sigma==other_derived->_sigma);
+	}
+
 public:
 
 	// Constructor and destructor

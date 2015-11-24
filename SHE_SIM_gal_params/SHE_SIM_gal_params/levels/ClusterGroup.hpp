@@ -45,8 +45,7 @@ class ClusterGroup: public ParamHierarchyLevel
 {
 
 public:
-	ClusterGroup(ParamHierarchyLevel * const & parent = nullptr,
-			generation_level_map_t * const & p_generation_level_map = nullptr);
+	ClusterGroup(ParamHierarchyLevel * const & parent = nullptr);
 	virtual ~ClusterGroup();
 
 	/**

@@ -56,6 +56,7 @@ public:
 
 private:
 
+	// Private members
 	Mode _mode;
 
 protected:
@@ -99,6 +100,13 @@ public:
 	{
 	};
 	virtual ~ParamParam() {};
+
+	// Comparisons
+	virtual bool is_equal( ParamParam const * const & other ) const = 0;
+	bool not_equal( ParamParam const * const & other ) const
+	{
+		return !is_equal(other);
+	}
 
 	// Public methods
 

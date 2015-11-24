@@ -42,6 +42,15 @@ private:
 
 	flt_t _mean, _stddev, _min, _max;
 
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndTruncGaussian const * other_derived = dynamic_cast<IndTruncGaussian const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_mean==other_derived->_mean) and (_stddev==other_derived->_stddev) and
+				(_min==other_derived->_min) and (_max==other_derived->_max);
+	}
+
 public:
 
 	// Constructor and destructor

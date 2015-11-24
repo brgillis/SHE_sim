@@ -44,9 +44,6 @@ class Image;
  */
 class Survey: public ParamHierarchyLevel
 {
-private:
-
-	generation_level_map_t _survey_generation_level_map;
 
 public:
 	Survey();
@@ -57,21 +54,6 @@ public:
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::survey_level;}
-
-	// Methods for interacting with the generation level map
-#if(1)
-
-	const generation_level_map_t & get_survey_generation_level_map() const noexcept;
-
-	void set_survey_generation_level_map(
-			const generation_level_map_t & survey_generation_level_map);
-
-	void set_survey_generation_level_map(
-			generation_level_map_t && survey_generation_level_map);
-
-	void set_generation_level( const name_t & name, const int_t & generation_level );
-
-#endif
 
 	// Methods to add children
 #if(1)

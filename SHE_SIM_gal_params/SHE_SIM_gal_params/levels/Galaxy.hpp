@@ -45,8 +45,7 @@ class Galaxy: public ParamHierarchyLevel
 {
 
 public:
-	Galaxy(ParamHierarchyLevel * const & parent = nullptr,
-			generation_level_map_t * const & p_generation_level_map = nullptr);
+	Galaxy(ParamHierarchyLevel * const & parent = nullptr);
 	virtual ~Galaxy();
 
 	/**

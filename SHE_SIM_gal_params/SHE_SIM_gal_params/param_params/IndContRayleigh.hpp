@@ -26,6 +26,8 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDCONTRAYLEIGH_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDCONTRAYLEIGH_HPP_
 
+#include <stdexcept>
+
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/random_functions.hpp"
@@ -40,7 +42,17 @@ class IndContRayleigh: public ParamParam
 {
 private:
 
+	// Private members
 	flt_t _sigma, _max, _p;
+
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
+	{
+		IndContRayleigh const * other_derived = dynamic_cast<IndContRayleigh const *>(other);
+		if(other_derived==nullptr) return false;
+		return (_sigma==other_derived->_sigma) and (_max==other_derived->_max) and
+				(_p==other_derived->_p);
+	}
 
 public:
 
