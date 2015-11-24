@@ -26,11 +26,14 @@
 #ifndef SHE_SIM_GAL_PARAMS_COMMON_H_
 #define SHE_SIM_GAL_PARAMS_COMMON_H_
 
+#include <memory>
 #include <random>
 #include <string>
 #include <unordered_map>
 
 // General typedefs
+
+namespace SHE_SIM {
 
 typedef int int_t;
 typedef double flt_t;
@@ -42,5 +45,22 @@ typedef std::unordered_map<name_t,int_t> generation_level_map_t;
 
 typedef std::ranlux48 gen_t;
 typedef gen_t::result_type seed_t;
+
+// Class forward-declarations
+class ParamHierarchyLevel;
+class ParamGenerator;
+class ParamParam;
+
+// Typedefs using these classes
+
+typedef ParamGenerator param_t;
+typedef std::unique_ptr<param_t> param_ptr_t;
+typedef std::unordered_map<name_t,param_ptr_t> params_t;
+
+typedef ParamParam param_param_t;
+typedef std::unique_ptr<param_param_t> param_param_ptr_t;
+typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
+
+}
 
 #endif // SHE_SIM_GAL_PARAMS_COMMON_H_

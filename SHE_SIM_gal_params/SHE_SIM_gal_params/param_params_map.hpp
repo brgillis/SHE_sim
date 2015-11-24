@@ -48,10 +48,6 @@
 
 namespace SHE_SIM {
 
-typedef ParamParam param_param_t;
-typedef std::unique_ptr<param_param_t> param_param_ptr_t;
-typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
-
 extern const param_params_t param_params_map;
 
 template<typename T_in, typename T_map>

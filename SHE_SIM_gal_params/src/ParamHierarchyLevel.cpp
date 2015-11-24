@@ -243,12 +243,12 @@ void ParamHierarchyLevel::adopt_child(child_t * const & p_child)
 	_children.push_back( child_ptr_t(p_child) );
 }
 
-ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const name_t & name)
+param_t * ParamHierarchyLevel::get_param(const name_t & name)
 {
 	return _params.at(name).get();
 }
 
-const ParamHierarchyLevel::param_t * ParamHierarchyLevel::get_param(const name_t & name) const
+const param_t * ParamHierarchyLevel::get_param(const name_t & name) const
 {
 	return _params.at(name).get();
 }

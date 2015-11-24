@@ -60,10 +60,6 @@ public:
 	typedef std::unique_ptr<child_t> child_ptr_t;
 	typedef std::vector<child_ptr_t> children_t;
 
-	typedef ParamGenerator param_t;
-	typedef std::unique_ptr<param_t> param_ptr_t;
-	typedef std::unordered_map<name_t,param_ptr_t> params_t;
-
 private:
 
 	// Private members
