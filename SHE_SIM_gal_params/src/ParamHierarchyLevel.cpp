@@ -128,11 +128,20 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 			param_name_and_ptr.second->set_p_params(p_parent->get_p_param_params(param_name_and_ptr.first));
 			param_name_and_ptr.second->set_p_generation_level(p_parent->get_p_generation_level(param_name_and_ptr.first));
 		}
+
+		// Get ID from the parent's number of children
+		_local_ID = p_parent->num_children();
+	}
+	else
+	{
+		// Set ID to zero
+		_local_ID = 0;
 	}
 }
 
 ParamHierarchyLevel::ParamHierarchyLevel(const ParamHierarchyLevel & other)
-: _p_parent(other._p_parent)
+: _p_parent(other._p_parent),
+  _local_ID(other._local_ID)
 {
 	// Deep-copy maps
 
@@ -171,6 +180,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
   _children(std::move(other._children)),
   _local_param_params(std::move(other._local_param_params)),
   _local_generation_levels(std::move(other._local_generation_levels)),
+  _local_ID(std::move(other._local_ID)),
   _params(std::move(other._params))
 {
 	// Update parent's pointer to this
@@ -189,6 +199,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
 ParamHierarchyLevel & ParamHierarchyLevel::operator=(const ParamHierarchyLevel & other)
 {
 	_p_parent = other._p_parent;
+	_local_ID = other._local_ID;
 
 	// Deep-copy maps
 
@@ -229,6 +240,7 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && othe
 	_children = std::move(other._children);
 	_local_param_params = std::move(other._local_param_params);
 	_local_generation_levels = std::move(other._local_generation_levels);
+	_local_ID = std::move(other._local_ID);
 
 	// Update parent's pointer to this
 	if(_p_parent != nullptr)
@@ -347,6 +359,30 @@ void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam co
 	}
 
 	_drop_local_param_param(name);
+}
+
+int_t const & ParamHierarchyLevel::get_local_ID() const noexcept
+{
+	return _local_ID;
+}
+
+std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
+{
+	// Append this to the parent's sequence if the parent exists
+	if(_p_parent != nullptr )
+	{
+		auto res = _p_parent->get_ID_seq();
+
+		res.push_back(get_local_ID());
+
+		return res;
+	}
+	else // Just use this one's ID
+	{
+		std::vector<int_t> res({get_local_ID()});
+
+		return res;
+	}
 }
 
 } // namespace SHE_SIM

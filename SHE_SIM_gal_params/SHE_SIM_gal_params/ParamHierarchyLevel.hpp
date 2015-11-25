@@ -67,6 +67,7 @@ private:
 	children_t _children;
 	param_params_t _local_param_params;
 	generation_level_map_t _local_generation_levels;
+	int_t _local_ID;
 
 	// Private methods
 	void _update_parent(parent_ptr_t const & new_p_parent);
@@ -338,6 +339,10 @@ public:
 	}
 
 	void set_p_param_params( name_t const & name, ParamParam const * const & params );
+
+	int_t const & get_local_ID() const noexcept;
+
+	std::vector<int_t> get_ID_seq() const;
 
 #endif
 

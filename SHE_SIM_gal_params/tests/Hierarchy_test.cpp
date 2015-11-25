@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ImageGroup_test.cpp
+ @file Hierarchy_test.cpp
  ------------------
 
  TODO <Insert file description here>
