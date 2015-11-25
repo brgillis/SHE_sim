@@ -26,6 +26,7 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <cassert>
 #include <memory>
 #include <set>
@@ -33,7 +34,6 @@
 #include <utility>
 #include <vector>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/param_params_map.hpp"

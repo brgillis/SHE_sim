@@ -26,10 +26,10 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMGENERATOR_HPP_
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <unordered_map>
 #include <unordered_set>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 

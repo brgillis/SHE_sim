@@ -26,13 +26,13 @@
 #ifndef SHE_SIM_GAL_PARAMS_DEFAULT_PARAM_PARAMS_HPP_
 #define SHE_SIM_GAL_PARAMS_DEFAULT_PARAM_PARAMS_HPP_
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
 #include <memory>
 #include <unordered_map>
 #include <utility>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 // Include all needed param param headers here

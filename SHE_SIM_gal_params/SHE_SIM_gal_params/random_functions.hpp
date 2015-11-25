@@ -25,11 +25,11 @@
 #ifndef _BRG_RANDOM_FUNCTIONS_HPP_INCLUDED_
 #define _BRG_RANDOM_FUNCTIONS_HPP_INCLUDED_
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <cassert>
 #include <cmath>
 #include <random>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {

@@ -26,7 +26,7 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDFIXED_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDFIXED_HPP_
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/random_functions.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 

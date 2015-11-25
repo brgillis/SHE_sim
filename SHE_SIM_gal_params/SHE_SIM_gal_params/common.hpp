@@ -23,8 +23,8 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_COMMON_H_
-#define SHE_SIM_GAL_PARAMS_COMMON_H_
+#ifndef SHE_SIM_GAL_PARAMS_COMMON_HPP_
+#define SHE_SIM_GAL_PARAMS_COMMON_HPP_
 
 #include <memory>
 #include <random>
@@ -65,4 +65,4 @@ typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
 
 }
 
-#endif // SHE_SIM_GAL_PARAMS_COMMON_H_
+#endif // SHE_SIM_GAL_PARAMS_COMMON_HPP_

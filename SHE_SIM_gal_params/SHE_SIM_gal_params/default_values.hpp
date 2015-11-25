@@ -26,7 +26,7 @@
 #ifndef SHE_SIM_GAL_PARAMS_VALUES_H_
 #define SHE_SIM_GAL_PARAMS_VALUES_H_
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 
 namespace SHE_SIM { namespace dv {
 

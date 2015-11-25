@@ -26,11 +26,11 @@
 #ifndef SHE_SIM_GAL_PARAMS_MAKE_PARAM_PARAMS_MAP_HPP_
 #define SHE_SIM_GAL_PARAMS_MAKE_PARAM_PARAMS_MAP_HPP_
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <memory>
 #include <unordered_map>
 #include <utility>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 // Include all param param headers here
