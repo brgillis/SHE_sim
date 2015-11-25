@@ -23,10 +23,10 @@
 
  \**********************************************************************/
 
+#include <SHE_SIM_gal_params/default_param_params.hpp>
 #include <limits>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/default_param_params.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"

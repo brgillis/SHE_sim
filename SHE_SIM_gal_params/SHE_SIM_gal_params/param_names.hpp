@@ -24,8 +24,8 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_
-#define SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_
 
 constexpr const char * exp_time_name = "exp_time";
 constexpr const char * mag_vis_inst_zp_name = "mag_vis_inst_zp";
@@ -33,4 +33,4 @@ constexpr const char * mag_i_inst_zp_name = "mag_i_inst_zp";
 constexpr const char * mag_vis_zp_name = "mag_vis_zp";
 constexpr const char * mag_i_zp_name = "mag_i_zp";
 
-#endif // SHE_SIM_GAL_PARAMS_PARAM_NAMES_H_
+#endif // SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_

@@ -26,12 +26,12 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMS_MAGIINSTZP_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMS_MAGIINSTZP_HPP_
 
+#include <SHE_SIM_gal_params/default_param_params.hpp>
+#include <SHE_SIM_gal_params/param_names.hpp>
 #include <cassert>
 #include <vector>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/default_param_params.h"
-#include "SHE_SIM_gal_params/param_names.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
 namespace SHE_SIM

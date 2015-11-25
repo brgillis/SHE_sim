@@ -26,10 +26,10 @@
 #ifndef SHE_SIM_GAL_PARAMS_LEVELS_CLUSTERGROUP_HPP_
 #define SHE_SIM_GAL_PARAMS_LEVELS_CLUSTERGROUP_HPP_
 
+#include <SHE_SIM_gal_params/default_values.hpp>
 #include <utility>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/default_values.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
 namespace SHE_SIM
