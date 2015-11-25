@@ -30,7 +30,7 @@
 #include <vector>
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/default_values.h"
+#include "SHE_SIM_gal_params/default_param_params.h"
 #include "SHE_SIM_gal_params/param_names.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 
@@ -42,17 +42,12 @@ namespace SHE_SIM
  */
 class MagVisInstZp : public ParamGenerator
 {
-private:
-
-	virtual void _generate() override
-	{
-		ParamGenerator::_cached_value = _params->get_independently();
-	}
 
 public:
 	MagVisInstZp( owner_t & owner )
 	: ParamGenerator(owner)
 	{
+		_params = default_param_params_map.at(name()).get();
 	}
 
 	virtual ~MagVisInstZp()

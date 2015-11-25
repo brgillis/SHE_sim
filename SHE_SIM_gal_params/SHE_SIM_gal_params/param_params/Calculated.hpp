@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file MagVisZp.hpp
+ @file Calculated.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,17 +23,11 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_
-
-#include <cassert>
-#include <cmath>
-#include <vector>
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_CALCULATED_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_CALCULATED_HPP_
 
 #include "SHE_SIM_gal_params/common.h"
-#include "SHE_SIM_gal_params/default_param_params.h"
-#include "SHE_SIM_gal_params/param_names.h"
-#include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/random_functions.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
@@ -42,49 +36,48 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class MagVisZp : public ParamGenerator
+class Calculated: public ParamParam
 {
-private:
+public:
 
-	virtual void _generate() override
+	// Private methods
+	virtual bool is_equal( ParamParam const * const & other ) const override
 	{
-		if(_params->get_mode()==ParamParam::DEPENDENT)
-		{
-			_cached_value = _request_param_value(mag_vis_inst_zp_name)
-				+ 2.5* std::log10(_request_param_value(exp_time_name));
-		}
-		else if(_params->get_mode()==ParamParam::INDEPENDENT)
-		{
-			_cached_value = _params->get_independently();
-		}
-		else
-		{
-			throw bad_mode_error(_params->get_mode_name());
-		}
+		Calculated const * other_derived = dynamic_cast<Calculated const *>(other);
+		if(other_derived==nullptr) return false;
+		return true;
 	}
 
 public:
-	MagVisZp( owner_t & owner)
-	: ParamGenerator(owner)
-	{
-		_params = default_param_params_map.at(name()).get();
-	}
 
-	virtual ~MagVisZp()
+	// Constructor and destructor
+	Calculated()
+	: ParamParam(ParamParam::DEPENDENT)
+
 	{
 	}
+	virtual ~Calculated() {}
 
-	virtual name_t name() const override
+	// Get the name of this
+	virtual name_t name() const override { return "calculated"; };
+
+	// Get the value
+	virtual flt_t get_independently( gen_t & gen = rng ) const override
 	{
-		return mag_vis_zp_name;
+		throw std::logic_error("Calculated parameters cannot use the 'get_independently' method.");
 	}
 
-	virtual ParamGenerator * clone() const override
+	virtual ParamParam * clone() const override
 	{
-		return new MagVisZp(*this);
+		return new Calculated(*this);
+	}
+
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	{
+		return new Calculated();
 	}
 };
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAMS_MAGVISZP_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_CALCULATED_HPP_

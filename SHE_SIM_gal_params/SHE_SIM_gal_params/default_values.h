@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file default_values.h
+ @file values.h
  ------------------
 
  Default values for galaxy simulation parameters.
@@ -23,8 +23,8 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_DEFAULT_VALUES_H_
-#define SHE_SIM_GAL_PARAMS_DEFAULT_VALUES_H_
+#ifndef SHE_SIM_GAL_PARAMS_VALUES_H_
+#define SHE_SIM_GAL_PARAMS_VALUES_H_
 
 #include "SHE_SIM_gal_params/common.h"
 
@@ -83,4 +83,4 @@ constexpr const int_t galaxy_dither_level = 70;
 
 
 
-#endif // SHE_SIM_GAL_PARAMS_DEFAULT_VALUES_H_
+#endif // SHE_SIM_GAL_PARAMS_VALUES_H_

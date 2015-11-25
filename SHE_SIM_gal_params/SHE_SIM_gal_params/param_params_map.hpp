@@ -35,6 +35,7 @@
 
 // Include all param param headers here
 #include "SHE_SIM_gal_params/ParamParam.hpp"
+#include "SHE_SIM_gal_params/param_params/Calculated.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
@@ -50,10 +51,10 @@ namespace SHE_SIM {
 
 extern const param_params_t param_params_map;
 
-template<typename T_in, typename T_map>
-void insert_param_param(T_map & res)
+template<typename T_in>
+void insert_param_param(param_params_t & res)
 {
-	typename T_map::mapped_type new_ptr(new T_in);
+	typename param_params_t::mapped_type new_ptr(new T_in);
 	auto name(new_ptr->name());
 
 	res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
@@ -65,6 +66,7 @@ inline param_params_t make_full_param_params_map()
 	param_params_t res;
 
 	// Insert all param_params here
+	insert_param_param<Calculated>(res);
 	insert_param_param<IndFixed>(res);
 	insert_param_param<IndContRayleigh>(res);
 	insert_param_param<IndGaussian>(res);

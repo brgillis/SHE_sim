@@ -51,12 +51,16 @@ public:
 protected:
 
 	// Protected members
+
 	flt_t _cached_value;
 	owner_t & _owner;
 	const ParamParam * _params;
 	const level_t * _generation_level;
 
 	// Protected methods
+
+	virtual void _generate();
+
 	flt_t _request_param_value(name_t const & name);
 
 private:
@@ -71,8 +75,6 @@ private:
 	void _clear_cache();
 
 	void _add_dependant(name_t const & dependant_name);
-
-	virtual void _generate() = 0;
 
 	bool _generated_at_this_level() const;
 

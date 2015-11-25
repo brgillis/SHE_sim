@@ -26,8 +26,10 @@
 #include <limits>
 
 #include "SHE_SIM_gal_params/common.h"
+#include "SHE_SIM_gal_params/default_param_params.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
 #define UNCACHED_VALUE std::numeric_limits<flt_t>::infinity()
 
@@ -39,6 +41,18 @@ namespace SHE_SIM
 flt_t ParamGenerator::_request_param_value(name_t const & param_name)
 {
 	return _owner._request_param_value(param_name, name());
+}
+
+void ParamGenerator::_generate()
+{
+	if(_params->get_mode()==ParamParam::INDEPENDENT)
+	{
+		_cached_value = _params->get_independently();
+	}
+	else
+	{
+		throw bad_mode_error(_params->get_mode_name());
+	}
 }
 
 // Private methods
