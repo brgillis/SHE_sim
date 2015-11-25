@@ -35,6 +35,8 @@
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
 #include "SHE_SIM_gal_params/params/ExposureTime.hpp"
+#include "SHE_SIM_gal_params/params/MagIInstZp.hpp"
+#include "SHE_SIM_gal_params/params/MagIZp.hpp"
 #include "SHE_SIM_gal_params/params/MagVisInstZp.hpp"
 #include "SHE_SIM_gal_params/params/MagVisZp.hpp"
 
@@ -60,6 +62,8 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 
 	// Insert all params here
 	insert_param<ExposureTime>(res, owner);
+	insert_param<MagIInstZp>(res, owner);
+	insert_param<MagIZp>(res, owner);
 	insert_param<MagVisInstZp>(res, owner);
 	insert_param<MagVisZp>(res, owner);
 
