@@ -30,6 +30,7 @@
 #include <stdexcept>
 
 #include <boost/algorithm/string.hpp>
+#include <boost/bimap.hpp>
 
 #include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/random_functions.hpp"
@@ -58,47 +59,27 @@ private:
 
 	// Private members
 	Mode _mode;
+	static const boost::bimap<name_t,Mode> _mode_names;
 
 protected:
 
-	Mode _get_mode_from_string( std::string mode_str )
-	{
-		boost::algorithm::to_lower(mode_str);
-
-		if( mode_str == "independent" )
-		{
-			return INDEPENDENT;
-		}
-		else if( mode_str == "dependent" )
-		{
-			return DEPENDENT;
-		}
-		else if( mode_str == "alt_dependent" )
-		{
-			return ALT_DEPENDENT;
-		}
-		else if( mode_str == "other" )
-		{
-			return OTHER;
-		}
-		else if( mode_str == "unspecified" or mode_str == "none" )
-		{
-			return UNSPECIFIED;
-		}
-		else
-		{
-			throw std::runtime_error("Unrecognised mode: " + mode_str);
-		}
-	}
+	Mode _get_mode_from_name( name_t mode_str ) const;
+	name_t _get_name_from_mode( Mode const & Mode ) const;
 
 public:
 
 	// Constructor and destructor
 
-	ParamParam( Mode const & mode = UNSPECIFIED)
+	ParamParam( Mode const & mode = UNSPECIFIED )
 	: _mode(mode)
 	{
 	};
+
+	ParamParam( name_t const & mode_name )
+	: _mode(_get_mode_from_name( mode_name ))
+	{
+	};
+
 	virtual ~ParamParam() {};
 
 	// Comparisons
@@ -115,6 +96,11 @@ public:
 		return _mode;
 	}
 
+	name_t get_mode_name() const
+	{
+		return _get_name_from_mode(_mode);
+	}
+
 	virtual flt_t get_independently( gen_t & gen=rng ) const = 0;
 
 	virtual name_t name() const = 0;
@@ -122,6 +108,25 @@ public:
 	virtual ParamParam * clone() const = 0;
 
 	virtual ParamParam * recreate(const std::vector<flt_t> & params) const = 0;
+
+};
+
+class bad_mode_error : std::runtime_error
+{
+public:
+	bad_mode_error()
+	: std::runtime_error("Unrecognized ParamParam generation mode.")
+	{
+	}
+	bad_mode_error(name_t const & name)
+	: std::runtime_error("Unrecognized ParamParam generation mode: " + name)
+	{
+	}
+	bad_mode_error(ParamParam::Mode const & mode)
+	: std::runtime_error("Unrecognized ParamParam generation mode: " + mode)
+	{
+	}
+	virtual ~bad_mode_error() noexcept {}
 
 };
 

@@ -34,6 +34,7 @@
 #include "SHE_SIM_gal_params/default_values.h"
 #include "SHE_SIM_gal_params/param_names.h"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
 {
@@ -47,8 +48,13 @@ private:
 
 	virtual void _generate() override
 	{
-		ParamGenerator::_cached_value = _request_param_value(mag_vis_inst_zp_name)
+		if(_params->get_mode()==ParamParam::DEPENDENT)
+			_cached_value = _request_param_value(mag_vis_inst_zp_name)
 				+ 2.5* std::log10(_request_param_value(exp_time_name));
+		else if(_params->get_mode()==ParamParam::INDEPENDENT)
+			_cached_value = _params->get_independently();
+		else
+			throw bad_mode_error(_params->get_mode_name());
 	}
 
 public:
