@@ -69,9 +69,9 @@ BOOST_AUTO_TEST_SUITE (Hierarchy_Test)
 BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 
 	// Setup
-	survey.set_generation_level(exp_time_name,dv::survey_level);
-	survey.set_generation_level(mag_vis_inst_zp_name,dv::survey_level);
-	survey.set_generation_level(mag_vis_zp_name,dv::survey_level);
+	survey.set_generation_level(exp_time_name, dv::survey_level);
+	survey.set_generation_level(mag_vis_inst_zp_name, dv::survey_level);
+	survey.set_generation_level(mag_vis_zp_name, dv::survey_level);
 
 	survey.set_p_param_params(exp_time_name,&exp_time0);
 	survey.set_p_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp1);
@@ -102,8 +102,8 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image12.get_param_value(mag_vis_zp_name),expected_mag_vis_zp10,1e-9);
 	BOOST_CHECK_CLOSE(image21.get_param_value(mag_vis_zp_name),expected_mag_vis_zp10,1e-9);
 
-	survey.set_generation_level(exp_time_name,dv::image_group_level);
-	survey.set_generation_level(mag_vis_zp_name,dv::image_group_level);
+	survey.set_generation_level(exp_time_name, dv::image_level);
+	survey.set_generation_level(mag_vis_zp_name, dv::image_level);
 
 	// Check that each image group gets the zp from its own values now
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp11,1e-9);
@@ -114,7 +114,7 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image21.get_param_value(mag_vis_zp_name),expected_mag_vis_zp12,1e-9);
 
 	// Change the survey's inst zp
-	survey.set_p_param_params(mag_vis_inst_zp_name,&mag_vis_inst_zp2);
+	survey.set_p_param_params(mag_vis_inst_zp_name, &mag_vis_inst_zp2);
 
 	// Check that each image group gets the correct new zp now
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
@@ -125,8 +125,8 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image21.get_param_value(mag_vis_zp_name),expected_mag_vis_zp22,1e-9);
 
 	// Change the survey's generation levels
-	survey.set_generation_level(exp_time_name,dv::survey_level);
-	survey.set_generation_level(mag_vis_zp_name,dv::survey_level);
+	survey.set_generation_level(exp_time_name, dv::survey_level);
+	survey.set_generation_level(mag_vis_zp_name, dv::survey_level);
 
 	// Check that each image group gets the zp from the survey values now
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp20,1e-9);
@@ -137,8 +137,8 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image21.get_param_value(mag_vis_zp_name),expected_mag_vis_zp20,1e-9);
 
 	// Change image_group1's generation levels
-	image_group1.set_generation_level(exp_time_name,dv::image_group_level);
-	image_group1.set_generation_level(mag_vis_zp_name,dv::image_group_level);
+	image_group1.set_generation_level(exp_time_name, dv::image_level);
+	image_group1.set_generation_level(mag_vis_zp_name, dv::image_level);
 
 	// Check
 	BOOST_CHECK_CLOSE(image_group1.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
@@ -147,6 +147,12 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image11.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
 	BOOST_CHECK_CLOSE(image12.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
 	BOOST_CHECK_CLOSE(image21.get_param_value(mag_vis_zp_name),expected_mag_vis_zp20,1e-9);
+
+	// Check if new parameters will inherit from their parents
+	Image & image13 = *image_group1.add_image();
+	BOOST_CHECK_CLOSE(image13.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
+	Image & image22 = *image_group2.add_image();
+	BOOST_CHECK_CLOSE(image22.get_param_value(mag_vis_zp_name),expected_mag_vis_zp20,1e-9);
 
 }
 
