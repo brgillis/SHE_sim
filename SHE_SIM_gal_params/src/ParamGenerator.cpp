@@ -23,10 +23,10 @@
 
  \**********************************************************************/
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
 #include <limits>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
@@ -47,7 +47,7 @@ void ParamGenerator::_generate()
 {
 	if(_params->get_mode()==ParamParam::INDEPENDENT)
 	{
-		_cached_value = _params->get_independently();
+		_cached_value = _params->get_independently(_rng);
 	}
 	else
 	{
@@ -123,7 +123,8 @@ ParamGenerator::ParamGenerator( owner_t & owner, level_t const * const & p_gener
 : _cached_value(UNCACHED_VALUE),
   _owner(owner),
   _params(nullptr),
-  _generation_level(p_generation_level)
+  _generation_level(p_generation_level),
+  _rng(_owner._rng)
 {
 }
 

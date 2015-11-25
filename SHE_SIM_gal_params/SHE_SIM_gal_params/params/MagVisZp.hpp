@@ -55,7 +55,7 @@ private:
 		}
 		else if(_params->get_mode()==ParamParam::INDEPENDENT)
 		{
-			_cached_value = _params->get_independently();
+			_cached_value = _params->get_independently(_rng);
 		}
 		else
 		{

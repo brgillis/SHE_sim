@@ -23,11 +23,11 @@
 
  \**********************************************************************/
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include <stdexcept>
 
 #include <boost/bimap.hpp>
 
-#include "SHE_SIM_gal_params/common.h"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM

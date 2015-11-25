@@ -26,14 +26,15 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMHIERARCHYLEVEL_HPP_
 
-#include <SHE_SIM_gal_params/common.hpp>
 #include <cassert>
 #include <memory>
+#include <random>
 #include <set>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/param_params_map.hpp"
@@ -65,9 +66,14 @@ private:
 	// Private members
 	parent_ptr_t _p_parent;
 	children_t _children;
+
 	param_params_t _local_param_params;
 	generation_level_map_t _local_generation_levels;
 	int_t _local_ID;
+
+	int_t _seed;
+	std::seed_seq _seed_seq;
+	gen_t _rng;
 
 	// Private methods
 	void _update_parent(parent_ptr_t const & new_p_parent);
@@ -99,6 +105,7 @@ protected:
 	params_t _params;
 
 	// Protected methods
+
 	/**
 	 * Clears the cache of the parameter with the specified name, for both this and all its
 	 * children.
@@ -106,6 +113,24 @@ protected:
 	 * @param name The name of the parameters whose cache is to be cleared.
 	 */
 	void _clear_param_cache(name_t const & name);
+
+	/**
+	 * Clears the cache of the parameter with the specified name, for only this.
+	 *
+	 * @param name The name of the parameters whose cache is to be cleared.
+	 */
+	void _clear_own_param_cache(name_t const & name);
+
+	/**
+	 * Clears the caches of all parameters, for both this and all its
+	 * children.
+	 */
+	void _clear_param_cache();
+
+	/**
+	 * Clears the caches of all parameters, for only this.
+	 */
+	void _clear_own_param_cache();
 
 public:
 
@@ -345,6 +370,9 @@ public:
 	std::vector<int_t> get_ID_seq() const;
 
 #endif
+
+	void seed();
+	void seed( int_t const & seed );
 
 	virtual ParamHierarchyLevel * clone() const = 0;
 

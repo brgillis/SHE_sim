@@ -56,6 +56,7 @@ protected:
 	owner_t & _owner;
 	const ParamParam * _params;
 	const level_t * _generation_level;
+	gen_t & _rng;
 
 	// Protected methods
 

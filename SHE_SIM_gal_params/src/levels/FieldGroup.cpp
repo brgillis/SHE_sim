@@ -29,7 +29,7 @@
 
 #include <utility>
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/levels/Field.hpp"
 #include "SHE_SIM_gal_params/levels/FieldGroup.hpp"

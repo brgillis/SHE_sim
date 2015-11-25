@@ -23,7 +23,7 @@
 
 \**********************************************************************/
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 
 namespace SHE_SIM {
 

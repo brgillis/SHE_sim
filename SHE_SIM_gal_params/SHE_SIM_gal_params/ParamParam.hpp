@@ -26,13 +26,13 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAMPARAM_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAMPARAM_HPP_
 
-#include <SHE_SIM_gal_params/common.hpp>
 #include <string>
 #include <stdexcept>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/random_functions.hpp"
 
 namespace SHE_SIM

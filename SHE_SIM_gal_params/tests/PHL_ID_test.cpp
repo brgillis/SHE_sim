@@ -32,7 +32,7 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
@@ -66,7 +66,7 @@ struct PHL_ID_fixture {
 
 BOOST_AUTO_TEST_SUITE (PHL_ID_Test)
 
-BOOST_FIXTURE_TEST_CASE(test_PHK_ID, PHL_ID_fixture) {
+BOOST_FIXTURE_TEST_CASE(test_PHL_ID, PHL_ID_fixture) {
 
 	// Check the survey's ID
 	BOOST_CHECK_EQUAL(survey.get_local_ID(), expected_survey_local_ID);

@@ -23,10 +23,12 @@
 
  \**********************************************************************/
 
+#include <ctime>
 #include <memory>
+#include <random>
 #include <utility>
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
@@ -103,12 +105,37 @@ void ParamHierarchyLevel::_drop_local_generation_level(name_t const & name)
 void ParamHierarchyLevel::_clear_param_cache(name_t const & name)
 {
 	// Clear for this
-	_params.at(name)->_clear_cache();
+	_clear_own_param_cache(name);
 
 	// Clear for all children
 	for( auto & child : _children )
 	{
 		child->_clear_param_cache(name);
+	}
+}
+
+void ParamHierarchyLevel::_clear_own_param_cache(name_t const & name)
+{
+	_params.at(name)->_clear_cache();
+}
+
+void ParamHierarchyLevel::_clear_param_cache()
+{
+	// Clear for this
+	_clear_own_param_cache();
+
+	// Clear for all children
+	for( auto & child : _children )
+	{
+		child->_clear_param_cache();
+	}
+}
+
+void ParamHierarchyLevel::_clear_own_param_cache()
+{
+	for( auto & param : _params )
+	{
+		param.second->_clear_cache();
 	}
 }
 
@@ -131,17 +158,24 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 
 		// Get ID from the parent's number of children
 		_local_ID = p_parent->num_children();
+		seed(p_parent->_seed);
 	}
 	else
 	{
 		// Set ID to zero
 		_local_ID = 0;
+
+		// Use default seed
+		seed();
 	}
 }
 
 ParamHierarchyLevel::ParamHierarchyLevel(const ParamHierarchyLevel & other)
 : _p_parent(other._p_parent),
-  _local_ID(other._local_ID)
+  _local_ID(other._local_ID),
+  _seed(other._seed),
+  _seed_seq(other._seed_seq),
+  _rng(other._rng)
 {
 	// Deep-copy maps
 
@@ -181,6 +215,9 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
   _local_param_params(std::move(other._local_param_params)),
   _local_generation_levels(std::move(other._local_generation_levels)),
   _local_ID(std::move(other._local_ID)),
+  _seed(std::move(other._seed)),
+  _seed_seq(std::move(other._seed_seq)),
+  _rng(std::move(other._rng)),
   _params(std::move(other._params))
 {
 	// Update parent's pointer to this
@@ -200,6 +237,9 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(const ParamHierarchyLevel &
 {
 	_p_parent = other._p_parent;
 	_local_ID = other._local_ID;
+	_seed = other._seed;
+	_seed_seq = other._seed_seq;
+	_rng = other._rng;
 
 	// Deep-copy maps
 
@@ -241,6 +281,9 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && othe
 	_local_param_params = std::move(other._local_param_params);
 	_local_generation_levels = std::move(other._local_generation_levels);
 	_local_ID = std::move(other._local_ID);
+	_seed = std::move(other._seed);
+	_seed_seq = std::move(other._seed_seq);
+	_rng = std::move(other._rng);
 
 	// Update parent's pointer to this
 	if(_p_parent != nullptr)
@@ -382,6 +425,34 @@ std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 		std::vector<int_t> res({get_local_ID()});
 
 		return res;
+	}
+}
+
+void ParamHierarchyLevel::seed()
+{
+	seed(time(nullptr));
+}
+
+
+void ParamHierarchyLevel::seed( int_t const & seed )
+{
+	// Clear the cache
+	_clear_own_param_cache();
+
+	// Get a seed sequence
+	auto seed_vec = get_ID_seq();
+	seed_vec.push_back(seed);
+
+	_seed_seq = std::seed_seq(seed_vec.begin(),seed_vec.end());
+	_seed = seed;
+
+	// Seed the generator
+	_rng.seed(_seed_seq);
+
+	// Seed all children with this
+	for( auto & child : _children )
+	{
+		child->seed(seed);
 	}
 }
 

@@ -30,7 +30,7 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
-#include "SHE_SIM_gal_params/common.h"
+#include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"

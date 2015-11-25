@@ -35,13 +35,16 @@
 
 namespace SHE_SIM {
 
+typedef short int short_int_t;
 typedef int int_t;
+typedef long int long_int_t;
+
 typedef double flt_t;
 
 typedef std::string str_t;
 typedef str_t name_t;
 
-typedef short int level_t;
+typedef short_int_t level_t;
 typedef std::unique_ptr<level_t> level_ptr_t;
 typedef std::unordered_map<name_t,level_ptr_t> generation_level_map_t;
 
