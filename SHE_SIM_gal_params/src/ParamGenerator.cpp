@@ -43,6 +43,11 @@ flt_t ParamGenerator::_request_param_value(name_t const & param_name)
 	return _owner._request_param_value(param_name, name());
 }
 
+ParamGenerator * ParamGenerator::_request_param(name_t const & param_name)
+{
+	return _owner._request_param(param_name, name());
+}
+
 void ParamGenerator::_generate()
 {
 	if(_params->get_mode()==ParamParam::INDEPENDENT)
@@ -180,13 +185,30 @@ const flt_t & ParamGenerator::get_new()
 	return _cached_value;
 }
 
-const flt_t & ParamGenerator::request(name_t const & requester_name)
+ParamGenerator * ParamGenerator::request(name_t const & requester_name)
+{
+	_add_dependant(requester_name);
+	if(!_is_cached())
+	{
+		_determine_value();
+	}
+	return this;
+}
+
+ParamGenerator * ParamGenerator::request_new(name_t const & requester_name)
+{
+	_add_dependant(requester_name);
+	_determine_new_value();
+	return this;
+}
+
+const flt_t & ParamGenerator::request_value(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get();
 }
 
-const flt_t & ParamGenerator::request_new(name_t const & requester_name)
+const flt_t & ParamGenerator::request_new_value(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get_new();

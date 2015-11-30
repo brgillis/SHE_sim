@@ -37,7 +37,10 @@
 
 // Include all needed param param headers here
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
+#include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
+#include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"
+#include "SHE_SIM_gal_params/param_params/IndUniform.hpp"
 
 namespace SHE_SIM {
 
@@ -56,12 +59,93 @@ inline param_params_t make_default_param_params_map()
 {
 	param_params_t res;
 
+#define INSERT_FIXED_PARAM(param) insert_default_param_param<IndFixed>(res, param##_name, dv::param);
+#define INSERT_LOGNORMAL_PARAM(param) insert_default_param_param<IndLogNormalMean>(res, param##_name, dv::param##_l10_mean, dv::param##_l10_stddev);
+#define INSERT_UNIFORM_PARAM(param) insert_default_param_param<IndUniform>(res, param##_name, dv::param##_min, dv::param##_max);
+#define INSERT_CONTRAYLEIGH_PARAM(param) insert_default_param_param<IndContRayleigh>(res, param##_name, dv::param##_sigma, dv::param##_max, dv::param##_p);
+#define INSERT_CALCULATED_PARAM(param) insert_default_param_param<Calculated>(res, param##_name);
+
 	// Insert all defaults  here
-	insert_default_param_param<IndFixed>(res, exp_time_name, dv::exp_time);
-	insert_default_param_param<IndFixed>(res, mag_vis_inst_zp_name, dv::mag_vis_inst_zp);
-	insert_default_param_param<IndFixed>(res, mag_i_inst_zp_name, dv::mag_i_inst_zp);
-	insert_default_param_param<Calculated>(res, mag_vis_zp_name);
-	insert_default_param_param<Calculated>(res, mag_i_zp_name);
+
+	// Survey level
+
+	INSERT_FIXED_PARAM(gain);
+	INSERT_FIXED_PARAM(mag_i_inst_zp);
+	INSERT_FIXED_PARAM(mag_vis_inst_zp);
+	INSERT_FIXED_PARAM(pixel_scale);
+	INSERT_FIXED_PARAM(read_noise);
+	INSERT_FIXED_PARAM(vis_filter_response);
+
+	INSERT_CALCULATED_PARAM(mag_i_zp);
+	INSERT_CALCULATED_PARAM(mag_vis_zp);
+
+	// Image level
+
+	INSERT_FIXED_PARAM(exp_time);
+	INSERT_FIXED_PARAM(background_galaxy_density);
+	INSERT_FIXED_PARAM(cluster_density);
+	INSERT_FIXED_PARAM(field_galaxy_density);
+	INSERT_FIXED_PARAM(image_size_xp);
+	INSERT_FIXED_PARAM(image_size_yp);
+	INSERT_FIXED_PARAM(star_density);
+	INSERT_FIXED_PARAM(psf_params);
+	INSERT_LOGNORMAL_PARAM(subtracted_background);
+	INSERT_FIXED_PARAM(unsubtracted_background);
+
+	INSERT_CALCULATED_PARAM(background_noise);
+	INSERT_CALCULATED_PARAM(background_psf);
+	INSERT_CALCULATED_PARAM(num_background_galaxies);
+	INSERT_CALCULATED_PARAM(num_clusters);
+	INSERT_CALCULATED_PARAM(num_stars);
+
+	// Cluster level
+
+	INSERT_LOGNORMAL_PARAM(cluster_mass);
+	INSERT_UNIFORM_PARAM(cluster_redshift);
+	INSERT_UNIFORM_PARAM(cluster_xp);
+	INSERT_UNIFORM_PARAM(cluster_yp);
+
+	INSERT_CALCULATED_PARAM(cluster_num_satellites);
+
+	// Field level
+
+	INSERT_CALCULATED_PARAM(num_field_galaxies);
+
+	// Galaxy level
+
+	INSERT_LOGNORMAL_PARAM(apparent_size);
+	INSERT_UNIFORM_PARAM(morphology);
+	INSERT_UNIFORM_PARAM(redshift);
+	INSERT_UNIFORM_PARAM(rotation);
+	INSERT_UNIFORM_PARAM(shear_angle);
+	INSERT_CONTRAYLEIGH_PARAM(shear_magnitude);
+	INSERT_UNIFORM_PARAM(tilt);
+	INSERT_UNIFORM_PARAM(xp);
+	INSERT_UNIFORM_PARAM(yp);
+
+	INSERT_CALCULATED_PARAM(apparent_mag_vis);
+	INSERT_CALCULATED_PARAM(binned_intrinsic_flux_distribution);
+	INSERT_CALCULATED_PARAM(binned_observed_flux_distribution);
+	INSERT_CALCULATED_PARAM(binned_psf);
+	INSERT_CALCULATED_PARAM(galaxy_type);
+	INSERT_CALCULATED_PARAM(observed_flux_distribution);
+	INSERT_CALCULATED_PARAM(physical_size);
+	INSERT_CALCULATED_PARAM(psf_model);
+	INSERT_CALCULATED_PARAM(sed);
+	INSERT_CALCULATED_PARAM(stellar_mass);
+
+	// GalaxyDither level
+
+	INSERT_FIXED_PARAM(dither_xp_shift);
+	INSERT_FIXED_PARAM(dither_yp_shift);
+
+	INSERT_CALCULATED_PARAM(pix_galaxy_w_pois_noise);
+
+#undef INSERT_CALCULATED_PARAM
+#undef INSERT_CONTRAYLEIGH_PARAM
+#undef INSERT_FIXED_PARAM
+#undef INSERT_LOGNORMAL_PARAM
+#undef INSERT_UNIFORM_PARAM
 
 	return res;
 

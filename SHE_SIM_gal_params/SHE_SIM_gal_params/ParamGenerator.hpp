@@ -63,6 +63,7 @@ protected:
 	virtual void _generate();
 
 	flt_t _request_param_value(name_t const & name);
+	ParamGenerator * _request_param(name_t const & name);
 
 private:
 
@@ -123,9 +124,13 @@ public:
 
 	const flt_t & get_new();
 
-	const flt_t & request(name_t const & requester_name);
+	const flt_t & request_value(name_t const & requester_name);
 
-	const flt_t & request_new(name_t const & requester_name);
+	const flt_t & request_new_value(name_t const & requester_name);
+
+	ParamGenerator * request(name_t const & requester_name);
+
+	ParamGenerator * request_new(name_t const & requester_name);
 
 	const level_t & level_generated_at() const;
 

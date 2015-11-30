@@ -55,6 +55,11 @@ void ParamHierarchyLevel::_update_child(child_t * const & old_p_child, child_t *
 
 flt_t const & ParamHierarchyLevel::_request_param_value(name_t const & name, name_t const & requester_name)
 {
+	return _params.at(name)->request_value(requester_name);
+}
+
+ParamGenerator * ParamHierarchyLevel::_request_param(name_t const & name, name_t const & requester_name)
+{
 	return _params.at(name)->request(requester_name);
 }
 

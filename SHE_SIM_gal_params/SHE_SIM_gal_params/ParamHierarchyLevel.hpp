@@ -93,6 +93,18 @@ private:
 	 */
 	flt_t const & _request_param_value(name_t const & name, name_t const & requester_name);
 
+	/**
+	 * Get the parameter with a given name. Will throw an exception if none
+	 * by that name exists. Will record the name of the requesting parameter so it can
+	 * be updated later if need be.
+	 *
+	 * @param name Name of the desired parameter.
+	 * @param name Name of the requesting parameter.
+	 *
+	 * @return Pointer to the desired parameter.
+	 */
+	ParamGenerator * _request_param(name_t const & name, name_t const & requester_name);
+
 	void _drop_local_param_param(name_t const & name);
 
 	void _drop_local_generation_level(name_t const & name);

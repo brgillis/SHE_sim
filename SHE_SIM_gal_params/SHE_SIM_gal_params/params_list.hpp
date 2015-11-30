@@ -34,11 +34,8 @@
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
-#include "SHE_SIM_gal_params/params/ExposureTime.hpp"
-#include "SHE_SIM_gal_params/params/MagIInstZp.hpp"
-#include "SHE_SIM_gal_params/params/MagIZp.hpp"
-#include "SHE_SIM_gal_params/params/MagVisInstZp.hpp"
-#include "SHE_SIM_gal_params/params/MagVisZp.hpp"
+#include "SHE_SIM_gal_params/params/dependent_params.hpp"
+#include "SHE_SIM_gal_params/params/independent_params.hpp"
 
 namespace SHE_SIM {
 
@@ -56,20 +53,59 @@ void insert_param(T_map & res, ParamHierarchyLevel & owner)
 	res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
 }
 
-inline params_t get_full_params_map(ParamHierarchyLevel & owner)
+#define INSERT_PARAM(param) insert_param<param>(res,owner);
+
+inline params_t get_galaxy_params_map(ParamHierarchyLevel & owner)
 {
 	params_t res;
 
-	// Insert all params here
-	insert_param<ExposureTime>(res, owner);
-	insert_param<MagIInstZp>(res, owner);
-	insert_param<MagIZp>(res, owner);
-	insert_param<MagVisInstZp>(res, owner);
-	insert_param<MagVisZp>(res, owner);
+	// Insert galaxy-level params here
+
+	// Insert galaxy-dither-level params here
+	INSERT_PARAM(DitherXpShift);
+	INSERT_PARAM(DitherYpShift);
+
+	return res;
+}
+
+inline params_t get_full_params_map(ParamHierarchyLevel & owner)
+{
+	params_t res(get_galaxy_params_map(owner));
+
+	// Survey level
+	INSERT_PARAM(ExposureTime);
+	INSERT_PARAM(Gain);
+	INSERT_PARAM(MagIInstZp);
+	INSERT_PARAM(MagVisInstZp);
+	INSERT_PARAM(PixelScale);
+	INSERT_PARAM(ReadNoise);
+
+	INSERT_PARAM(MagIZp);
+	INSERT_PARAM(MagVisZp);
+
+	// Image level
+	INSERT_PARAM(BackgroundGalaxyDensity);
+	INSERT_PARAM(ClusterDensity);
+	INSERT_PARAM(FieldGalaxyDensity);
+	INSERT_PARAM(PSFParams);
+	INSERT_PARAM(StarDensity);
+	INSERT_PARAM(SubtractedBackground);
+	INSERT_PARAM(UnsubtractedBackground);
+	INSERT_PARAM(ImageSizeXp);
+	INSERT_PARAM(ImageSizeYp);
+
+	// Cluster level
+	INSERT_PARAM(ClusterMass);
+	INSERT_PARAM(ClusterRedshift);
+	INSERT_PARAM(ClusterNumSatellites);
+	INSERT_PARAM(ClusterXp);
+	INSERT_PARAM(ClusterYp);
 
 	return res;
 
 } // params_t get_full_params_map()
+
+#undef INSERT_PARAM
 
 } // namespace SHE_SIM
 
