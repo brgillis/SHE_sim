@@ -30,6 +30,7 @@
 #include <utility>
 
 #include <SHE_SIM_gal_params/common.hpp>
+#include "SHE_SIM_gal_params/default_param_params.hpp"
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
@@ -42,6 +43,13 @@ Survey::Survey()
 : ParamHierarchyLevel(nullptr,
 		get_full_params_map(*this))
 {
+	// Set the local generation levels from defaults
+	for( auto const & name_and_gen_level : default_generation_levels_map )
+	{
+		set_generation_level(name_and_gen_level.first,*name_and_gen_level.second);
+	}
+
+	return;
 }
 
 Survey::~Survey()

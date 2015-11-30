@@ -32,7 +32,9 @@
 #include <cassert>
 #include <vector>
 
+#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -85,10 +87,86 @@ public: \
 // Define each param
 
 // Survey level
-DEPENDENT_PARAM(MagIZp,mag_i_zp,_request_param_value(mag_i_inst_zp_name)
-				                + 2.5* std::log10(_request_param_value(exp_time_name)));
-DEPENDENT_PARAM(MagVisZp,mag_vis_zp,_request_param_value(mag_vis_inst_zp_name)
-								+ 2.5* std::log10(_request_param_value(exp_time_name)));
+
+// Image level
+
+DEPENDENT_PARAM(BackgroundNoise, background_noise,
+		0; throw std::logic_error("Dependent calculation for background_noise not yet implemented."));
+
+DEPENDENT_PARAM(ImageArea, image_area,
+		_request_param_value(image_size_xp_name) * _request_param_value(image_size_yp_name)
+		* square(_request_param_value(pixel_scale_name)));
+
+DEPENDENT_PARAM(MagIZp, mag_i_zp, _request_param_value(mag_i_inst_zp_name)
+				                  + 2.5 * std::log10(_request_param_value(exp_time_name)));
+
+DEPENDENT_PARAM(MagVisZp, mag_vis_zp, _request_param_value(mag_vis_inst_zp_name)
+								      + 2.5 * std::log10(_request_param_value(exp_time_name)));
+
+DEPENDENT_PARAM(NumBackgroundGalaxies, num_background_galaxies,
+		Pois_rand( _request_param_value(image_area_name) *
+		_request_param_value(background_galaxy_density_name) , _rng) );
+
+DEPENDENT_PARAM(NumClusters, num_clusters,
+		Pois_rand( _request_param_value(image_area_name) *
+		_request_param_value(cluster_density_name) , _rng) );
+
+DEPENDENT_PARAM(NumFieldGalaxies, num_field_galaxies,
+		Pois_rand( _request_param_value(image_area_name) *
+		_request_param_value(field_galaxy_density_name) , _rng) );
+
+DEPENDENT_PARAM(NumStars, num_stars,
+		Pois_rand( _request_param_value(image_area_name) *
+		_request_param_value(star_density_name) , _rng) );
+
+// Cluster level
+
+DEPENDENT_PARAM(ClusterMass, cluster_mass,
+		0; throw std::logic_error("Dependent calculation for cluster_mass not yet implemented."));
+
+DEPENDENT_PARAM(ClusterNumSatellites, cluster_num_satellites,
+		0; throw std::logic_error("Dependent calculation for cluster_num_satellites not yet implemented."));
+
+// Galaxy level
+
+DEPENDENT_PARAM(ApparentMagVis, apparent_mag_vis,
+		0; throw std::logic_error("Dependent calculation for apparent_mag_vis not yet implemented."));
+
+DEPENDENT_PARAM(ApparentSize, apparent_size,
+		0; throw std::logic_error("Dependent calculation for apparent_size not yet implemented."));
+
+DEPENDENT_PARAM(GalaxyType, galaxy_type,
+		0; throw std::logic_error("Dependent calculation for galaxy_type not yet implemented."));
+
+DEPENDENT_PARAM(Morphology, morphology,
+		0; throw std::logic_error("Dependent calculation for morphology not yet implemented."));
+
+DEPENDENT_PARAM(PhysicalSize, physical_size,
+		0; throw std::logic_error("Dependent calculation for physical_size not yet implemented."));
+
+DEPENDENT_PARAM(Redshift, redshift,
+		0; throw std::logic_error("Dependent calculation for redshift not yet implemented."));
+
+DEPENDENT_PARAM(Rotation, rotation,
+		0; throw std::logic_error("Dependent calculation for rotation not yet implemented."));
+
+DEPENDENT_PARAM(ShearAngle, shear_angle,
+		0; throw std::logic_error("Dependent calculation for shear_angle not yet implemented."));
+
+DEPENDENT_PARAM(ShearMagnitude, shear_magnitude,
+		0; throw std::logic_error("Dependent calculation for shear_magnitude not yet implemented."));
+
+DEPENDENT_PARAM(StellarMass, stellar_mass,
+		0; throw std::logic_error("Dependent calculation for stellar_mass not yet implemented."));
+
+DEPENDENT_PARAM(Tilt, tilt,
+		0; throw std::logic_error("Dependent calculation for tilt not yet implemented."));
+
+DEPENDENT_PARAM(Xp, xp,
+		0; throw std::logic_error("Dependent calculation for xp not yet implemented."));
+
+DEPENDENT_PARAM(Yp, yp,
+		0; throw std::logic_error("Dependent calculation for yp not yet implemented."));
 
 // Undef the macro
 #undef DEPENDENT_PARAM

@@ -48,6 +48,7 @@ DEF_NAME(background_psf);
 DEF_NAME(cluster_density);
 DEF_NAME(exp_time);
 DEF_NAME(field_galaxy_density);
+DEF_NAME(image_area);
 DEF_NAME(image_size_xp);
 DEF_NAME(image_size_yp);
 DEF_NAME(num_background_galaxies);

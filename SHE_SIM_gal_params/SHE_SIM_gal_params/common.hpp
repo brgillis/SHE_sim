@@ -26,6 +26,8 @@
 #ifndef SHE_SIM_GAL_PARAMS_COMMON_HPP_
 #define SHE_SIM_GAL_PARAMS_COMMON_HPP_
 
+#include <Eigen/Core>
+
 #include <memory>
 #include <random>
 #include <string>
@@ -50,6 +52,11 @@ typedef std::unordered_map<name_t,level_ptr_t> generation_level_map_t;
 
 typedef std::ranlux48 gen_t;
 typedef gen_t::result_type seed_t;
+
+// Arrays
+
+typedef Eigen::Array<flt_t,Eigen::Dynamic,1> array_1d_t;
+typedef Eigen::Array<flt_t,Eigen::Dynamic,Eigen::Dynamic> array_2d_t;
 
 // Class forward-declarations
 class ParamHierarchyLevel;

@@ -45,6 +45,7 @@
 namespace SHE_SIM {
 
 extern const param_params_t default_param_params_map;
+extern const generation_level_map_t default_generation_levels_map;
 
 template<typename T_in, typename... Args>
 void insert_default_param_param(param_params_t & res, const name_t & param_name, Args... args)
@@ -94,6 +95,7 @@ inline param_params_t make_default_param_params_map()
 
 	INSERT_CALCULATED_PARAM(background_noise);
 	INSERT_CALCULATED_PARAM(background_psf);
+	INSERT_CALCULATED_PARAM(image_area);
 	INSERT_CALCULATED_PARAM(num_background_galaxies);
 	INSERT_CALCULATED_PARAM(num_clusters);
 	INSERT_CALCULATED_PARAM(num_stars);
@@ -146,6 +148,95 @@ inline param_params_t make_default_param_params_map()
 #undef INSERT_FIXED_PARAM
 #undef INSERT_LOGNORMAL_PARAM
 #undef INSERT_UNIFORM_PARAM
+
+	return res;
+
+} // param_params_t get_full_param_params_map()
+
+// Function to get a list of all params
+inline generation_level_map_t make_default_generation_levels_map()
+{
+	generation_level_map_t res;
+
+#define INSERT_LEVEL(param,level) res.insert(std::make_pair(param##_name,level_ptr_t(new level_t(level))));
+
+	// Insert all defaults  here
+
+	// Survey level
+
+	INSERT_LEVEL(gain, dv::survey_level);
+	INSERT_LEVEL(mag_i_inst_zp, dv::survey_level);
+	INSERT_LEVEL(mag_vis_inst_zp, dv::survey_level);
+	INSERT_LEVEL(pixel_scale, dv::survey_level);
+	INSERT_LEVEL(read_noise, dv::survey_level);
+	INSERT_LEVEL(vis_filter_response, dv::survey_level);
+
+	// Image level
+
+	INSERT_LEVEL(exp_time, dv::image_level);
+	INSERT_LEVEL(background_galaxy_density, dv::image_level);
+	INSERT_LEVEL(cluster_density, dv::image_level);
+	INSERT_LEVEL(field_galaxy_density, dv::image_level);
+	INSERT_LEVEL(image_size_xp, dv::image_level);
+	INSERT_LEVEL(image_size_yp, dv::image_level);
+	INSERT_LEVEL(star_density, dv::image_level);
+	INSERT_LEVEL(psf_params, dv::image_level);
+	INSERT_LEVEL(subtracted_background, dv::image_level);
+	INSERT_LEVEL(unsubtracted_background, dv::image_level);
+
+	INSERT_LEVEL(background_noise, dv::image_level);
+	INSERT_LEVEL(background_psf, dv::image_level);
+	INSERT_LEVEL(image_area, dv::image_level);
+	INSERT_LEVEL(mag_i_zp, dv::image_level);
+	INSERT_LEVEL(mag_vis_zp, dv::image_level);
+	INSERT_LEVEL(num_background_galaxies, dv::image_level);
+	INSERT_LEVEL(num_clusters, dv::image_level);
+	INSERT_LEVEL(num_stars, dv::image_level);
+
+	// Cluster level
+
+	INSERT_LEVEL(cluster_mass, dv::cluster_level);
+	INSERT_LEVEL(cluster_redshift, dv::cluster_level);
+	INSERT_LEVEL(cluster_xp, dv::cluster_level);
+	INSERT_LEVEL(cluster_yp, dv::cluster_level);
+
+	INSERT_LEVEL(cluster_num_satellites, dv::cluster_level);
+
+	// Field level
+
+	INSERT_LEVEL(num_field_galaxies, dv::field_level);
+
+	// Galaxy level
+
+	INSERT_LEVEL(apparent_size, dv::galaxy_level);
+	INSERT_LEVEL(morphology, dv::galaxy_level);
+	INSERT_LEVEL(redshift, dv::galaxy_level);
+	INSERT_LEVEL(rotation, dv::galaxy_level);
+	INSERT_LEVEL(shear_angle, dv::galaxy_level);
+	INSERT_LEVEL(shear_magnitude, dv::galaxy_level);
+	INSERT_LEVEL(tilt, dv::galaxy_level);
+	INSERT_LEVEL(xp, dv::galaxy_level);
+	INSERT_LEVEL(yp, dv::galaxy_level);
+
+	INSERT_LEVEL(apparent_mag_vis, dv::galaxy_level);
+	INSERT_LEVEL(binned_intrinsic_flux_distribution, dv::galaxy_level);
+	INSERT_LEVEL(binned_observed_flux_distribution, dv::galaxy_level);
+	INSERT_LEVEL(binned_psf, dv::galaxy_level);
+	INSERT_LEVEL(galaxy_type, dv::galaxy_level);
+	INSERT_LEVEL(observed_flux_distribution, dv::galaxy_level);
+	INSERT_LEVEL(physical_size, dv::galaxy_level);
+	INSERT_LEVEL(psf_model, dv::galaxy_level);
+	INSERT_LEVEL(sed, dv::galaxy_level);
+	INSERT_LEVEL(stellar_mass, dv::galaxy_level);
+
+	// GalaxyDither level
+
+	INSERT_LEVEL(dither_xp_shift, dv::galaxy_dither_level);
+	INSERT_LEVEL(dither_yp_shift, dv::galaxy_dither_level);
+
+	INSERT_LEVEL(pix_galaxy_w_pois_noise, dv::galaxy_dither_level);
+
+#undef INSERT_LEVEL
 
 	return res;
 
