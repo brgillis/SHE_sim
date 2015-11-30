@@ -33,6 +33,7 @@
 #include <vector>
 
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/ObjectParamParam.hpp"
 
 namespace SHE_SIM
 {
@@ -43,7 +44,25 @@ namespace SHE_SIM
 class class_name : public ParamGenerator \
 { \
 private: \
+\
 	object_type _cached_object; \
+\
+	virtual void _generate() override \
+	{ \
+		if(_params->get_mode()==ParamParam::INDEPENDENT) \
+		{ \
+			auto _object_params = dynamic_cast<const ObjectParamParam<object_type> *>(_params); \
+			if(_object_params==nullptr) throw std::logic_error("This object requires an ObjectParamParam."); \
+			_cached_object = _object_params->get_object_independently(_rng); \
+			_cached_value = 0.; \
+		} \
+		else \
+		{ \
+			throw bad_mode_error(_params->get_mode_name()); \
+		} \
+	} \
+\
+private: \
 \
 public: \
 	class_name( owner_t & owner) \
@@ -86,9 +105,9 @@ INDEPENDENT_OBJECT_PARAM(BackgroundPSF, background_psf, array_2d_t);
 
 // Galaxy level
 
-INDEPENDENT_OBJECT_PARAM(BinnedIntrinsicFluxDistribution, binned_intrinsic_flux_distribution, std::vector<array_1d_t>);
-INDEPENDENT_OBJECT_PARAM(BinnedObservedFluxDistribution, binned_observed_flux_distribution, std::vector<array_1d_t>);
-INDEPENDENT_OBJECT_PARAM(BinnedPSF, binned_psf, std::vector<array_2d_t>);
+INDEPENDENT_OBJECT_PARAM(BinnedIntrinsicFluxDistribution, binned_intrinsic_flux_distribution, array_1d_array_t);
+INDEPENDENT_OBJECT_PARAM(BinnedObservedFluxDistribution, binned_observed_flux_distribution, array_1d_array_t);
+INDEPENDENT_OBJECT_PARAM(BinnedPSF, binned_psf, array_2d_array_t);
 INDEPENDENT_OBJECT_PARAM(ObservedFluxDistribution, observed_flux_distribution, array_2d_t);
 INDEPENDENT_OBJECT_PARAM(PSFModel, psf_model, array_2d_t);
 INDEPENDENT_OBJECT_PARAM(SED, sed, array_1d_t);
