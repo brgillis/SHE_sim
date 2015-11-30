@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file MagVisInstZp.hpp
+ @file independent_params.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_PARAMS_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_PARAMS_HPP_
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
@@ -37,34 +37,42 @@
 namespace SHE_SIM
 {
 
-/**
- * TODO Auto-generated comment stub
- */
-class MagVisInstZp : public ParamGenerator
-{
+// Define a macro for each param
 
-public:
-	MagVisInstZp( owner_t & owner )
-	: ParamGenerator(owner)
-	{
-		_params = default_param_params_map.at(name()).get();
-	}
-
-	virtual ~MagVisInstZp()
-	{
-	}
-
-	virtual name_t name() const override
-	{
-		return mag_vis_inst_zp_name;
-	}
-
-	virtual ParamGenerator * clone() const override
-	{
-		return new MagVisInstZp(*this);
-	}
+#define INDEPENDENT_PARAM(class_name,param_name) \
+class class_name : public ParamGenerator \
+{ \
+public: \
+	class_name( owner_t & owner) \
+	: ParamGenerator(owner) \
+	{ \
+		_params = default_param_params_map.at(name()).get(); \
+	} \
+\
+	virtual ~class_name() \
+	{ \
+	} \
+\
+	virtual name_t name() const override \
+	{ \
+		return param_name##_name; \
+	} \
+\
+	virtual ParamGenerator * clone() const override \
+	{ \
+		return new class_name(*this); \
+	} \
 };
+
+// Define each param
+INDEPENDENT_PARAM(ExposureTime,exp_time);
+INDEPENDENT_PARAM(Gain,gain);
+INDEPENDENT_PARAM(MagIInstZp,mag_i_inst_zp);
+INDEPENDENT_PARAM(MagVisInstZp,mag_vis_inst_zp);
+
+// Undef the macro
+#undef INDEPENDENT_PARAM
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAMS_MAGVISINSTZP_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_PARAMS_HPP_
