@@ -28,6 +28,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/params/dependent_params.hpp>
+#include <SHE_SIM_gal_params/params/dependent_object_params.hpp>
 #include <SHE_SIM_gal_params/params/independent_object_params.hpp>
 #include <SHE_SIM_gal_params/params/independent_params.hpp>
 #include <memory>

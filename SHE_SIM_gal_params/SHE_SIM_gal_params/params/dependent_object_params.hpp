@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file independent_object_params.hpp
+ @file dependent_object_params.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_OBJECT_PARAMS_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_OBJECT_PARAMS_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_PARAMS_DEPENDENT_OBJECT_PARAMS_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAMS_DEPENDENT_OBJECT_PARAMS_HPP_
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
@@ -40,7 +40,7 @@ namespace SHE_SIM
 
 // Define a macro for each param
 
-#define INDEPENDENT_OBJECT_PARAM( class_name, param_name, object_type ) \
+#define DEPENDENT_OBJECT_PARAM( class_name, param_name, object_type, dependent_generation ) \
 class class_name : public ParamGenerator \
 { \
 private: \
@@ -49,7 +49,11 @@ private: \
 \
 	virtual void _generate() override \
 	{ \
-		if(_params->get_mode()==ParamParam::INDEPENDENT) \
+		if(_params->get_mode()==ParamParam::DEPENDENT) \
+		{ \
+			dependent_generation; \
+		} \
+		else if(_params->get_mode()==ParamParam::INDEPENDENT) \
 		{ \
 			auto _object_params = dynamic_cast<const ObjectParamParam<object_type> *>(_params); \
 			if(_object_params==nullptr) throw std::logic_error("This object requires an ObjectParamParam."); \
@@ -95,19 +99,36 @@ public: \
 
 // Survey level
 
-INDEPENDENT_OBJECT_PARAM(VisFilterResponse, vis_filter_response, array_1d_t);
-
 // Image level
+
+DEPENDENT_OBJECT_PARAM(BackgroundPSF, background_psf, array_2d_t,
+		throw std::logic_error("Dependent generation for background_psf is not yet implemented."));
 
 // Cluster level
 
 // Galaxy level
 
+DEPENDENT_OBJECT_PARAM(BinnedIntrinsicFluxDistribution, binned_intrinsic_flux_distribution, array_1d_array_t,
+		throw std::logic_error("Dependent generation for binned_intrinsic_flux_distribution is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(BinnedObservedFluxDistribution, binned_observed_flux_distribution, array_1d_array_t,
+		throw std::logic_error("Dependent generation for binned_observed_flux_distribution is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(BinnedPSF, binned_psf, array_2d_array_t,
+		throw std::logic_error("Dependent generation for binned_psf is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(ObservedFluxDistribution, observed_flux_distribution, array_2d_t,
+		throw std::logic_error("Dependent generation for observed_flux_distribution is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(PSFModel, psf_model, array_2d_t,
+		throw std::logic_error("Dependent generation for psf_model is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(SED, sed, array_1d_t,
+		throw std::logic_error("Dependent generation for sed is not yet implemented."));
+
 // GalaxyDither level
 
+DEPENDENT_OBJECT_PARAM(PixGalaxyWPoisNoise, pix_galaxy_w_pois_noise, array_2d_t,
+		throw std::logic_error("Dependent generation for pix_galaxy_w_pois_noise is not yet implemented."));
+
 // Undef the macro
-#undef INDEPENDENT_OBJECT_PARAM
+#undef DEPENDENT_OBJECT_PARAM
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAMS_INDEPENDENT_OBJECT_PARAMS_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAMS_DEPENDENT_OBJECT_PARAMS_HPP_
