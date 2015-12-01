@@ -55,78 +55,79 @@ void insert_param(T_map & res, ParamHierarchyLevel & owner)
 	res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
 }
 
-#define INSERT_PARAM(param) insert_param<param>(res,owner);
+#define INSERT_PARAM(param) insert_param<param##_obj>(res,owner);
 
 inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 {
 	params_t res;
 
 	// Survey level
-	INSERT_PARAM(ExposureTime);
-	INSERT_PARAM(Gain);
-	INSERT_PARAM(MagIInstZp);
-	INSERT_PARAM(MagVisInstZp);
-	INSERT_PARAM(PixelScale);
-	INSERT_PARAM(ReadNoise);
-	INSERT_PARAM(VisFilterResponse);
+	INSERT_PARAM(exp_time);
+	INSERT_PARAM(gain);
+	INSERT_PARAM(mag_i_inst_zp);
+	INSERT_PARAM(mag_vis_inst_zp);
+	INSERT_PARAM(pixel_scale);
+	INSERT_PARAM(read_noise);
+	INSERT_PARAM(vis_filter_response);
 
-	INSERT_PARAM(MagIZp);
-	INSERT_PARAM(MagVisZp);
+	INSERT_PARAM(mag_i_zp);
+	INSERT_PARAM(mag_vis_zp);
 
 	// Image level
-	INSERT_PARAM(BackgroundGalaxyDensity);
-	INSERT_PARAM(BackgroundNoise);
-	INSERT_PARAM(BackgroundPSF);
-	INSERT_PARAM(ClusterDensity);
-	INSERT_PARAM(FieldGalaxyDensity);
-	INSERT_PARAM(ImageSizeXp);
-	INSERT_PARAM(ImageSizeYp);
-	INSERT_PARAM(PSFParams);
-	INSERT_PARAM(StarDensity);
-	INSERT_PARAM(SubtractedBackground);
-	INSERT_PARAM(UnsubtractedBackground);
+	INSERT_PARAM(background_galaxy_density);
+	INSERT_PARAM(background_noise);
+	INSERT_PARAM(background_psf);
+	INSERT_PARAM(cluster_density);
+	INSERT_PARAM(field_galaxy_density);
+	INSERT_PARAM(image_size_xp);
+	INSERT_PARAM(image_size_yp);
+	INSERT_PARAM(psf_params);
+	INSERT_PARAM(star_density);
+	INSERT_PARAM(subtracted_background);
+	INSERT_PARAM(unsubtracted_background);
 
-	INSERT_PARAM(ImageArea);
-	INSERT_PARAM(NumBackgroundGalaxies);
-	INSERT_PARAM(NumClusters);
-	INSERT_PARAM(NumFieldGalaxies);
-	INSERT_PARAM(NumStars);
+	INSERT_PARAM(image_area);
+	INSERT_PARAM(num_background_galaxies);
+	INSERT_PARAM(num_clusters);
+	INSERT_PARAM(num_field_galaxies);
+	INSERT_PARAM(num_stars);
 
 	// Cluster level
-	INSERT_PARAM(ClusterMass);
-	INSERT_PARAM(ClusterRedshift);
-	INSERT_PARAM(ClusterNumSatellites);
-	INSERT_PARAM(ClusterXp);
-	INSERT_PARAM(ClusterYp);
+	INSERT_PARAM(cluster_mass);
+	INSERT_PARAM(cluster_redshift);
+	INSERT_PARAM(cluster_num_satellites);
+	INSERT_PARAM(cluster_xp);
+	INSERT_PARAM(cluster_yp);
 
 	// Galaxy-level params here
 
-	INSERT_PARAM(ApparentMagVis);
-	INSERT_PARAM(ApparentSize);
-	INSERT_PARAM(BinnedIntrinsicFluxDistribution);
-	INSERT_PARAM(BinnedObservedFluxDistribution);
-	INSERT_PARAM(BinnedPSF);
-	INSERT_PARAM(GalaxyType);
-	INSERT_PARAM(Morphology);
-	INSERT_PARAM(ObservedFluxDistribution);
-	INSERT_PARAM(PhysicalSize);
-	INSERT_PARAM(PSFModel);
-	INSERT_PARAM(Redshift);
-	INSERT_PARAM(Rotation);
-	INSERT_PARAM(SED);
-	INSERT_PARAM(ShearAngle);
-	INSERT_PARAM(ShearMagnitude);
-	INSERT_PARAM(StellarMass);
-	INSERT_PARAM(Tilt);
-	INSERT_PARAM(Xp);
-	INSERT_PARAM(Yp);
+	INSERT_PARAM(apparent_mag_vis);
+	INSERT_PARAM(apparent_size);
+	INSERT_PARAM(binned_observed_flux_distribution);
+	INSERT_PARAM(binned_psf);
+	INSERT_PARAM(galaxy_type);
+	INSERT_PARAM(morphology);
+	INSERT_PARAM(observed_flux_distribution);
+	INSERT_PARAM(physical_size);
+	INSERT_PARAM(psf_model);
+	INSERT_PARAM(redshift);
+	INSERT_PARAM(rotation);
+	INSERT_PARAM(rp);
+	INSERT_PARAM(sed);
+	INSERT_PARAM(shear_angle);
+	INSERT_PARAM(shear_magnitude);
+	INSERT_PARAM(stellar_mass);
+	INSERT_PARAM(theta_sat);
+	INSERT_PARAM(tilt);
+	INSERT_PARAM(xp);
+	INSERT_PARAM(yp);
 
 	// Galaxy-dither-level
 
-	INSERT_PARAM(DitherXpShift);
-	INSERT_PARAM(DitherYpShift);
+	INSERT_PARAM(dither_xp_shift);
+	INSERT_PARAM(dither_yp_shift);
 
-	INSERT_PARAM(PixGalaxyWPoisNoise);
+	INSERT_PARAM(pix_galaxy_w_pois_noise);
 
 	return res;
 

@@ -32,6 +32,8 @@
 #include <cassert>
 #include <vector>
 
+#include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/random_functions.hpp"
@@ -41,8 +43,8 @@ namespace SHE_SIM
 
 // Define a macro for each param
 
-#define DEPENDENT_PARAM( class_name, param_name, dependent_generation ) \
-class class_name : public ParamGenerator \
+#define DEPENDENT_PARAM( param_name, dependent_generation ) \
+class param_name##_obj : public ParamGenerator \
 { \
 private: \
 \
@@ -63,13 +65,13 @@ private: \
 	} \
 \
 public: \
-	class_name( owner_t & owner) \
+	param_name##_obj( owner_t & owner) \
 	: ParamGenerator(owner) \
 	{ \
 		_params = default_param_params_map.at(name()).get(); \
 	} \
 \
-	virtual ~class_name() \
+	virtual ~param_name##_obj() \
 	{ \
 	} \
 \
@@ -80,9 +82,12 @@ public: \
 \
 	virtual ParamGenerator * clone() const override \
 	{ \
-		return new class_name(*this); \
+		return new param_name##_obj(*this); \
 	} \
 };
+
+// Define a macro to request a parameter
+#define REQUEST(param) _request_param_value(param##_name)
 
 // Define each param
 
@@ -90,86 +95,108 @@ public: \
 
 // Image level
 
-DEPENDENT_PARAM(BackgroundNoise, background_noise,
-		throw std::logic_error("Dependent calculation for background_noise not yet implemented."));
+DEPENDENT_PARAM(background_noise,
+		_cached_value = get_background_noise(REQUEST(subtracted_background), REQUEST(unsubtracted_background),
+				REQUEST(read_noise), REQUEST(gain), REQUEST(pixel_scale) ));
 
-DEPENDENT_PARAM(ImageArea, image_area,
-		 _cached_value = _request_param_value(image_size_xp_name) *_request_param_value(image_size_yp_name)
-		* square(_request_param_value(pixel_scale_name)));
+DEPENDENT_PARAM(image_area,
+		 _cached_value = get_image_area(REQUEST(image_size_xp),REQUEST(image_size_yp),
+				 REQUEST(pixel_scale)));
 
-DEPENDENT_PARAM(MagIZp, mag_i_zp,  _cached_value = _request_param_value(mag_i_inst_zp_name)
-				                  + 2.5 * std::log10(_request_param_value(exp_time_name)));
+DEPENDENT_PARAM(mag_i_zp,  _cached_value = get_zp(REQUEST(mag_i_inst_zp),
+		REQUEST(exp_time)));
 
-DEPENDENT_PARAM(MagVisZp, mag_vis_zp,  _cached_value = _request_param_value(mag_vis_inst_zp_name)
-								      + 2.5 * std::log10(_request_param_value(exp_time_name)));
+DEPENDENT_PARAM(mag_vis_zp,  _cached_value = get_zp(REQUEST(mag_vis_inst_zp),
+		REQUEST(exp_time)));
 
-DEPENDENT_PARAM(NumBackgroundGalaxies, num_background_galaxies,
-		 _cached_value = Pois_rand( _request_param_value(image_area_name) *
-		_request_param_value(background_galaxy_density_name) , _rng) );
+DEPENDENT_PARAM(num_background_galaxies,
+		 _cached_value = generate_count( REQUEST(image_area) *
+				 REQUEST(background_galaxy_density) , _rng) );
 
-DEPENDENT_PARAM(NumClusters, num_clusters,
-		 _cached_value = Pois_rand( _request_param_value(image_area_name) *
-		_request_param_value(cluster_density_name) , _rng) );
+DEPENDENT_PARAM(num_clusters,
+		 _cached_value = generate_count( REQUEST(image_area) *
+				 REQUEST(cluster_density) , _rng) );
 
-DEPENDENT_PARAM(NumFieldGalaxies, num_field_galaxies,
-		 _cached_value = Pois_rand( _request_param_value(image_area_name) *
-		_request_param_value(field_galaxy_density_name) , _rng) );
+DEPENDENT_PARAM(num_field_galaxies,
+		 _cached_value = generate_count( REQUEST(image_area) *
+				 REQUEST(field_galaxy_density) , _rng) );
 
-DEPENDENT_PARAM(NumStars, num_stars,
-		 _cached_value = Pois_rand( _request_param_value(image_area_name) *
-		_request_param_value(star_density_name) , _rng) );
+DEPENDENT_PARAM(num_stars,
+		 _cached_value = generate_count( REQUEST(image_area) *
+				 REQUEST(star_density) , _rng) );
 
 // Cluster level
 
-DEPENDENT_PARAM(ClusterMass, cluster_mass,
-		throw std::logic_error("Dependent calculation for cluster_mass not yet implemented."));
+DEPENDENT_PARAM(cluster_mass,
+		_cached_value = generate_cluster_mass(REQUEST(cluster_redshift), _rng));
 
-DEPENDENT_PARAM(ClusterNumSatellites, cluster_num_satellites,
-		throw std::logic_error("Dependent calculation for cluster_num_satellites not yet implemented."));
+DEPENDENT_PARAM(cluster_num_satellites,
+		_cached_value = generate_count( get_cluster_richness(REQUEST(cluster_mass), REQUEST(cluster_redshift)), _rng) );
 
 // Galaxy level
 
-DEPENDENT_PARAM(ApparentMagVis, apparent_mag_vis,
-		throw std::logic_error("Dependent calculation for apparent_mag_vis not yet implemented."));
+DEPENDENT_PARAM(apparent_mag_vis,
+		_cached_value = get_apparent_mag_vis(REQUEST(stellar_mass), REQUEST(redshift)));
 
-DEPENDENT_PARAM(ApparentSize, apparent_size,
-		throw std::logic_error("Dependent calculation for apparent_size not yet implemented."));
+DEPENDENT_PARAM(apparent_size,
+		_cached_value = get_apparent_size(REQUEST(physical_size), REQUEST(redshift)));
 
-DEPENDENT_PARAM(GalaxyType, galaxy_type,
-		throw std::logic_error("Dependent calculation for galaxy_type not yet implemented."));
+DEPENDENT_PARAM(morphology,
+		_cached_value = generate_morphology(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));
 
-DEPENDENT_PARAM(Morphology, morphology,
-		throw std::logic_error("Dependent calculation for morphology not yet implemented."));
+DEPENDENT_PARAM(physical_size,
+		_cached_value = generate_physical_size(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));
 
-DEPENDENT_PARAM(PhysicalSize, physical_size,
-		throw std::logic_error("Dependent calculation for physical_size not yet implemented."));
+DEPENDENT_PARAM(redshift,
+		_cached_value = generate_redshift(REQUEST(galaxy_type), REQUEST(cluster_redshift), _rng));
 
-DEPENDENT_PARAM(Redshift, redshift,
-		throw std::logic_error("Dependent calculation for redshift not yet implemented."));
+DEPENDENT_PARAM(rotation,
+		if(is_satellite_galaxy(REQUEST(galaxy_type)))
+			_cached_value = generate_rotation( REQUEST(xp), REQUEST(yp), REQUEST(cluster_xp), REQUEST(cluster_yp),
+		         REQUEST(morphology), REQUEST(stellar_mass), _rng  );
+		else
+			_cached_value = _params->get_independently(_rng);)
 
-DEPENDENT_PARAM(Rotation, rotation,
-		throw std::logic_error("Dependent calculation for rotation not yet implemented."));
+DEPENDENT_PARAM(rp,
+		_cached_value = generate_rp(REQUEST(galaxy_type), REQUEST(cluster_mass), REQUEST(cluster_redshift), _rng));
 
-DEPENDENT_PARAM(ShearAngle, shear_angle,
-		throw std::logic_error("Dependent calculation for shear_angle not yet implemented."));
+DEPENDENT_PARAM(shear_angle,
+		_cached_value = generate_shear_angle(REQUEST(xp), REQUEST(yp), _rng));
 
-DEPENDENT_PARAM(ShearMagnitude, shear_magnitude,
-		throw std::logic_error("Dependent calculation for shear_magnitude not yet implemented."));
+DEPENDENT_PARAM(shear_magnitude,
+		_cached_value = generate_shear_magnitude(REQUEST(xp), REQUEST(yp), REQUEST(redshift), _rng));
 
-DEPENDENT_PARAM(StellarMass, stellar_mass,
-		throw std::logic_error("Dependent calculation for stellar_mass not yet implemented."));
+DEPENDENT_PARAM(stellar_mass,
+		_cached_value = generate_stellar_mass(REQUEST(galaxy_type), REQUEST(redshift), _rng));
 
-DEPENDENT_PARAM(Tilt, tilt,
-		throw std::logic_error("Dependent calculation for tilt not yet implemented."));
+DEPENDENT_PARAM(tilt,
+		if(is_satellite_galaxy(REQUEST(galaxy_type)))
+			_cached_value = generate_tilt( REQUEST(xp), REQUEST(yp), REQUEST(cluster_xp), REQUEST(cluster_yp),
+		         REQUEST(morphology), REQUEST(stellar_mass), _rng  );
+		else
+			_cached_value = _params->get_independently(_rng);)
 
-DEPENDENT_PARAM(Xp, xp,
-		throw std::logic_error("Dependent calculation for xp not yet implemented."));
+DEPENDENT_PARAM(xp,
+		if(is_field_galaxy(REQUEST(galaxy_type)))
+			_cached_value = _params->get_independently(_rng);
+		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = REQUEST(cluster_xp);
+		else
+			_cached_value = generate_xp(REQUEST(rp), REQUEST(theta_sat),
+					REQUEST(cluster_xp),  _rng));
 
-DEPENDENT_PARAM(Yp, yp,
-		throw std::logic_error("Dependent calculation for yp not yet implemented."));
+DEPENDENT_PARAM(yp,
+		if(is_field_galaxy(REQUEST(galaxy_type)))
+			_cached_value = _params->get_independently(_rng);
+		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = REQUEST(cluster_yp);
+		else
+			_cached_value = generate_yp(REQUEST(rp), REQUEST(theta_sat),
+				REQUEST(cluster_yp), _rng));
 
 // Undef the macro
 #undef DEPENDENT_PARAM
+#undef REQUEST
 
 } // namespace SHE_SIM
 

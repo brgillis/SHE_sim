@@ -104,6 +104,8 @@ constexpr const int_t galaxy_group_level = 50;
 
 constexpr const int_t galaxy_level = 60;
 
+constexpr const int_t galaxy_type = 0.; // 0 = field, <0 = central, >0 = satellite
+
 constexpr const flt_t apparent_size_l10_mean = -0.5; // log10 arcsec
 constexpr const flt_t apparent_size_l10_stddev = 0.15; // log10 arcsec
 
@@ -122,6 +124,9 @@ constexpr const flt_t shear_angle_max = 180.; // degrees
 constexpr const flt_t shear_magnitude_sigma = 0.25;
 constexpr const flt_t shear_magnitude_max = 0.9;
 constexpr const flt_t shear_magnitude_p = 4.;
+
+constexpr const flt_t theta_sat_min = 0.;
+constexpr const flt_t theta_sat_max = 360.;
 
 constexpr const flt_t tilt_min = 0.;
 constexpr const flt_t tilt_max = 90.;

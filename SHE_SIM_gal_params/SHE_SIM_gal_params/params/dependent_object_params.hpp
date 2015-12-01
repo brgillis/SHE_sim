@@ -38,14 +38,27 @@
 namespace SHE_SIM
 {
 
+// Typedefs for the type of each object
+typedef array_2d_t background_psf_t;
+
+typedef array_2d_array_t binned_observed_flux_distribution_t;
+typedef array_2d_array_t binned_psf_t;
+typedef array_2d_t core_observed_flux_distribution_t;
+typedef array_1d_t core_sed_t;
+typedef array_2d_t disk_observed_flux_distribution_t;
+typedef array_1d_t disk_sed_t;
+typedef array_2d_t observed_flux_distribution_t;
+typedef array_2d_t psf_model_t;
+typedef array_2d_t pix_galaxy_w_pois_noise_t;
+
 // Define a macro for each param
 
-#define DEPENDENT_OBJECT_PARAM( class_name, param_name, object_type, dependent_generation ) \
-class class_name : public ParamGenerator \
+#define DEPENDENT_OBJECT_PARAM( param_name, dependent_generation ) \
+class param_name##_obj : public ParamGenerator \
 { \
 private: \
 \
-	object_type _cached_object; \
+	param_name##_t _cached_object; \
 \
 	virtual void _generate() override \
 	{ \
@@ -55,7 +68,7 @@ private: \
 		} \
 		else if(_params->get_mode()==ParamParam::INDEPENDENT) \
 		{ \
-			auto _object_params = dynamic_cast<const ObjectParamParam<object_type> *>(_params); \
+			auto _object_params = dynamic_cast<const ObjectParamParam<param_name##_t> *>(_params); \
 			if(_object_params==nullptr) throw std::logic_error("This object requires an ObjectParamParam."); \
 			_cached_object = _object_params->get_object_independently(_rng); \
 			_cached_value = 0.; \
@@ -69,13 +82,13 @@ private: \
 private: \
 \
 public: \
-	class_name( owner_t & owner) \
+	param_name##_obj( owner_t & owner) \
 	: ParamGenerator(owner) \
 	{ \
 		_params = default_param_params_map.at(name()).get(); \
 	} \
 \
-	virtual ~class_name() \
+	virtual ~param_name##_obj() \
 	{ \
 	} \
 \
@@ -84,16 +97,20 @@ public: \
 		return param_name##_name; \
 	} \
 \
-	const object_type & get_object() \
+	const param_name##_t & get_object() \
 	{ \
 		return _cached_object; \
 	} \
 \
 	virtual ParamGenerator * clone() const override \
 	{ \
-		return new class_name(*this); \
+		return new param_name##_obj(*this); \
 	} \
 };
+
+// Define a macro to request a parameter
+#define REQUEST(param) _request_param_value(param##_name)
+#define REQUEST_OBJECT(param) static_cast<param##_obj *>(_request_param(param##_name))->get_object()
 
 // Define each param
 
@@ -101,33 +118,51 @@ public: \
 
 // Image level
 
-DEPENDENT_OBJECT_PARAM(BackgroundPSF, background_psf, array_2d_t,
-		throw std::logic_error("Dependent generation for background_psf is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(background_psf,
+		_cached_object = get_background_psf(REQUEST(psf_params)));
 
 // Cluster level
 
 // Galaxy level
 
-DEPENDENT_OBJECT_PARAM(BinnedIntrinsicFluxDistribution, binned_intrinsic_flux_distribution, array_1d_array_t,
-		throw std::logic_error("Dependent generation for binned_intrinsic_flux_distribution is not yet implemented."));
-DEPENDENT_OBJECT_PARAM(BinnedObservedFluxDistribution, binned_observed_flux_distribution, array_1d_array_t,
-		throw std::logic_error("Dependent generation for binned_observed_flux_distribution is not yet implemented."));
-DEPENDENT_OBJECT_PARAM(BinnedPSF, binned_psf, array_2d_array_t,
-		throw std::logic_error("Dependent generation for binned_psf is not yet implemented."));
-DEPENDENT_OBJECT_PARAM(ObservedFluxDistribution, observed_flux_distribution, array_2d_t,
-		throw std::logic_error("Dependent generation for observed_flux_distribution is not yet implemented."));
-DEPENDENT_OBJECT_PARAM(PSFModel, psf_model, array_2d_t,
-		throw std::logic_error("Dependent generation for psf_model is not yet implemented."));
-DEPENDENT_OBJECT_PARAM(SED, sed, array_1d_t,
-		throw std::logic_error("Dependent generation for sed is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(binned_observed_flux_distribution,
+		_cached_object = get_binned_observed_flux_distribution(REQUEST_OBJECT(core_sed), REQUEST_OBJECT(disk_sed),
+				REQUEST_OBJECT(core_observed_flux_distribution),
+				REQUEST_OBJECT(disk_observed_flux_distribution)));
+
+DEPENDENT_OBJECT_PARAM(binned_psf,
+		_cached_object = get_binned_psf(REQUEST_OBJECT(psf_model), REQUEST(xp), REQUEST(yp)));
+
+DEPENDENT_OBJECT_PARAM(core_observed_flux_distribution,
+		_cached_object = get_core_observed_flux_distribution(REQUEST(morphology),
+				REQUEST(rotation), REQUEST(tilt)));
+
+DEPENDENT_OBJECT_PARAM(core_sed,
+		_cached_object = get_core_sed(REQUEST(morphology), REQUEST(redshift), REQUEST(stellar_mass)));
+
+DEPENDENT_OBJECT_PARAM(disk_observed_flux_distribution,
+		_cached_object = get_disk_observed_flux_distribution(REQUEST(morphology),
+				REQUEST(rotation), REQUEST(tilt)));
+
+DEPENDENT_OBJECT_PARAM(disk_sed,
+		_cached_object = get_disk_sed(REQUEST(morphology), REQUEST(redshift), REQUEST(stellar_mass)));
+
+DEPENDENT_OBJECT_PARAM(observed_flux_distribution,
+		_cached_object = get_observed_flux_distribution(REQUEST_OBJECT(binned_observed_flux_distribution)));
+
+DEPENDENT_OBJECT_PARAM(psf_model,
+		_cached_object = get_psf_model(REQUEST(psf_params)));
 
 // GalaxyDither level
 
-DEPENDENT_OBJECT_PARAM(PixGalaxyWPoisNoise, pix_galaxy_w_pois_noise, array_2d_t,
-		throw std::logic_error("Dependent generation for pix_galaxy_w_pois_noise is not yet implemented."));
+DEPENDENT_OBJECT_PARAM(pix_galaxy_w_pois_noise,
+		_cached_object = get_pix_galaxy_w_pois_noise(REQUEST(observed_flux_distribution),
+				REQUEST(xp), REQUEST(yp), REQUEST(pixel_scale), REQUEST(gain)));
 
 // Undef the macro
 #undef DEPENDENT_OBJECT_PARAM
+#undef REQUEST
+#undef REQUEST_OBJECT
 
 } // namespace SHE_SIM
 

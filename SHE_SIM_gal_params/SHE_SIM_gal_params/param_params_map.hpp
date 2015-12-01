@@ -36,6 +36,7 @@
 // Include all param param headers here
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
+#include "SHE_SIM_gal_params/param_params/DepUniform.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
@@ -67,6 +68,7 @@ inline param_params_t make_full_param_params_map()
 
 	// Insert all param_params here
 	insert_param_param<Calculated>(res);
+	insert_param_param<DepUniform>(res);
 	insert_param_param<IndFixed>(res);
 	insert_param_param<IndContRayleigh>(res);
 	insert_param_param<IndGaussian>(res);

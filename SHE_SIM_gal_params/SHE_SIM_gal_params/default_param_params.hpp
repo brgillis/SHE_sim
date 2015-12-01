@@ -116,23 +116,25 @@ inline param_params_t make_default_param_params_map()
 	// Galaxy level
 
 	INSERT_LOGNORMAL_PARAM(apparent_size);
+	INSERT_FIXED_PARAM(galaxy_type);
 	INSERT_UNIFORM_PARAM(morphology);
 	INSERT_UNIFORM_PARAM(redshift);
 	INSERT_UNIFORM_PARAM(rotation);
 	INSERT_UNIFORM_PARAM(shear_angle);
 	INSERT_CONTRAYLEIGH_PARAM(shear_magnitude);
+	INSERT_UNIFORM_PARAM(theta_sat);
 	INSERT_UNIFORM_PARAM(tilt);
 	INSERT_UNIFORM_PARAM(xp);
 	INSERT_UNIFORM_PARAM(yp);
 
 	INSERT_CALCULATED_PARAM(apparent_mag_vis);
-	INSERT_CALCULATED_PARAM(binned_intrinsic_flux_distribution);
 	INSERT_CALCULATED_PARAM(binned_observed_flux_distribution);
 	INSERT_CALCULATED_PARAM(binned_psf);
 	INSERT_CALCULATED_PARAM(galaxy_type);
 	INSERT_CALCULATED_PARAM(observed_flux_distribution);
 	INSERT_CALCULATED_PARAM(physical_size);
 	INSERT_CALCULATED_PARAM(psf_model);
+	INSERT_CALCULATED_PARAM(rp);
 	INSERT_CALCULATED_PARAM(sed);
 	INSERT_CALCULATED_PARAM(stellar_mass);
 
@@ -219,7 +221,6 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(yp, dv::galaxy_level);
 
 	INSERT_LEVEL(apparent_mag_vis, dv::galaxy_level);
-	INSERT_LEVEL(binned_intrinsic_flux_distribution, dv::galaxy_level);
 	INSERT_LEVEL(binned_observed_flux_distribution, dv::galaxy_level);
 	INSERT_LEVEL(binned_psf, dv::galaxy_level);
 	INSERT_LEVEL(galaxy_type, dv::galaxy_level);

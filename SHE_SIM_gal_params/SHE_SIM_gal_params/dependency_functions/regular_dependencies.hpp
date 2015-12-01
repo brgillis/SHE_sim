@@ -34,20 +34,67 @@ namespace SHE_SIM {
 
 // Inlined functions first
 
-inline flt_t get_image_area( const flt_t & image_size_x_pix, const flt_t & image_size_y_pix, const flt_t & pixel_scale )
+inline flt_t get_image_area( flt_t const & image_size_x_pix, flt_t const & image_size_y_pix, flt_t const & pixel_scale )
 {
 	return image_size_x_pix * image_size_y_pix * square( pixel_scale );
 }
 
-inline flt_t get_zp( const flt_t & inst_zp, const flt_t & exp_time)
+inline flt_t get_zp( flt_t const & inst_zp, flt_t const & exp_time)
 {
 	return inst_zp + 2.5 * std::log10(exp_time);
 }
 
-inline flt_t generate_count( const flt_t & lambda, gen_t & rng )
+inline flt_t generate_count( flt_t const & lambda, gen_t & rng )
 {
 	return Pois_rand( lambda , rng);
 }
+
+// Non-inlined functions
+
+// Image-level
+
+flt_t get_background_noise( flt_t const & subtracted_background, flt_t const & unsubtracted_background,
+		flt_t const & read_noise, flt_t const & gain, flt_t const & pixel_scale );
+
+// Cluster-level
+
+flt_t generate_cluster_mass( flt_t const & cluster_redshift, gen_t & _rng );
+
+flt_t generate_cluster_redshift( gen_t & _rng );
+
+flt_t get_cluster_richness( flt_t const & cluster_mass, flt_t const & cluster_redshift );
+
+// Galaxy-level
+
+flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift );
+
+flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift );
+
+flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  );
+
+flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  );
+
+flt_t generate_redshift( flt_t const & galaxy_type, flt_t const & cluster_redshift, gen_t & rng  );
+
+flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
+				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  );
+
+flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng  );
+
+flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
+				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  );
+
+flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng  );
+
+flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const & redshift, gen_t & rng  );
+
+flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng  );
+
+flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng  );
+
+flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng  );
+
+
 
 } // namespace SHE_SIM
 
