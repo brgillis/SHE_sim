@@ -110,7 +110,15 @@ T log10Gaus_rand( gen_t & gen=rng )
 	return ( fact * std::pow(10., Gaus_rand<T>(gen) ) );
 } // flt_t log10Gaus_rand()
 
-// Returns a random variable from a Gaussian distribution, truncated between min and max
+template< typename T=flt_t, typename T_in=flt_t, typename T_gen=decltype(rng) >
+T log10Gaus_rand( T_in && mean, T_in && stddev = 1., T_gen & gen=rng )
+{
+	const flt_t & fact = std::exp( -square( stddev*std::log(10.) ) / 2 );
+
+	return ( fact * std::pow(10., Gaus_rand<T,T_in>(std::forward<T_in>(mean),std::forward<T_in>(stddev),gen) ) );
+} // flt_type log10Gaus_rand(flt_type mean, flt_type stddev)
+
+// Returns a random variable from a log10_Gaussian distribution, truncated between min and max
 template< typename T=flt_t, typename T_in=flt_t >
 T trunc_log10Gaus_rand( T_in && mean, T_in && stddev, T_in && min, T_in && max, gen_t & gen=rng )
 {
@@ -120,12 +128,15 @@ T trunc_log10Gaus_rand( T_in && mean, T_in && stddev, T_in && min, T_in && max, 
 	bool good_value = false;
 	int attempt_counter = 0;
 
+	flt_t p10_min = std::pow(10.,min);
+	flt_t p10_max = std::pow(10.,max);
+
 	while( (!good_value) and (attempt_counter < 1000) )
 	{
-		flt_t test_result = Gaus_rand(mean,stddev,gen);
-		if((test_result >= min)and(test_result <= max))
+		flt_t test_result = log10Gaus_rand(mean,stddev,gen);
+		if((test_result >= p10_min)and(test_result <= p10_min))
 		{
-			return std::pow(10.,test_result);
+			return test_result;
 		}
 		else
 		{

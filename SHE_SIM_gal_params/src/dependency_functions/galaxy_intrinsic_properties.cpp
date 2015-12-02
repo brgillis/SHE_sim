@@ -27,43 +27,51 @@
 #include "config.h"
 #endif
 
+#include <boost/log/trivial.hpp>
 #include <stdexcept>
 
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/default_values.hpp"
+#include "SHE_SIM_gal_params/random_functions.hpp"
 
 namespace SHE_SIM {
 
 flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  )
 {
-	throw std::logic_error("generate_morphology NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_morphology used.";
+
+	return drand( dv::morphology_min, dv::morphology_max, rng );
 }
 
 flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  )
 {
-	throw std::logic_error("generate_physical_size NYI");
-}
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_physical_size used.";
 
-flt_t generate_redshift( flt_t const & galaxy_type, flt_t const & cluster_redshift, gen_t & rng  )
-{
-	throw std::logic_error("generate_redshift NYI");
+	return dv::physical_size;
 }
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  )
 {
-	throw std::logic_error("generate_rotation NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_rotation used.";
+
+	return drand( dv::rotation_min, dv::rotation_max, rng );
 }
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  )
 {
-	throw std::logic_error("generate_tilt NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_tilt used.";
+
+	return drand( dv::tilt_min, dv::tilt_max, rng );
 }
 
 flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng  )
 {
-	throw std::logic_error("generate_stellar_mass NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_stellar_mass used.";
+
+	return dv::stellar_mass;
 }
 
 } // namespace SHE_SIM

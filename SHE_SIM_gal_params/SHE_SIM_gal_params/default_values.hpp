@@ -86,6 +86,8 @@ constexpr const flt_t cluster_mass_l10_stddev = 0.5; // log10 Msun
 constexpr const flt_t cluster_redshift_min = 0.2;
 constexpr const flt_t cluster_redshift_max = 1.3;
 
+constexpr const flt_t cluster_richness = 10.;
+
 constexpr const flt_t cluster_xp_min = 0.; // pixels
 constexpr const flt_t cluster_xp_max = image_size_xp; // pixels
 
@@ -106,11 +108,16 @@ constexpr const int_t galaxy_level = 60;
 
 constexpr const int_t galaxy_type = 0.; // 0 = field, <0 = central, >0 = satellite
 
+constexpr const flt_t apparent_mag_vis_min = 17;
+constexpr const flt_t apparent_mag_vis_max = 24.5;
+
 constexpr const flt_t apparent_size_l10_mean = -0.5; // log10 arcsec
 constexpr const flt_t apparent_size_l10_stddev = 0.15; // log10 arcsec
 
 constexpr const flt_t morphology_min = 0.5; // Sersic index
 constexpr const flt_t morphology_max = 6.5; // Sersic index
+
+constexpr const flt_t physical_size = 1.; // kpc
 
 constexpr const flt_t redshift_min = 0.2;
 constexpr const flt_t redshift_max = 1.3;
@@ -124,6 +131,8 @@ constexpr const flt_t shear_angle_max = 180.; // degrees
 constexpr const flt_t shear_magnitude_sigma = 0.25;
 constexpr const flt_t shear_magnitude_max = 0.9;
 constexpr const flt_t shear_magnitude_p = 4.;
+
+constexpr const flt_t stellar_mass = 1e9; // kpc
 
 constexpr const flt_t theta_sat_min = 0.;
 constexpr const flt_t theta_sat_max = 360.;

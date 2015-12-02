@@ -74,8 +74,6 @@ flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, fl
 
 flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  );
 
-flt_t generate_redshift( flt_t const & galaxy_type, flt_t const & cluster_redshift, gen_t & rng  );
-
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  );
 

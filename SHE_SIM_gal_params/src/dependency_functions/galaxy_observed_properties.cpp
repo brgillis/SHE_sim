@@ -27,31 +27,42 @@
 #include "config.h"
 #endif
 
+#include <boost/log/trivial.hpp>
 #include <stdexcept>
 
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/default_values.hpp"
+#include "SHE_SIM_gal_params/random_functions.hpp"
 
 namespace SHE_SIM {
 
 flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
 {
-	throw std::logic_error("get_apparent_mag_vis NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_mag_vis used.";
+
+	return drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, rng );
 }
 
 flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift )
 {
-	throw std::logic_error("get_apparent_size NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
+
+	return drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, rng );
 }
 
 flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng  )
 {
-	throw std::logic_error("get_apparent_size NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_shear_angle used.";
+
+	return drand( dv::shear_angle_min, dv::shear_angle_max, rng );
 }
 
 flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const & redshift, gen_t & rng  )
 {
-	throw std::logic_error("get_apparent_size NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_shear_magnitude used.";
+
+	return contracted_Rayleigh_rand( dv::shear_magnitude_sigma, dv::shear_magnitude_max, dv::shear_magnitude_p , rng );
 }
 
 

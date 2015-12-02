@@ -148,7 +148,10 @@ DEPENDENT_PARAM(physical_size,
 		_cached_value = generate_physical_size(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));
 
 DEPENDENT_PARAM(redshift,
-		_cached_value = generate_redshift(REQUEST(galaxy_type), REQUEST(cluster_redshift), _rng));
+		if(is_field_galaxy(REQUEST(galaxy_type)))
+			_cached_value = _params->get_independently(_rng);
+		else
+			_cached_value = REQUEST(cluster_redshift);)
 
 DEPENDENT_PARAM(rotation,
 		if(is_satellite_galaxy(REQUEST(galaxy_type)))

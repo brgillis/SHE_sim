@@ -27,16 +27,20 @@
 #include "config.h"
 #endif
 
+#include <boost/log/trivial.hpp>
 #include <cmath>
-#include <stdexcept>
 
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
+#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "SHE_SIM_gal_params/common.hpp"
 
 namespace SHE_SIM {
 
 flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng  )
 {
-	throw std::logic_error("generate_rp NYI");
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_rp used.";
+
+	return drand(0.,10.,rng);
 }
 
 flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng  )
