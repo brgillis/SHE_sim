@@ -76,6 +76,19 @@ typedef ParamParam param_param_t;
 typedef std::unique_ptr<param_param_t> param_param_ptr_t;
 typedef std::unordered_map<name_t,param_param_ptr_t> param_params_t;
 
+// Typedefs for the type of each object
+typedef array_2d_t background_psf_t;
+
+typedef array_2d_array_t binned_observed_flux_distribution_t;
+typedef array_2d_array_t binned_psf_t;
+typedef array_2d_t core_observed_flux_distribution_t;
+typedef array_1d_t core_sed_t;
+typedef array_2d_t disk_observed_flux_distribution_t;
+typedef array_1d_t disk_sed_t;
+typedef array_2d_t observed_flux_distribution_t;
+typedef array_2d_t psf_model_t;
+typedef array_2d_t pix_galaxy_w_pois_noise_t;
+
 }
 
 #endif // SHE_SIM_GAL_PARAMS_COMMON_HPP_

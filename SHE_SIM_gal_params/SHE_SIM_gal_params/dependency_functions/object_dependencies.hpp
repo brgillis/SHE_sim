@@ -34,13 +34,37 @@ namespace SHE_SIM {
 
 // Image-level
 
-array_2d_t get_background_psf( flt_t const & psf_params);
+background_psf_t get_background_psf( flt_t const & psf_params);
 
 // Galaxy-level
 
-array_1d_t get_psf_model( flt_t const & psf_params );
+binned_observed_flux_distribution_t get_binned_observed_flux_distribution(
+		core_sed_t const & (core_sed),
+		disk_sed_t const & (disk_sed),
+		core_observed_flux_distribution_t const & core_observed_flux_distribution,
+		disk_observed_flux_distribution_t const & disk_observed_flux_distribution);
 
-array_1d_t get_sed( flt_t const & morphology, flt_t const & redshift, flt_t const & stellar_mass );
+binned_psf_t get_binned_psf(psf_model_t const & psf_model, flt_t const & xp, flt_t const & yp);
+
+core_sed_t get_core_sed( flt_t const & morphology, flt_t const & redshift, flt_t const & stellar_mass );
+
+core_observed_flux_distribution_t get_core_observed_flux_distribution(
+		flt_t const & morphology, flt_t const & rotation, flt_t const & tilt);
+
+disk_sed_t get_disk_sed( flt_t const & morphology, flt_t const & redshift, flt_t const & stellar_mass );
+
+disk_observed_flux_distribution_t get_disk_observed_flux_distribution(
+		flt_t const & morphology, flt_t const & rotation, flt_t const & tilt);
+
+observed_flux_distribution_t get_observed_flux_distribution(
+		binned_observed_flux_distribution_t const & binned_observed_flux_distribution,
+		binned_psf_t const & binned_psf);
+
+psf_model_t get_psf_model( flt_t const & psf_params );
+
+pix_galaxy_w_pois_noise_t get_pix_galaxy_w_pois_noise(
+		observed_flux_distribution_t observed_flux_distribution,
+		flt_t const & xp, flt_t const & yp, flt_t const & pixel_scale, flt_t const & gain);
 
 } // namespace SHE_SIM
 

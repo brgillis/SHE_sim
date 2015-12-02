@@ -54,6 +54,7 @@ protected:
 
 	flt_t _cached_value;
 	owner_t & _owner;
+	std::unordered_set<name_t> _dependant_names;
 	const ParamParam * _params;
 	const level_t * _generation_level;
 	gen_t & _rng;
@@ -65,26 +66,24 @@ protected:
 	flt_t _request_param_value(name_t const & name);
 	ParamGenerator * _request_param(name_t const & name);
 
-private:
+	bool _generated_at_this_level() const;
 
-	// Private members
-	std::unordered_set<name_t> _dependant_names;
+	ParamGenerator & _parent_version();
+
+private:
 
 	// Private methods
 
-	bool _is_cached() const;
+	virtual bool _is_cached() const;
 
+	virtual void _decache();
 	void _clear_cache();
 
 	void _add_dependant(name_t const & dependant_name);
 
-	bool _generated_at_this_level() const;
-
-	void _determine_value();
+	virtual void _determine_value();
 
 	void _determine_new_value();
-
-	ParamGenerator & _parent_version();
 
 	const ParamGenerator & _parent_version() const;
 

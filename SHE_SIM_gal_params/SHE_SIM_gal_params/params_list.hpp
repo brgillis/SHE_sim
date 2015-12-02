@@ -105,6 +105,8 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(apparent_size);
 	INSERT_PARAM(binned_observed_flux_distribution);
 	INSERT_PARAM(binned_psf);
+	INSERT_PARAM(core_sed);
+	INSERT_PARAM(disk_sed);
 	INSERT_PARAM(galaxy_type);
 	INSERT_PARAM(morphology);
 	INSERT_PARAM(observed_flux_distribution);
@@ -113,7 +115,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(redshift);
 	INSERT_PARAM(rotation);
 	INSERT_PARAM(rp);
-	INSERT_PARAM(sed);
 	INSERT_PARAM(shear_angle);
 	INSERT_PARAM(shear_magnitude);
 	INSERT_PARAM(stellar_mass);

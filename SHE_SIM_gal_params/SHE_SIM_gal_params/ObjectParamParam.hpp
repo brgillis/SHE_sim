@@ -45,6 +45,9 @@ namespace SHE_SIM
 template< typename T_object >
 class ObjectParamParam : public ParamParam
 {
+public:
+
+	typedef T_object object_type;
 
 public:
 
@@ -62,9 +65,7 @@ public:
 
 	virtual ~ObjectParamParam() {};
 
-	// Comparisons
-
-	virtual T_object get_object_independently( gen_t & gen=rng ) const = 0;
+	virtual object_type get_object_independently( gen_t & gen=rng ) const = 0;
 
 	virtual flt_t get_independently( gen_t & gen=rng ) const override
 	{

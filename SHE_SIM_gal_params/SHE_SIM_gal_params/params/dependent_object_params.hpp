@@ -32,29 +32,17 @@
 #include <cassert>
 #include <vector>
 
-#include "SHE_SIM_gal_params/ParamGenerator.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/object_dependencies.hpp"
+#include "SHE_SIM_gal_params/ObjectParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ObjectParamParam.hpp"
 
 namespace SHE_SIM
 {
 
-// Typedefs for the type of each object
-typedef array_2d_t background_psf_t;
-
-typedef array_2d_array_t binned_observed_flux_distribution_t;
-typedef array_2d_array_t binned_psf_t;
-typedef array_2d_t core_observed_flux_distribution_t;
-typedef array_1d_t core_sed_t;
-typedef array_2d_t disk_observed_flux_distribution_t;
-typedef array_1d_t disk_sed_t;
-typedef array_2d_t observed_flux_distribution_t;
-typedef array_2d_t psf_model_t;
-typedef array_2d_t pix_galaxy_w_pois_noise_t;
-
 // Define a macro for each param
 
 #define DEPENDENT_OBJECT_PARAM( param_name, dependent_generation ) \
-class param_name##_obj : public ParamGenerator \
+class param_name##_obj : public ObjectParamGenerator<param_name##_t> \
 { \
 private: \
 \
@@ -83,7 +71,7 @@ private: \
 \
 public: \
 	param_name##_obj( owner_t & owner) \
-	: ParamGenerator(owner) \
+	: ObjectParamGenerator(owner) \
 	{ \
 		_params = default_param_params_map.at(name()).get(); \
 	} \
@@ -110,7 +98,7 @@ public: \
 
 // Define a macro to request a parameter
 #define REQUEST(param) _request_param_value(param##_name)
-#define REQUEST_OBJECT(param) static_cast<param##_obj *>(_request_param(param##_name))->get_object()
+#define REQUEST_OBJECT(param) static_cast<ObjectParamGenerator<param##_t> *>(_request_param(param##_name))->get_object()
 
 // Define each param
 
@@ -148,7 +136,8 @@ DEPENDENT_OBJECT_PARAM(disk_sed,
 		_cached_object = get_disk_sed(REQUEST(morphology), REQUEST(redshift), REQUEST(stellar_mass)));
 
 DEPENDENT_OBJECT_PARAM(observed_flux_distribution,
-		_cached_object = get_observed_flux_distribution(REQUEST_OBJECT(binned_observed_flux_distribution)));
+		_cached_object = get_observed_flux_distribution(REQUEST_OBJECT(binned_observed_flux_distribution),
+				REQUEST_OBJECT(binned_psf)));
 
 DEPENDENT_OBJECT_PARAM(psf_model,
 		_cached_object = get_psf_model(REQUEST(psf_params)));
@@ -156,7 +145,7 @@ DEPENDENT_OBJECT_PARAM(psf_model,
 // GalaxyDither level
 
 DEPENDENT_OBJECT_PARAM(pix_galaxy_w_pois_noise,
-		_cached_object = get_pix_galaxy_w_pois_noise(REQUEST(observed_flux_distribution),
+		_cached_object = get_pix_galaxy_w_pois_noise(REQUEST_OBJECT(observed_flux_distribution),
 				REQUEST(xp), REQUEST(yp), REQUEST(pixel_scale), REQUEST(gain)));
 
 // Undef the macro
