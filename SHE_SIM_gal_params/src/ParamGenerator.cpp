@@ -67,9 +67,14 @@ bool ParamGenerator::_is_cached() const
 	return _cached_value != UNCACHED_VALUE;
 }
 
-void ParamGenerator::_clear_cache()
+void ParamGenerator::_decache()
 {
 	_cached_value = UNCACHED_VALUE;
+}
+
+void ParamGenerator::_clear_cache()
+{
+	_decache();
 
 	// Uncache for any children
 	for( auto const & child : _owner._children )

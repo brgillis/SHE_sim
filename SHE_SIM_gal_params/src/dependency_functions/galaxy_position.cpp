@@ -28,6 +28,7 @@
 #endif
 
 #include <cmath>
+#include <stdexcept>
 
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 

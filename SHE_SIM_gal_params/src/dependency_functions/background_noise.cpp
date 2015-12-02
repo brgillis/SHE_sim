@@ -29,6 +29,9 @@
 
 #include <cmath>
 
+#include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
+
 namespace SHE_SIM {
 
 flt_t get_background_noise( flt_t const & subtracted_background, flt_t const & unsubtracted_background,
