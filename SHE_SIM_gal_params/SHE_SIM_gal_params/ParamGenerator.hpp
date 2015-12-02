@@ -119,13 +119,13 @@ public:
 
 	void set_p_generation_level( level_t const * const & p_level );
 
-	const flt_t & get();
+	flt_t const & get();
 
-	const flt_t & get_new();
+	flt_t const & get_new();
 
-	const flt_t & request_value(name_t const & requester_name);
+	flt_t const & request_value(name_t const & requester_name);
 
-	const flt_t & request_new_value(name_t const & requester_name);
+	flt_t const & request_new_value(name_t const & requester_name);
 
 	ParamGenerator * request(name_t const & requester_name);
 

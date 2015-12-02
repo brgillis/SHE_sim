@@ -175,7 +175,7 @@ void ParamGenerator::set_p_generation_level( level_t const * const & p_level )
 	_generation_level = p_level;
 }
 
-const flt_t & ParamGenerator::get()
+flt_t const & ParamGenerator::get()
 {
 	if(!_is_cached())
 	{
@@ -184,7 +184,7 @@ const flt_t & ParamGenerator::get()
 	return _cached_value;
 }
 
-const flt_t & ParamGenerator::get_new()
+flt_t const & ParamGenerator::get_new()
 {
 	_determine_new_value();
 	return _cached_value;
@@ -207,13 +207,13 @@ ParamGenerator * ParamGenerator::request_new(name_t const & requester_name)
 	return this;
 }
 
-const flt_t & ParamGenerator::request_value(name_t const & requester_name)
+flt_t const & ParamGenerator::request_value(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get();
 }
 
-const flt_t & ParamGenerator::request_new_value(name_t const & requester_name)
+flt_t const & ParamGenerator::request_new_value(name_t const & requester_name)
 {
 	_add_dependant(requester_name);
 	return get_new();

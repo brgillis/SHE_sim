@@ -105,7 +105,7 @@ T trunc_Gaus_rand( T_in && mean, T_in && stddev, T_in && min, T_in && max, gen_t
 template< typename T=flt_t >
 T log10Gaus_rand( gen_t & gen=rng )
 {
-	const flt_t & fact = std::exp( -square( std::log( 10. ) ) / 2 );
+	flt_t const & fact = std::exp( -square( std::log( 10. ) ) / 2 );
 
 	return ( fact * std::pow(10., Gaus_rand<T>(gen) ) );
 } // flt_t log10Gaus_rand()

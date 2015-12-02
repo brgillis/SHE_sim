@@ -34,7 +34,7 @@ namespace SHE_SIM {
 
 // Image-level
 
-background_psf_t get_background_psf( flt_t const & psf_params);
+background_psf_t get_background_psf( flt_t const & psf_params );
 
 // Galaxy-level
 

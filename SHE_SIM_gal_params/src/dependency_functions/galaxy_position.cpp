@@ -34,17 +34,17 @@
 
 namespace SHE_SIM {
 
-flt_t generate_rp( const flt_t & galaxy_type, const flt_t & cluster_mass, const flt_t & cluster_redshift, const gen_t & rng  )
+flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng  )
 {
 	throw std::logic_error("generate_rp NYI");
 }
 
-flt_t generate_xp( const flt_t & rp, const flt_t & theta_sat, const flt_t & cluster_xp, gen_t & rng  )
+flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng  )
 {
 	return cluster_xp + rp * std::cos(theta_sat*M_PI/180);
 }
 
-flt_t generate_yp( const flt_t & rp, const flt_t & theta_sat, const flt_t & cluster_yp, gen_t & rng  )
+flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng  )
 {
 	return generate_xp( rp, 45-theta_sat, cluster_yp, rng);
 }
