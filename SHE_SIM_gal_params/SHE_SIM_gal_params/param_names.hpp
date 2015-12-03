@@ -36,6 +36,7 @@ DEF_NAME(mag_vis_inst_zp);
 DEF_NAME(mag_i_inst_zp);
 DEF_NAME(mag_vis_zp);
 DEF_NAME(mag_i_zp);
+DEF_NAME(num_images);
 DEF_NAME(pixel_scale);
 DEF_NAME(read_noise);
 
@@ -52,6 +53,7 @@ DEF_NAME(image_size_yp);
 DEF_NAME(num_background_galaxies);
 DEF_NAME(num_clusters);
 DEF_NAME(num_field_galaxies);
+DEF_NAME(num_fields);
 DEF_NAME(num_stars);
 DEF_NAME(psf_params);
 DEF_NAME(star_density);

@@ -131,7 +131,7 @@ DEPENDENT_PARAM(cluster_mass,
 		_cached_value = generate_cluster_mass(REQUEST(cluster_redshift), _rng));
 
 DEPENDENT_PARAM(cluster_num_satellites,
-		_cached_value = generate_count( get_cluster_richness(REQUEST(cluster_mass), REQUEST(cluster_redshift)), _rng) );
+		_cached_value = generate_count( get_cluster_richness(REQUEST(cluster_mass), REQUEST(cluster_redshift)) - 1, _rng) );
 
 // Galaxy level
 

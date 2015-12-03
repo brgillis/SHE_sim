@@ -35,6 +35,7 @@ namespace SHE_SIM { namespace dv {
 constexpr const int_t survey_level = 0;
 
 constexpr const flt_t gain = 3.3; // e-/ADU
+constexpr const flt_t num_images = 1;
 constexpr const flt_t pixel_scale = 0.1; // arcsec/pixel
 constexpr const flt_t read_noise = 5.4; // e-/pixel
 constexpr const flt_t mag_vis_inst_zp = 25.6527; // Mag_vis instrumental zeropoint, from Lance's code
@@ -50,10 +51,12 @@ constexpr const int_t image_group_level = 10;
 
 constexpr const int_t image_level = 20;
 
-constexpr const flt_t background_galaxy_density = 60.; // #/arcsec^2
-constexpr const flt_t cluster_density = 1.; // #/arcsec^2
-constexpr const flt_t field_galaxy_density = 30.; // #/arcsec^2
-constexpr const flt_t star_density = 30.; // #/arcsec^2
+constexpr const flt_t background_galaxy_density = 60.; // #/arcmin^2
+constexpr const flt_t cluster_density = 1.; // #/arcmin^2
+constexpr const flt_t field_galaxy_density = 30.; // #/arcmin^2
+constexpr const flt_t star_density = 30.; // #/arcmin^2
+
+constexpr const flt_t num_fields = 1.; // #/arcsec^2
 
 constexpr const flt_t image_size_xp = 4096; // pixels
 constexpr const flt_t image_size_yp = 2048; // pixels
@@ -93,6 +96,8 @@ constexpr const flt_t cluster_xp_max = image_size_xp; // pixels
 
 constexpr const flt_t cluster_yp_min = 0.; // pixels
 constexpr const flt_t cluster_yp_max = image_size_yp; // pixels
+
+constexpr const flt_t cluster_num_satellites = 10;
 
 // Field-level
 

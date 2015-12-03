@@ -69,6 +69,7 @@ public: \
 // Survey level
 INDEPENDENT_PARAM(exp_time);
 INDEPENDENT_PARAM(gain);
+INDEPENDENT_PARAM(num_images);
 INDEPENDENT_PARAM(mag_i_inst_zp);
 INDEPENDENT_PARAM(mag_vis_inst_zp);
 INDEPENDENT_PARAM(pixel_scale);
@@ -78,7 +79,7 @@ INDEPENDENT_PARAM(read_noise);
 INDEPENDENT_PARAM(background_galaxy_density);
 INDEPENDENT_PARAM(cluster_density);
 INDEPENDENT_PARAM(field_galaxy_density);
-INDEPENDENT_PARAM(galaxy_type);
+INDEPENDENT_PARAM(num_fields);
 INDEPENDENT_PARAM(psf_params);
 INDEPENDENT_PARAM(star_density);
 INDEPENDENT_PARAM(subtracted_background);
@@ -93,6 +94,7 @@ INDEPENDENT_PARAM(cluster_yp);
 
 // Galaxy level
 
+INDEPENDENT_PARAM(galaxy_type);
 INDEPENDENT_PARAM(theta_sat);
 
 // GalaxyDither level

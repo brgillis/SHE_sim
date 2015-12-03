@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/level_names.hpp"
 
 namespace SHE_SIM
 {
@@ -54,6 +55,8 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::galaxy_level;}
 
+	virtual name_t get_name() const override {return galaxy_name;}
+
 	// Methods to add children
 #if(1)
 
@@ -62,6 +65,11 @@ public:
 	void add_galaxy_dithers(int_t const & N);
 
 #endif
+
+	/**
+	 * Set up so that parameters will be generated in background-galaxy mode.
+	 */
+	void set_as_background_galaxy();
 
 	virtual ParamHierarchyLevel * clone() const override;
 

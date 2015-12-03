@@ -31,6 +31,8 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 #include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
@@ -69,6 +71,43 @@ Galaxy * Cluster::add_galaxy()
 void Cluster::add_galaxies(int_t const & N)
 {
 	return ParamHierarchyLevel::spawn_children<Galaxy>(N);
+}
+
+Galaxy * Cluster::add_central_galaxy()
+{
+	Galaxy * gal = add_galaxy();
+	gal->set_param_params(galaxy_type_name,"fixed",central_galaxy_type);
+
+	return gal;
+}
+
+Galaxy * Cluster::add_satellite_galaxy()
+{
+	Galaxy * gal = add_galaxy();
+	gal->set_param_params(galaxy_type_name,"fixed",satellite_galaxy_type);
+
+	return gal;
+}
+
+void Cluster::add_satellite_galaxies(int_t const & N)
+{
+	for(int i=0; i<N; ++i) add_satellite_galaxy();
+}
+
+#endif
+
+// Methods to automatically add children
+#if(1)
+
+void Cluster::fill_children()
+{
+	fill_galaxies();
+}
+
+void Cluster::fill_galaxies()
+{
+	add_central_galaxy();
+	add_satellite_galaxies( round_int( get_param_value( cluster_num_satellites_name ) ) );
 }
 
 #endif

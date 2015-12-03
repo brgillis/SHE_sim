@@ -31,6 +31,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/default_param_params.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
@@ -77,6 +78,21 @@ Image * Survey::add_image()
 void Survey::add_images(int_t const & N)
 {
 	return ParamHierarchyLevel::spawn_children<Image>(N);
+}
+
+#endif
+
+// Methods to automatically add children
+#if(1)
+
+void Survey::fill_children()
+{
+	fill_images();
+}
+
+void Survey::fill_images()
+{
+	add_images( round_int(get_param_value(num_images_name)) );
 }
 
 #endif

@@ -35,7 +35,9 @@
 #include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Field.hpp"
 #include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM
 {
@@ -91,6 +93,46 @@ Field * Image::add_field()
 void Image::add_fields(int_t const & N)
 {
 	return ParamHierarchyLevel::spawn_children<Field>(N);
+}
+
+Galaxy * Image::add_background_galaxy()
+{
+	Galaxy * gal = static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+	gal->set_as_background_galaxy();
+
+	return gal;
+}
+
+void Image::add_background_galaxies(int_t const & N)
+{
+	for(int i=0; i<N; ++i) add_background_galaxy();
+}
+
+#endif
+
+// Methods to automatically add children
+#if(1)
+
+void Image::fill_children()
+{
+	fill_clusters();
+	fill_field();
+	fill_background_galaxies();
+}
+
+void Image::fill_clusters()
+{
+	add_clusters(round_int(get_param_value(num_clusters_name)));
+}
+
+void Image::fill_field()
+{
+	add_fields(round_int(get_param_value(num_fields_name)));
+}
+
+void Image::fill_background_galaxies()
+{
+	add_background_galaxies(round_int(get_param_value(num_background_galaxies_name)));
 }
 
 #endif

@@ -28,6 +28,11 @@
 
 namespace SHE_SIM {
 
+// Constant definitions for each type
+constexpr const flt_t central_galaxy_type = -1.;
+constexpr const flt_t field_galaxy_type = 0;
+constexpr const flt_t satellite_galaxy_type = 1.;
+
 inline bool is_central_galaxy( flt_t const & galaxy_type )
 {
 	return galaxy_type<0;

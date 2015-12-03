@@ -332,6 +332,30 @@ ParamHierarchyLevel::children_t const & ParamHierarchyLevel::get_children() cons
 	return _children;
 }
 
+std::vector<ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_children( name_t const & type_name )
+{
+	std::vector<ParamHierarchyLevel::child_t *> res;
+
+	for( auto & child : _children )
+	{
+		if( child->get_name()==type_name ) res.push_back( child.get() );
+	}
+
+	return res;
+}
+
+std::vector<const ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_children( name_t const & type_name ) const
+{
+	std::vector<const ParamHierarchyLevel::child_t *> res;
+
+	for( const auto & child : _children )
+	{
+		if( child->get_name()==type_name ) res.push_back( child.get() );
+	}
+
+	return res;
+}
+
 ParamHierarchyLevel::child_t * ParamHierarchyLevel::get_child(const int & i)
 {
 	return _children.at(i).get();
@@ -345,6 +369,15 @@ ParamHierarchyLevel::child_t const * ParamHierarchyLevel::get_child(const int & 
 void ParamHierarchyLevel::adopt_child(child_t * const & p_child)
 {
 	_children.push_back( child_ptr_t(p_child) );
+}
+
+void ParamHierarchyLevel::autofill_children()
+{
+	fill_children();
+	for( auto & child : _children )
+	{
+		child->autofill_children();
+	}
 }
 
 param_t * ParamHierarchyLevel::get_param( name_t const & name )

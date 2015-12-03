@@ -26,12 +26,20 @@
 #ifndef MATH_HPP_
 #define MATH_HPP_
 
+#include "SHE_SIM_gal_params/common.hpp"
+
 namespace SHE_SIM {
 
 template< typename T >
 decltype(T()*T()) square(const T & v1)
 {
 	return v1*v1;
+}
+
+template< typename T >
+int_t round_int( const T & v )
+{
+	return static_cast<int_t>(v+0.5);
 }
 
 }

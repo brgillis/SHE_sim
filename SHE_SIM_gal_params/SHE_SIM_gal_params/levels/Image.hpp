@@ -26,11 +26,13 @@
 #ifndef SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
 #define SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
 
-#include <SHE_SIM_gal_params/common.hpp>
-#include <SHE_SIM_gal_params/default_values.hpp>
+#include <boost/optional.hpp>
 #include <utility>
 
+#include <SHE_SIM_gal_params/common.hpp>
+#include <SHE_SIM_gal_params/default_values.hpp>
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/level_names.hpp"
 
 namespace SHE_SIM
 {
@@ -40,6 +42,7 @@ class ClusterGroup;
 class Cluster;
 class FieldGroup;
 class Field;
+class Galaxy;
 
 /**
  * TODO Auto-generated comment stub
@@ -56,6 +59,8 @@ public:
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::image_level;}
+
+	virtual name_t get_name() const override {return image_name;}
 
 	// Methods to add children
 #if(1)
@@ -75,6 +80,23 @@ public:
 	Field * add_field();
 
 	void add_fields(int_t const & N);
+
+	Galaxy * add_background_galaxy();
+
+	void add_background_galaxies(int_t const & N);
+
+#endif
+
+	// Methods to automatically add children
+#if(1)
+
+	virtual void fill_children() override;
+
+	void fill_clusters();
+
+	void fill_field();
+
+	void fill_background_galaxies();
 
 #endif
 

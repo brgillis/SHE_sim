@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/level_names.hpp"
 
 namespace SHE_SIM
 {
@@ -55,6 +56,8 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::survey_level;}
 
+	virtual name_t get_name() const override {return survey_name;}
+
 	// Methods to add children
 #if(1)
 
@@ -65,6 +68,15 @@ public:
 	Image * add_image();
 
 	void add_images(int_t const & N);
+
+#endif
+
+	// Methods to automatically add children
+#if(1)
+
+	virtual void fill_children() override;
+
+	void fill_images();
 
 #endif
 

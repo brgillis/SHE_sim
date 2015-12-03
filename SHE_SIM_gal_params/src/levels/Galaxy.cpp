@@ -62,6 +62,13 @@ void Galaxy::add_galaxy_dithers(int_t const & N)
 
 #endif
 
+void Galaxy::set_as_background_galaxy()
+{
+	set_param_params(galaxy_type_name,"fixed",field_galaxy_type);
+	set_param_params(apparent_mag_vis_name,"alt_calculated");
+	set_param_params(apparent_size_name,"alt_calculated");
+}
+
 ParamHierarchyLevel * Galaxy::clone() const
 {
 	return new Galaxy(*this);

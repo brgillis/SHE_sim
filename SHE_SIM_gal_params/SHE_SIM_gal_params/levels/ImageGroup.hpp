@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/level_names.hpp"
 
 namespace SHE_SIM
 {
@@ -53,6 +54,8 @@ public:
 	 * @return The hierachy level. 0 = highest, 1 = just below 0, etc.
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::image_group_level;}
+
+	virtual name_t get_name() const override {return image_group_name;}
 
 	// Methods to add children
 #if(1)

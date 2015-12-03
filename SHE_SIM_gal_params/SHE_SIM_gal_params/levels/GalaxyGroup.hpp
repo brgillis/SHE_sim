@@ -54,6 +54,8 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::galaxy_group_level;}
 
+	virtual name_t get_name() const override {return galaxy_group_name;}
+
 	// Methods to add children
 #if(1)
 

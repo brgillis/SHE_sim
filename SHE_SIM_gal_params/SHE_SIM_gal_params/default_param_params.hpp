@@ -71,6 +71,7 @@ inline param_params_t make_default_param_params_map()
 	// Survey level
 
 	INSERT_FIXED_PARAM(gain);
+	INSERT_FIXED_PARAM(num_images);
 	INSERT_FIXED_PARAM(mag_i_inst_zp);
 	INSERT_FIXED_PARAM(mag_vis_inst_zp);
 	INSERT_FIXED_PARAM(pixel_scale);
@@ -87,6 +88,7 @@ inline param_params_t make_default_param_params_map()
 	INSERT_FIXED_PARAM(field_galaxy_density);
 	INSERT_FIXED_PARAM(image_size_xp);
 	INSERT_FIXED_PARAM(image_size_yp);
+	INSERT_FIXED_PARAM(num_fields);
 	INSERT_FIXED_PARAM(star_density);
 	INSERT_FIXED_PARAM(psf_params);
 	INSERT_LOGNORMAL_PARAM(subtracted_background);
@@ -161,6 +163,7 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(gain, dv::survey_level);
 	INSERT_LEVEL(mag_i_inst_zp, dv::survey_level);
 	INSERT_LEVEL(mag_vis_inst_zp, dv::survey_level);
+	INSERT_LEVEL(num_images, dv::survey_level);
 	INSERT_LEVEL(pixel_scale, dv::survey_level);
 	INSERT_LEVEL(read_noise, dv::survey_level);
 
@@ -172,6 +175,7 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(field_galaxy_density, dv::image_level);
 	INSERT_LEVEL(image_size_xp, dv::image_level);
 	INSERT_LEVEL(image_size_yp, dv::image_level);
+	INSERT_LEVEL(num_fields, dv::image_level);
 	INSERT_LEVEL(star_density, dv::image_level);
 	INSERT_LEVEL(psf_params, dv::image_level);
 	INSERT_LEVEL(subtracted_background, dv::image_level);

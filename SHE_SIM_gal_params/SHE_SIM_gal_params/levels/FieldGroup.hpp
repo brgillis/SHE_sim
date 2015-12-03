@@ -31,6 +31,7 @@
 #include <utility>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
+#include "SHE_SIM_gal_params/level_names.hpp"
 
 namespace SHE_SIM
 {
@@ -54,7 +55,7 @@ public:
 	 */
 	virtual int_t get_hierarchy_level() const override {return dv::field_group_level;}
 
-	virtual ParamHierarchyLevel * clone() const override;
+	virtual name_t get_name() const override {return field_group_name;}
 
 	// Methods to add children
 #if(1)
@@ -64,6 +65,8 @@ public:
 	void add_fields(int_t const & N);
 
 #endif
+
+	virtual ParamHierarchyLevel * clone() const override;
 
 };
 

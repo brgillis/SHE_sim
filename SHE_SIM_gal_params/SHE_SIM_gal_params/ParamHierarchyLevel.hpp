@@ -205,6 +205,13 @@ public:
 	virtual int_t get_hierarchy_level() const = 0;
 
 	/**
+	 * Get the name of the specific level.
+	 *
+	 * @return The level's name.
+	 */
+	virtual name_t get_name() const = 0;
+
+	/**
 	 * Get the number of children of this object.
 	 *
 	 * @return Number of children.
@@ -248,6 +255,60 @@ public:
 	 * @return A vector of this object's children.
 	 */
 	children_t const & get_children() const noexcept;
+
+	/**
+	 * Get a vector of this object's children of a given type.
+	 *
+	 * @param type_name The name of the desired type.
+	 * @return A vector of this object's children of the passed type.
+	 */
+	std::vector<child_t *> get_children( name_t const & type_name );
+
+	/**
+	 * Get a vector of this object's children of a given type.
+	 *
+	 * @param type_name The name of the desired type.
+	 * @return A vector of this object's children of the passed type.
+	 */
+	std::vector<const child_t *> get_children( name_t const & type_name ) const;
+
+	/**
+	 * Get a vector of this object's children of a given type.
+	 *
+	 * @return A vector of this object's children of the passed type.
+	 */
+	template< typename T_child >
+	std::vector<T_child *> get_children()
+	{
+		std::vector<T_child *> res;
+
+		for( auto & child : _children )
+		{
+			T_child * casted_child = dynamic_cast<T_child *>(child.get());
+			if( casted_child != nullptr ) res.push_back(casted_child);
+		}
+
+		return res;
+	}
+
+	/**
+	 * Get a vector of this object's children of a given type.
+	 *
+	 * @return A vector of this object's children of the passed type.
+	 */
+	template< typename T_child >
+	std::vector<const T_child *> get_children() const
+	{
+		std::vector<const T_child *> res;
+
+		for( auto & child : _children )
+		{
+			const T_child * casted_child = dynamic_cast<const T_child *>(child.get());
+			if( casted_child != nullptr ) res.push_back(casted_child);
+		}
+
+		return res;
+	}
 
 	/**
 	 * Get a pointer to a specific child. Will throw an exception if no child with that index exists.
@@ -304,6 +365,16 @@ public:
 	 * @param p_child Pointer to the child to take ownership of.
 	 */
 	void adopt_child(child_t * const & p_child);
+
+	/**
+	 * Automatically generate appropriate children for this object.
+	 */
+	virtual void fill_children() {}
+
+	/**
+	 * Automatically generate appropriate children for this object, and recursively do this for those children.
+	 */
+	void autofill_children();
 
 #endif
 

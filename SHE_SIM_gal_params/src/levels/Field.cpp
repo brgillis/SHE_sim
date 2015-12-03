@@ -31,6 +31,8 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/levels/Field.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 #include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
@@ -63,12 +65,30 @@ void Field::add_galaxy_groups(int_t const & N)
 
 Galaxy * Field::add_galaxy()
 {
-	return static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+	Galaxy * gal = static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+	gal->set_param_params(galaxy_type_name,"fixed",field_galaxy_type);
+
+	return gal;
 }
 
 void Field::add_galaxies(int_t const & N)
 {
-	return ParamHierarchyLevel::spawn_children<Galaxy>(N);
+	for(int i=0; i<N; ++i) add_galaxy();
+}
+
+#endif
+
+// Methods to automatically add children
+#if(1)
+
+void Field::fill_children()
+{
+	fill_galaxies();
+}
+
+void Field::fill_galaxies()
+{
+	add_galaxies( round_int( get_param_value( num_field_galaxies_name ) ) );
 }
 
 #endif

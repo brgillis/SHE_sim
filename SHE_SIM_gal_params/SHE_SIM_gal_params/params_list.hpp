@@ -63,6 +63,7 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	// Survey level
 	INSERT_PARAM(exp_time);
 	INSERT_PARAM(gain);
+	INSERT_PARAM(num_images);
 	INSERT_PARAM(mag_i_inst_zp);
 	INSERT_PARAM(mag_vis_inst_zp);
 	INSERT_PARAM(pixel_scale);
@@ -78,6 +79,7 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(field_galaxy_density);
 	INSERT_PARAM(image_size_xp);
 	INSERT_PARAM(image_size_yp);
+	INSERT_PARAM(num_fields);
 	INSERT_PARAM(psf_params);
 	INSERT_PARAM(star_density);
 	INSERT_PARAM(subtracted_background);
