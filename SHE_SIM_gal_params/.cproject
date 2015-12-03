@@ -31,6 +31,8 @@
 								<option id="gnu.cpp.compiler.option.include.paths.319089621" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.1799729616" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1058526020" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -40,6 +42,8 @@
 								<option id="gnu.c.compiler.lib.debug.option.debugging.level.1461868658" name="Debug Level" superClass="gnu.c.compiler.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1706973998" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2043977185" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -48,6 +52,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.debug.787084305" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.debug">
 								<option id="gnu.both.asm.option.include.paths.1509387246" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1149921784" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -87,6 +93,8 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1497545996" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.1292974990" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.optimization.flags.2011358544" name="Other optimization flags" superClass="gnu.cpp.compiler.option.optimization.flags" value="-fopenmp -funroll-loops -march=native -mfpmath=sse -flto" valueType="string"/>
@@ -97,6 +105,8 @@
 								<option id="gnu.c.compiler.lib.release.option.debugging.level.2081377164" name="Debug Level" superClass="gnu.c.compiler.lib.release.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1942088643" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.854497985" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -105,6 +115,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.release.1559736017" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.release">
 								<option id="gnu.both.asm.option.include.paths.1897247034" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.375041327" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -145,6 +157,8 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1229706087" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SHE_SIM_gal_params}&quot;"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.513523298" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.720662694" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
@@ -157,6 +171,8 @@
 								<option id="gnu.c.compiler.lib.debug.option.debugging.level.1958583433" name="Debug Level" superClass="gnu.c.compiler.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1135437769" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.564413054" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -165,6 +181,8 @@
 								<option id="gnu.cpp.link.option.libs.153584923" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_log"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_python"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1543331253" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/brg/lib"/>
@@ -179,6 +197,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.debug.2077667445" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.debug">
 								<option id="gnu.both.asm.option.include.paths.1488533027" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
+									<listOptionValue builtIn="false" value="../python2.7"/>
+									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.841399549" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>

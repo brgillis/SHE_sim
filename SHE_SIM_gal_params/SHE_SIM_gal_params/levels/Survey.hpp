@@ -78,6 +78,8 @@ public:
 
 	void fill_images();
 
+	void autofill_images() {autofill_children();}
+
 #endif
 
 	virtual ParamHierarchyLevel * clone() const override;
