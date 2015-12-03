@@ -147,7 +147,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SHE_SIM_gal_params}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.513523298" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.720662694" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.720662694" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="BOOST_LOG_DYN_LINK"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2019529161" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>

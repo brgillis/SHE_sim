@@ -28,6 +28,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
+#include <SHE_SIM_gal_params/object_types.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
 #include <cassert>
 #include <vector>

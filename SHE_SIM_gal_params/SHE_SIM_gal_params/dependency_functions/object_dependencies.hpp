@@ -27,6 +27,7 @@
 #define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_OBJECT_DEPENDENCIES_HPP_
 
 #include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/object_types.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/random_functions.hpp"
 

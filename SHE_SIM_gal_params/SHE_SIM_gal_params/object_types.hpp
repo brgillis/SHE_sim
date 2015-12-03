@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file psf_model.cpp
+ @file object_types.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,38 +23,36 @@
 
 \**********************************************************************/
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#ifndef SHE_SIM_GAL_PARAMS_OBJECT_TYPES_HPP_
+#define SHE_SIM_GAL_PARAMS_OBJECT_TYPES_HPP_
 
-#include <stdexcept>
+#include <memory>
 
 #include <GalSim.h>
 
-#include "SHE_SIM_gal_params/dependency_functions/object_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
 
 namespace SHE_SIM {
 
-// Image-level
+// Typedefs for the type of each object
 
-background_psf_t get_background_psf( flt_t const & psf_params )
-{
-	throw std::logic_error("get_background_psf NYI");
+typedef std::shared_ptr<galsim::SBProfile> p_profile_t;
+
+typedef p_profile_t background_psf_t;
+
+typedef array_t<p_profile_t> binned_observed_flux_distribution_t;
+typedef array_t<p_profile_t> binned_psf_t;
+typedef p_profile_t core_observed_flux_distribution_t;
+typedef array_1d_t core_sed_t;
+typedef p_profile_t disk_observed_flux_distribution_t;
+typedef array_1d_t disk_sed_t;
+typedef p_profile_t observed_flux_distribution_t;
+typedef array_2d_t psf_model_t;
+typedef array_2d_t pix_galaxy_w_pois_noise_t;
+
 }
 
-// Galaxy-level
-
-binned_psf_t get_binned_psf(psf_model_t const & psf_model, flt_t const & xp, flt_t const & yp)
-{
-	throw std::logic_error("get_binned_psf NYI");
-}
-
-psf_model_t get_psf_model( flt_t const & psf_params )
-{
-	throw std::logic_error("get_psf_model NYI");
-}
-
-} // namespace SHE_SIM
 
 
+
+#endif // SHE_SIM_GAL_PARAMS_OBJECT_TYPES_HPP_
