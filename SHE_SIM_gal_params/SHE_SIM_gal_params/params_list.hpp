@@ -28,8 +28,6 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/params/dependent_params.hpp>
-#include <SHE_SIM_gal_params/params/dependent_object_params.hpp>
-#include <SHE_SIM_gal_params/params/independent_object_params.hpp>
 #include <SHE_SIM_gal_params/params/independent_params.hpp>
 #include <memory>
 #include <unordered_map>
@@ -68,7 +66,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(mag_vis_inst_zp);
 	INSERT_PARAM(pixel_scale);
 	INSERT_PARAM(read_noise);
-	INSERT_PARAM(vis_filter_response);
 
 	INSERT_PARAM(mag_i_zp);
 	INSERT_PARAM(mag_vis_zp);
@@ -76,7 +73,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	// Image level
 	INSERT_PARAM(background_galaxy_density);
 	INSERT_PARAM(background_noise);
-	INSERT_PARAM(background_psf);
 	INSERT_PARAM(cluster_density);
 	INSERT_PARAM(field_galaxy_density);
 	INSERT_PARAM(image_size_xp);
@@ -103,15 +99,9 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 
 	INSERT_PARAM(apparent_mag_vis);
 	INSERT_PARAM(apparent_size);
-	INSERT_PARAM(binned_observed_flux_distribution);
-	INSERT_PARAM(binned_psf);
-	INSERT_PARAM(core_sed);
-	INSERT_PARAM(disk_sed);
 	INSERT_PARAM(galaxy_type);
 	INSERT_PARAM(morphology);
-	INSERT_PARAM(observed_flux_distribution);
 	INSERT_PARAM(physical_size);
-	INSERT_PARAM(psf_model);
 	INSERT_PARAM(redshift);
 	INSERT_PARAM(rotation);
 	INSERT_PARAM(rp);
@@ -127,8 +117,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 
 	INSERT_PARAM(dither_xp_shift);
 	INSERT_PARAM(dither_yp_shift);
-
-	INSERT_PARAM(pix_galaxy_w_pois_noise);
 
 	return res;
 

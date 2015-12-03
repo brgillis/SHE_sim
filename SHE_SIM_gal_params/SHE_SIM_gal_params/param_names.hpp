@@ -38,13 +38,11 @@ DEF_NAME(mag_vis_zp);
 DEF_NAME(mag_i_zp);
 DEF_NAME(pixel_scale);
 DEF_NAME(read_noise);
-DEF_NAME(vis_filter_response);
 
 // Image level
 
 DEF_NAME(background_galaxy_density);
 DEF_NAME(background_noise);
-DEF_NAME(background_psf);
 DEF_NAME(cluster_density);
 DEF_NAME(exp_time);
 DEF_NAME(field_galaxy_density);
@@ -72,15 +70,8 @@ DEF_NAME(cluster_yp);
 
 DEF_NAME(apparent_mag_vis);
 DEF_NAME(apparent_size);
-DEF_NAME(binned_observed_flux_distribution);
-DEF_NAME(binned_psf);
-DEF_NAME(core_observed_flux_distribution);
-DEF_NAME(core_sed);
-DEF_NAME(disk_observed_flux_distribution);
-DEF_NAME(disk_sed);
 DEF_NAME(galaxy_type);
 DEF_NAME(morphology);
-DEF_NAME(observed_flux_distribution);
 DEF_NAME(physical_size);
 DEF_NAME(psf_model);
 DEF_NAME(redshift);
@@ -97,7 +88,6 @@ DEF_NAME(yp);
 // GalaxyDither level
 DEF_NAME(dither_xp_shift);
 DEF_NAME(dither_yp_shift);
-DEF_NAME(pix_galaxy_w_pois_noise);
 
 #undef DEF_NAME
 
