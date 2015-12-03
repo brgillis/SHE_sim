@@ -35,6 +35,7 @@
 
 // Include all param param headers here
 #include "SHE_SIM_gal_params/ParamParam.hpp"
+#include "SHE_SIM_gal_params/param_params/AltCalculated.hpp"
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
 #include "SHE_SIM_gal_params/param_params/DepUniform.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
@@ -67,6 +68,7 @@ inline param_params_t make_full_param_params_map()
 	param_params_t res;
 
 	// Insert all param_params here
+	insert_param_param<AltCalculated>(res);
 	insert_param_param<Calculated>(res);
 	insert_param_param<DepUniform>(res);
 	insert_param_param<IndFixed>(res);
