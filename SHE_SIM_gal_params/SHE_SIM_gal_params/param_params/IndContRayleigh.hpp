@@ -28,6 +28,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <stdexcept>
+#include <initializer_list>
 
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/random_functions.hpp"
@@ -80,9 +81,9 @@ public:
 		return new IndContRayleigh(*this);
 	}
 
-	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
 	{
-		return new IndContRayleigh(params.at(0),params.at(1),params.at(2));
+		return new IndContRayleigh(*params.begin(),*(params.begin()+1),*(params.begin()+2));
 	}
 };
 

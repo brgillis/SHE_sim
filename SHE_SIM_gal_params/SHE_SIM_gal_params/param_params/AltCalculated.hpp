@@ -26,6 +26,8 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_ALTCALCULATED_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_ALTCALCULATED_HPP_
 
+#include <initializer_list>
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/random_functions.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
@@ -72,7 +74,7 @@ public:
 		return new AltCalculated(*this);
 	}
 
-	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
 	{
 		return new AltCalculated();
 	}

@@ -38,8 +38,8 @@
 #include "SHE_SIM_gal_params/param_params/AltCalculated.hpp"
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
 #include "SHE_SIM_gal_params/param_params/DepUniform.hpp"
+#include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
-#include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalPeak.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"

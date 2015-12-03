@@ -37,7 +37,7 @@
 
 // Include all needed param param headers here
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
-#include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
+#include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"
 #include "SHE_SIM_gal_params/param_params/IndUniform.hpp"
@@ -213,7 +213,6 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(apparent_mag_vis, dv::galaxy_level);
 	INSERT_LEVEL(galaxy_type, dv::galaxy_level);
 	INSERT_LEVEL(physical_size, dv::galaxy_level);
-	INSERT_LEVEL(psf_model, dv::galaxy_level);
 	INSERT_LEVEL(stellar_mass, dv::galaxy_level);
 
 	// GalaxyDither level

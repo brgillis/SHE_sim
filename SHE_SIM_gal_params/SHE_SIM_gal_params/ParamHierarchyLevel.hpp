@@ -371,7 +371,7 @@ public:
 	template< typename... Args >
 	void set_param_params(name_t const & name, str_t const & param_type, Args... args)
 	{
-		_local_param_params[name] = param_param_ptr_t(param_params_map.at(param_type)->recreate(std::vector<flt_t>({args...})));
+		_local_param_params[name] = param_param_ptr_t(param_params_map.at(param_type)->recreate({args...}));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
 
