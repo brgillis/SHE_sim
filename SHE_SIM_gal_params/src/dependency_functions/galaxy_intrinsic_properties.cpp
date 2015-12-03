@@ -44,6 +44,13 @@ flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, fl
 	return drand( dv::morphology_min, dv::morphology_max, rng );
 }
 
+flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng  )
+{
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_morphology (alt) used.";
+
+	return drand( dv::morphology_min, dv::morphology_max, rng );
+}
+
 flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_physical_size used.";

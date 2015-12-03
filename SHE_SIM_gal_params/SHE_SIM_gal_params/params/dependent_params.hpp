@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file DEPENDENT_PARAMs.hpp
+ @file dependent_params.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -137,12 +137,6 @@ DEPENDENT_PARAM(cluster_num_satellites,
 
 DEPENDENT_PARAM(apparent_mag_vis,
 		_cached_value = get_apparent_mag_vis(REQUEST(stellar_mass), REQUEST(redshift)));
-
-DEPENDENT_PARAM(apparent_size,
-		_cached_value = get_apparent_size(REQUEST(physical_size), REQUEST(redshift)));
-
-DEPENDENT_PARAM(morphology,
-		_cached_value = generate_morphology(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));
 
 DEPENDENT_PARAM(physical_size,
 		_cached_value = generate_physical_size(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));

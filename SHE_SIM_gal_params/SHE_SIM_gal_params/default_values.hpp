@@ -106,13 +106,15 @@ constexpr const int_t galaxy_group_level = 50;
 
 constexpr const int_t galaxy_level = 60;
 
-constexpr const int_t galaxy_type = 0.; // 0 = field, <0 = central, >0 = satellite
-
 constexpr const flt_t apparent_mag_vis_min = 17;
 constexpr const flt_t apparent_mag_vis_max = 24.5;
 
+constexpr const flt_t apparent_size = std::pow(10.,-0.5); // arcsec
+
 constexpr const flt_t apparent_size_l10_mean = -0.5; // log10 arcsec
 constexpr const flt_t apparent_size_l10_stddev = 0.15; // log10 arcsec
+
+constexpr const int_t galaxy_type = 0.; // 0 = field, <0 = central, >0 = satellite
 
 constexpr const flt_t morphology_min = 0.5; // Sersic index
 constexpr const flt_t morphology_max = 6.5; // Sersic index

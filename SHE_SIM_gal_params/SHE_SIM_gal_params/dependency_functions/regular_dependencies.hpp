@@ -70,27 +70,31 @@ flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
 
 flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift );
 
-flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  );
+flt_t generate_apparent_size( flt_t const & apparent_mag_vis, gen_t & rng );
 
-flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  );
+flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng );
+
+flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng );
+
+flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  );
+				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );
 
-flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng  );
+flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng );
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  );
+				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );
 
-flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng  );
+flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng );
 
-flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const & redshift, gen_t & rng  );
+flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const & redshift, gen_t & rng );
 
-flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng  );
+flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng );
 
-flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng  );
+flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng );
 
-flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng  );
+flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng );
 
 
 

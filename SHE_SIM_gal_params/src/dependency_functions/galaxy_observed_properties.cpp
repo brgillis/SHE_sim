@@ -48,7 +48,14 @@ flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
 
-	return drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, rng );
+	return dv::apparent_size;
+}
+
+flt_t generate_apparent_size( flt_t const & apparent_mag_vis, gen_t & rng )
+{
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
+
+	return dv::apparent_size;
 }
 
 flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng  )
