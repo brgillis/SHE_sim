@@ -47,7 +47,7 @@ class FieldGroup: public ParamHierarchyLevel
 
 public:
 	FieldGroup(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~FieldGroup();
+	virtual ~FieldGroup() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -66,7 +66,14 @@ public:
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<Field *> get_fields();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new FieldGroup(*this); }
 
 };
 

@@ -30,12 +30,11 @@
 #include <utility>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/default_param_params.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/params_list.hpp"
-#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
 {
@@ -43,17 +42,6 @@ namespace SHE_SIM
 Survey::Survey()
 : ParamHierarchyLevel(nullptr,
 		get_full_params_map(*this))
-{
-	// Set the local generation levels from defaults
-	for( auto const & name_and_gen_level : default_generation_levels_map )
-	{
-		set_generation_level(name_and_gen_level.first,*name_and_gen_level.second);
-	}
-
-	return;
-}
-
-Survey::~Survey()
 {
 }
 
@@ -85,21 +73,25 @@ void Survey::add_images(int_t const & N)
 // Methods to automatically add children
 #if(1)
 
-void Survey::fill_children()
-{
-	fill_images();
-}
-
 void Survey::fill_images()
 {
-	add_images( round_int(get_param_value(num_images_name)) );
+	 add_images( round_int(get_param_value(num_images_name)) );
 }
 
 #endif
 
-ParamHierarchyLevel * Survey::clone() const
+// Methods to get children of specific types
+#if(1)
+
+std::vector<ImageGroup *> Survey::get_image_groups()
 {
-	return new Survey(*this);
+	return get_children<ImageGroup>();
 }
+
+std::vector<Image *> Survey::get_images() {
+	return get_children<Image>();
+}
+
+#endif
 
 } // namespace SHE_SIM

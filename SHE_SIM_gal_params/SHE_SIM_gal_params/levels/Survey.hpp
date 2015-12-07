@@ -48,7 +48,8 @@ class Survey: public ParamHierarchyLevel
 
 public:
 	Survey();
-	virtual ~Survey();
+
+	virtual ~Survey() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -74,15 +75,24 @@ public:
 	// Methods to automatically add children
 #if(1)
 
-	virtual void fill_children() override;
+	virtual void fill_children() override { fill_images(); }
 
 	void fill_images();
 
-	void autofill_images() {autofill_children();}
+	void autofill_images() { autofill_children(); }
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<ImageGroup *> get_image_groups();
+
+	std::vector<Image *> get_images();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new Survey(*this); }
 
 };
 

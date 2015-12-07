@@ -26,10 +26,10 @@
 #ifndef SHE_SIM_GAL_PARAMS_LEVELS_CLUSTER_HPP_
 #define SHE_SIM_GAL_PARAMS_LEVELS_CLUSTER_HPP_
 
+#include <vector>
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
-#include <utility>
-
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/level_names.hpp"
 
@@ -48,7 +48,7 @@ class Cluster: public ParamHierarchyLevel
 
 public:
 	Cluster(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~Cluster();
+	virtual ~Cluster() {}
 
 	virtual int_t get_hierarchy_level() const override {return dv::cluster_level;}
 
@@ -82,7 +82,20 @@ public:
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<GalaxyGroup *> get_galaxy_groups();
+
+	std::vector<Galaxy *> get_galaxies();
+
+	Galaxy * get_central_galaxy();
+
+	std::vector<Galaxy *> get_satellite_galaxies();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new Cluster(*this); }
 
 };
 

@@ -27,7 +27,7 @@
 #include "config.h"
 #endif
 
-#include <utility>
+#include <vector>
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
@@ -43,10 +43,6 @@ namespace SHE_SIM
 Field::Field(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
 		get_full_params_map(*this))
-{
-}
-
-Field::~Field()
 {
 }
 
@@ -93,9 +89,19 @@ void Field::fill_galaxies()
 
 #endif
 
-ParamHierarchyLevel * Field::clone() const
+// Methods to get children of specific types
+#if(1)
+
+std::vector<GalaxyGroup *> Field::get_galaxy_groups()
 {
-	return new Field(*this);
+	return get_children<GalaxyGroup>();
 }
+
+std::vector<Galaxy *> Field::get_galaxies()
+{
+	return get_children<Galaxy>();
+}
+
+#endif
 
 } // namespace SHE_SIM

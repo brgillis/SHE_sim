@@ -28,8 +28,6 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
-#include <utility>
-
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/level_names.hpp"
 
@@ -44,10 +42,13 @@ class GalaxyDither;
  */
 class Galaxy: public ParamHierarchyLevel
 {
+private:
+
+	bool _is_background;
 
 public:
 	Galaxy(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~Galaxy();
+	virtual ~Galaxy() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -71,7 +72,20 @@ public:
 	 */
 	void set_as_background_galaxy();
 
-	virtual ParamHierarchyLevel * clone() const override;
+	bool is_background_galaxy() { return _is_background; }
+
+	/**
+	 * Set up so that parameters will be generated in foreground-galaxy mode.
+	 */
+	void set_as_foreground_galaxy();
+
+	bool is_foreground_galaxy() { return !_is_background; }
+
+	bool is_central_galaxy();
+	bool is_field_galaxy();
+	bool is_satellite_galaxy();
+
+	virtual ParamHierarchyLevel * clone() const override { return new Galaxy(*this); }
 
 };
 

@@ -216,7 +216,7 @@ public:
 	 *
 	 * @return Number of children.
 	 */
-	int_t num_children() const;
+	int_t num_children() const { return get_children().size(); }
 
 #endif // Get details on this object
 
@@ -228,33 +228,35 @@ public:
 	 *
 	 * @return A pointer to this object's parent.
 	 */
-	parent_t * get_parent();
+	parent_t * get_parent() { return _p_parent; }
 
 	/**
 	 * Get a pointer to this object's parent.
 	 *
 	 * @return A pointer to this object's parent.
 	 */
-	parent_t const * get_parent() const;
+	parent_t const * get_parent() const { return _p_parent; }
 
 #endif
 
 	// Child-related methods
 #if(1)
 
-	/**
-	 * Get a vector of this object's children.
-	 *
-	 * @return A vector of this object's children.
-	 */
-	children_t const & get_children() noexcept;
+	void clear_children() { _children.clear(); }
 
 	/**
 	 * Get a vector of this object's children.
 	 *
 	 * @return A vector of this object's children.
 	 */
-	children_t const & get_children() const noexcept;
+	children_t const & get_children() noexcept { return _children; }
+
+	/**
+	 * Get a vector of this object's children.
+	 *
+	 * @return A vector of this object's children.
+	 */
+	children_t const & get_children() const noexcept { return _children; }
 
 	/**
 	 * Get a vector of this object's children of a given type.
@@ -448,14 +450,17 @@ public:
 
 	void set_p_param_params( name_t const & name, ParamParam const * const & params );
 
-	int_t const & get_local_ID() const noexcept;
+	int_t const & get_local_ID() const noexcept { return _local_ID; }
 
 	std::vector<int_t> get_ID_seq() const;
 
 #endif
 
-	void seed();
-	void seed( int_t const & seed );
+	void clear() { clear_children(); _clear_own_param_cache(); }
+
+	int_t const & get_seed() const noexcept { return _seed; }
+	void set_seed();
+	void set_seed( int_t const & seed );
 
 	virtual ParamHierarchyLevel * clone() const = 0;
 

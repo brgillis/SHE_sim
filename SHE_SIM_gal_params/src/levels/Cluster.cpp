@@ -27,7 +27,8 @@
 #include "config.h"
 #endif
 
-#include <utility>
+#include <stdexcept>
+#include <vector>
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
@@ -43,10 +44,6 @@ namespace SHE_SIM
 Cluster::Cluster(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
 		get_full_params_map(*this))
-{
-}
-
-Cluster::~Cluster()
 {
 }
 
@@ -75,6 +72,11 @@ void Cluster::add_galaxies(int_t const & N)
 
 Galaxy * Cluster::add_central_galaxy()
 {
+	// Check that we don't already have a central galaxy
+	if( get_central_galaxy() != nullptr )
+	{
+		throw std::runtime_error("Cannot add another central galaxy.");
+	}
 	Galaxy * gal = add_galaxy();
 	gal->set_param_params(galaxy_type_name,"fixed",central_galaxy_type);
 
@@ -112,9 +114,51 @@ void Cluster::fill_galaxies()
 
 #endif
 
-ParamHierarchyLevel * Cluster::clone() const
+// Methods to get children of specific types
+#if(1)
+
+std::vector<GalaxyGroup *> Cluster::get_galaxy_groups()
 {
-	return new Cluster(*this);
+	return get_children<GalaxyGroup>();
 }
+
+std::vector<Galaxy *> Cluster::get_galaxies()
+{
+	return get_children<Galaxy>();
+}
+
+Galaxy * Cluster::get_central_galaxy()
+{
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_central_galaxy())
+				return casted_child;
+		}
+	}
+
+	return nullptr;
+}
+
+std::vector<Galaxy *> Cluster::get_satellite_galaxies()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_satellite_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+
+#endif
 
 } // namespace SHE_SIM

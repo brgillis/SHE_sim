@@ -163,7 +163,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 
 		// Get ID from the parent's number of children
 		_local_ID = p_parent->num_children();
-		seed(p_parent->_seed);
+		set_seed(p_parent->get_seed());
 	}
 	else
 	{
@@ -171,7 +171,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
 		_local_ID = 0;
 
 		// Use default seed
-		seed();
+		set_seed();
 	}
 }
 
@@ -307,38 +307,13 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && othe
 
 // Public methods
 
-int_t ParamHierarchyLevel::num_children() const
-{
-	return _children.size();
-}
-
-ParamHierarchyLevel::parent_t * ParamHierarchyLevel::get_parent()
-{
-	return _p_parent;
-}
-
-ParamHierarchyLevel::parent_t const * ParamHierarchyLevel::get_parent() const
-{
-	return _p_parent;
-}
-
-ParamHierarchyLevel::children_t const & ParamHierarchyLevel::get_children() noexcept
-{
-	return _children;
-}
-
-ParamHierarchyLevel::children_t const & ParamHierarchyLevel::get_children() const noexcept
-{
-	return _children;
-}
-
 std::vector<ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_children( name_t const & type_name )
 {
 	std::vector<ParamHierarchyLevel::child_t *> res;
 
 	for( auto & child : _children )
 	{
-		if( child->get_name()==type_name ) res.push_back( child.get() );
+		if( ( child->get_name()==type_name ) or ( type_name == "" ) ) res.push_back( child.get() );
 	}
 
 	return res;
@@ -350,7 +325,7 @@ std::vector<const ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_child
 
 	for( const auto & child : _children )
 	{
-		if( child->get_name()==type_name ) res.push_back( child.get() );
+		if( ( child->get_name()==type_name ) or ( type_name == "" ) ) res.push_back( child.get() );
 	}
 
 	return res;
@@ -442,11 +417,6 @@ void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam co
 	_drop_local_param_param(name);
 }
 
-int_t const & ParamHierarchyLevel::get_local_ID() const noexcept
-{
-	return _local_ID;
-}
-
 std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 {
 	// Append this to the parent's sequence if the parent exists
@@ -466,13 +436,13 @@ std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 	}
 }
 
-void ParamHierarchyLevel::seed()
+void ParamHierarchyLevel::set_seed()
 {
-	seed(time(nullptr));
+	set_seed(time(nullptr));
 }
 
 
-void ParamHierarchyLevel::seed( int_t const & seed )
+void ParamHierarchyLevel::set_seed( int_t const & seed )
 {
 	// Clear the cache
 	_clear_own_param_cache();
@@ -490,7 +460,7 @@ void ParamHierarchyLevel::seed( int_t const & seed )
 	// Seed all children with this
 	for( auto & child : _children )
 	{
-		child->seed(seed);
+		child->set_seed(seed);
 	}
 }
 

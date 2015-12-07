@@ -43,10 +43,6 @@ ClusterGroup::ClusterGroup(ParamHierarchyLevel * const & p_parent)
 {
 }
 
-ClusterGroup::~ClusterGroup()
-{
-}
-
 // Methods to add children
 #if(1)
 
@@ -62,9 +58,14 @@ void ClusterGroup::add_clusters(int_t const & N)
 
 #endif
 
-ParamHierarchyLevel * ClusterGroup::clone() const
+// Methods to get children of specific types
+#if(1)
+
+std::vector<Cluster *> ClusterGroup::get_clusters()
 {
-	return new ClusterGroup(*this);
+	return get_children<Cluster>();
 }
+
+#endif
 
 } // namespace SHE_SIM

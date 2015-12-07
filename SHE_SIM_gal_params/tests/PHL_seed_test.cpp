@@ -61,7 +61,7 @@ BOOST_FIXTURE_TEST_CASE(test_PHL_ID, PHL_seed_fixture) {
 
 	Survey survey2 = survey1;
 
-	survey1.seed(test_seed1);
+	survey1.set_seed(test_seed1);
 
 	ImageGroup image_group11 = *survey1.add_image_group();
 	ImageGroup image_group12 = *survey1.add_image_group();
@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(test_PHL_ID, PHL_seed_fixture) {
 	ImageGroup image_group21 = *survey2.add_image_group();
 	ImageGroup image_group22 = *survey2.add_image_group();
 
-	survey2.seed(test_seed1);
+	survey2.set_seed(test_seed1);
 
 	// Check it's as expected
 	BOOST_CHECK_NE(survey1.get_param_value(exp_time_name),image_group11.get_param_value(exp_time_name));

@@ -43,10 +43,6 @@ ImageGroup::ImageGroup(ParamHierarchyLevel * const & p_parent)
 {
 }
 
-ImageGroup::~ImageGroup()
-{
-}
-
 // Methods to add children
 #if(1)
 
@@ -62,9 +58,13 @@ void ImageGroup::add_images(int_t const & N)
 
 #endif
 
-ParamHierarchyLevel * ImageGroup::clone() const
-{
-	return new ImageGroup(*this);
+// Methods to get children of specific types
+#if(1)
+
+std::vector<Image *> ImageGroup::get_images() {
+	return get_children<Image>();
 }
+
+#endif
 
 } // namespace SHE_SIM

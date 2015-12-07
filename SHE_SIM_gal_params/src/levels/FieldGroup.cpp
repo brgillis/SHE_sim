@@ -43,10 +43,6 @@ FieldGroup::FieldGroup(ParamHierarchyLevel * const & p_parent)
 {
 }
 
-FieldGroup::~FieldGroup()
-{
-}
-
 // Methods to add children
 #if(1)
 
@@ -62,9 +58,13 @@ void FieldGroup::add_fields(int_t const & N)
 
 #endif
 
-ParamHierarchyLevel * FieldGroup::clone() const
-{
-	return new FieldGroup(*this);
+// Methods to get children of specific types
+#if(1)
+
+std::vector<Field *> FieldGroup::get_fields() {
+	return get_children<Field>();
 }
+
+#endif
 
 } // namespace SHE_SIM

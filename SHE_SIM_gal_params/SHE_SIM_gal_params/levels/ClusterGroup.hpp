@@ -47,7 +47,7 @@ class ClusterGroup: public ParamHierarchyLevel
 
 public:
 	ClusterGroup(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~ClusterGroup();
+	virtual ~ClusterGroup() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -57,8 +57,6 @@ public:
 
 	virtual name_t get_name() const override {return cluster_group_name;}
 
-	virtual ParamHierarchyLevel * clone() const override;
-
 	// Methods to add children
 #if(1)
 
@@ -67,6 +65,15 @@ public:
 	void add_clusters(int_t const & N);
 
 #endif
+
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<Cluster *> get_clusters();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new ClusterGroup(*this); }
 
 };
 

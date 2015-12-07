@@ -27,7 +27,7 @@
 #include "config.h"
 #endif
 
-#include <utility>
+#include <vector>
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
@@ -40,10 +40,6 @@ namespace SHE_SIM
 GalaxyGroup::GalaxyGroup(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
 		get_full_params_map(*this))
-{
-}
-
-GalaxyGroup::~GalaxyGroup()
 {
 }
 
@@ -62,9 +58,13 @@ void GalaxyGroup::add_galaxies(int_t const & N)
 
 #endif
 
-ParamHierarchyLevel * GalaxyGroup::clone() const
-{
-	return new GalaxyGroup(*this);
+// Methods to get children of specific types
+#if(1)
+
+std::vector<Galaxy *> GalaxyGroup::get_galaxies() {
+	return get_children<Galaxy>();
 }
+
+#endif
 
 } // namespace SHE_SIM

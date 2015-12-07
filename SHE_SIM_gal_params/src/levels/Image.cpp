@@ -36,6 +36,7 @@
 #include "SHE_SIM_gal_params/levels/Field.hpp"
 #include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
+#include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
 
@@ -45,10 +46,6 @@ namespace SHE_SIM
 Image::Image(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
 		get_full_params_map(*this))
-{
-}
-
-Image::~Image()
 {
 }
 
@@ -95,6 +92,26 @@ void Image::add_fields(int_t const & N)
 	return ParamHierarchyLevel::spawn_children<Field>(N);
 }
 
+GalaxyGroup * Image::add_galaxy_group()
+{
+	return static_cast<GalaxyGroup *>(ParamHierarchyLevel::spawn_child<GalaxyGroup>());
+}
+
+void Image::add_galaxy_groups(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<GalaxyGroup>(N);
+}
+
+Galaxy * Image::add_galaxy()
+{
+	return static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+}
+
+void Image::add_galaxies(int_t const & N)
+{
+	return ParamHierarchyLevel::spawn_children<Galaxy>(N);
+}
+
 Galaxy * Image::add_background_galaxy()
 {
 	Galaxy * gal = static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
@@ -106,6 +123,19 @@ Galaxy * Image::add_background_galaxy()
 void Image::add_background_galaxies(int_t const & N)
 {
 	for(int i=0; i<N; ++i) add_background_galaxy();
+}
+
+Galaxy * Image::add_foreground_galaxy()
+{
+	Galaxy * gal = static_cast<Galaxy *>(ParamHierarchyLevel::spawn_child<Galaxy>());
+	gal->set_as_foreground_galaxy();
+
+	return gal;
+}
+
+void Image::add_foreground_galaxies(int_t const & N)
+{
+	for(int i=0; i<N; ++i) add_foreground_galaxy();
 }
 
 #endif
@@ -122,24 +152,115 @@ void Image::fill_children()
 
 void Image::fill_clusters()
 {
-	add_clusters(round_int(get_param_value(num_clusters_name)));
+	int_t N = round_int(get_param_value(num_clusters_name));
+	add_clusters(N);
+}
+void Image::autofill_clusters()
+{
+	int_t N = round_int(get_param_value(num_clusters_name));
+	for( int_t i=0; i<N; ++i )
+	{
+		auto p_new = add_cluster();
+		p_new->autofill_children();
+	}
 }
 
 void Image::fill_field()
 {
-	add_fields(round_int(get_param_value(num_fields_name)));
+	int_t N = round_int(get_param_value(num_fields_name));
+	add_fields(N);
+}
+void Image::autofill_field()
+{
+	int_t N = round_int(get_param_value(num_fields_name));
+	for( int_t i=0; i<N; ++i )
+	{
+		auto p_new = add_field();
+		p_new->autofill_children();
+	}
 }
 
 void Image::fill_background_galaxies()
 {
-	add_background_galaxies(round_int(get_param_value(num_background_galaxies_name)));
+	int_t N = round_int(get_param_value(num_background_galaxies_name));
+	add_background_galaxies(N);
+}
+void Image::autofill_background_galaxies()
+{
+	int_t N = round_int(get_param_value(num_background_galaxies_name));
+	for( int_t i=0; i<N; ++i )
+	{
+		auto p_new = add_background_galaxy();
+		p_new->autofill_children();
+	}
 }
 
 #endif
 
-ParamHierarchyLevel * Image::clone() const
+// Methods to get children of specific types
+#if(1)
+
+std::vector<ClusterGroup *> Image::get_cluster_groups()
 {
-	return new Image(*this);
+	return get_children<ClusterGroup>();
 }
+
+std::vector<Cluster *> Image::get_clusters() {
+	return get_children<Cluster>();
+}
+
+std::vector<FieldGroup *> Image::get_field_groups()
+{
+	return get_children<FieldGroup>();
+}
+
+std::vector<Field *> Image::get_fields() {
+	return get_children<Field>();
+}
+
+std::vector<GalaxyGroup *> Image::get_galaxy_groups()
+{
+	return get_children<GalaxyGroup>();
+}
+
+std::vector<Galaxy *> Image::get_galaxies() {
+	return get_children<Galaxy>();
+}
+
+std::vector<Galaxy *> Image::get_background_galaxies() {
+
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_background_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+
+std::vector<Galaxy *> Image::get_foreground_galaxies() {
+
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_foreground_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+
+#endif
 
 } // namespace SHE_SIM

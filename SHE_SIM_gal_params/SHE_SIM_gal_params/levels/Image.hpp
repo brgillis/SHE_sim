@@ -26,8 +26,7 @@
 #ifndef SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
 #define SHE_SIM_GAL_PARAMS_LEVELS_IMAGE_HPP_
 
-#include <boost/optional.hpp>
-#include <utility>
+#include <vector>
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
@@ -42,6 +41,7 @@ class ClusterGroup;
 class Cluster;
 class FieldGroup;
 class Field;
+class GalaxyGroup;
 class Galaxy;
 
 /**
@@ -52,7 +52,7 @@ class Image: public ParamHierarchyLevel
 
 public:
 	Image(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~Image();
+	virtual ~Image() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -81,9 +81,21 @@ public:
 
 	void add_fields(int_t const & N);
 
+	GalaxyGroup * add_galaxy_group();
+
+	void add_galaxy_groups(int_t const & N);
+
+	Galaxy * add_galaxy();
+
+	void add_galaxies(int_t const & N);
+
 	Galaxy * add_background_galaxy();
 
 	void add_background_galaxies(int_t const & N);
+
+	Galaxy * add_foreground_galaxy();
+
+	void add_foreground_galaxies(int_t const & N);
 
 #endif
 
@@ -93,14 +105,38 @@ public:
 	virtual void fill_children() override;
 
 	void fill_clusters();
+	void autofill_clusters();
 
 	void fill_field();
+	void autofill_field();
 
 	void fill_background_galaxies();
+	void autofill_background_galaxies();
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<ClusterGroup *> get_cluster_groups();
+
+	std::vector<Cluster *> get_clusters();
+
+	std::vector<FieldGroup *> get_field_groups();
+
+	std::vector<Field *> get_fields();
+
+	std::vector<GalaxyGroup *> get_galaxy_groups();
+
+	std::vector<Galaxy *> get_galaxies();
+
+	std::vector<Galaxy *> get_background_galaxies();
+
+	std::vector<Galaxy *> get_foreground_galaxies();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new Image(*this); }
 
 };
 

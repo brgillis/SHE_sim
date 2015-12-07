@@ -48,7 +48,7 @@ class Field: public ParamHierarchyLevel
 
 public:
 	Field(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~Field();
+	virtual ~Field() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -80,7 +80,16 @@ public:
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<GalaxyGroup *> get_galaxy_groups();
+
+	std::vector<Galaxy *> get_galaxies();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new Field(*this); }
 
 };
 

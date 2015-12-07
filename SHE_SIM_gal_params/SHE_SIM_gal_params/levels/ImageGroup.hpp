@@ -47,7 +47,7 @@ class ImageGroup: public ParamHierarchyLevel
 
 public:
 	ImageGroup(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~ImageGroup();
+	virtual ~ImageGroup() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -66,7 +66,14 @@ public:
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<Image *> get_images();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new ImageGroup(*this); }
 
 };
 

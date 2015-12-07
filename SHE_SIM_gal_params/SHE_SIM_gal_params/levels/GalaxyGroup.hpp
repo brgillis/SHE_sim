@@ -26,10 +26,10 @@
 #ifndef SHE_SIM_GAL_PARAMS_LEVELS_GALAXYGROUP_HPP_
 #define SHE_SIM_GAL_PARAMS_LEVELS_GALAXYGROUP_HPP_
 
+#include <vector>
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
-#include <utility>
-
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 
 namespace SHE_SIM
@@ -46,7 +46,7 @@ class GalaxyGroup: public ParamHierarchyLevel
 
 public:
 	GalaxyGroup(ParamHierarchyLevel * const & parent = nullptr);
-	virtual ~GalaxyGroup();
+	virtual ~GalaxyGroup() {}
 
 	/**
 	 * Get the hierarchy level for this class.
@@ -65,7 +65,14 @@ public:
 
 #endif
 
-	virtual ParamHierarchyLevel * clone() const override;
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<Galaxy *> get_galaxies();
+
+#endif
+
+	virtual ParamHierarchyLevel * clone() const override { return new GalaxyGroup(*this); }
 
 };
 

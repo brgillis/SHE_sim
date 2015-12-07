@@ -27,10 +27,9 @@
 #include "config.h"
 #endif
 
-#include <utility>
-
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 #include "SHE_SIM_gal_params/levels/GalaxyDither.hpp"
 
@@ -39,11 +38,8 @@ namespace SHE_SIM
 
 Galaxy::Galaxy(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent,
-		get_full_params_map(*this))
-{
-}
-
-Galaxy::~Galaxy()
+		get_full_params_map(*this)),
+  _is_background(false)
 {
 }
 
@@ -67,11 +63,26 @@ void Galaxy::set_as_background_galaxy()
 	set_param_params(galaxy_type_name,"fixed",field_galaxy_type);
 	set_param_params(apparent_mag_vis_name,"alt_calculated");
 	set_param_params(apparent_size_name,"alt_calculated");
+	_is_background = true;
 }
 
-ParamHierarchyLevel * Galaxy::clone() const
+void Galaxy::set_as_foreground_galaxy()
 {
-	return new Galaxy(*this);
+	set_param_params(apparent_mag_vis_name,"calculated");
+	set_param_params(apparent_size_name,"calculated");
+}
+
+bool Galaxy::is_central_galaxy()
+{
+	return ::SHE_SIM::is_central_galaxy(get_param_value(galaxy_type_name));
+}
+bool Galaxy::is_field_galaxy()
+{
+	return ::SHE_SIM::is_field_galaxy(get_param_value(galaxy_type_name));
+}
+bool Galaxy::is_satellite_galaxy()
+{
+	return ::SHE_SIM::is_satellite_galaxy(get_param_value(galaxy_type_name));
 }
 
 } // namespace SHE_SIM
