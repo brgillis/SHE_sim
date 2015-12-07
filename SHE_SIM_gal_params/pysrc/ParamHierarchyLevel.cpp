@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file ParamHierarchyLevel.cpp
+ @file name.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -28,6 +28,7 @@
 #endif
 
 #include <boost/python.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
@@ -44,89 +45,117 @@ using namespace boost::python;
 using namespace SHE_SIM;
 
 // Set up wrappers for functions we can't use directly for one reason or another
-struct ParamHierarchyLevelWrap : ParamHierarchyLevel, wrapper<ParamHierarchyLevel>
-{
-    void fill_children()
-    {
-        if (override fill_children = this->get_override("fill_children"))
-            fill_children();
-        ParamHierarchyLevel::fill_children();
-    }
 
-    void default_fill_children() { return this->ParamHierarchyLevel::fill_children(); }
-
-	std::vector<child_t *> get_children( name_t const & type_name = "" )
-	{
-		return get_children(type_name);
-	}
-
-	child_t * get_child(int const & i) { return ParamHierarchyLevel::get_child(i); }
-
-	flt_t get_generation_level(name_t const & name) { return ParamHierarchyLevel::get_generation_level(name); }
-
-	int_t get_hierarchy_level() const { return this->get_override("get_hierarchy_level")(); }
-
-	name_t get_name() const { return this->get_override("fill_children")(); }
-
-	int_t get_local_ID() const { return ParamHierarchyLevel::get_local_ID(); }
-
-	flt_t get_param_value(name_t const & name) { return ParamHierarchyLevel::get_param_value(name); }
-
-	void set_param_params(name_t const & name, str_t const & param_type )
-	{ ParamHierarchyLevel::set_param_params(name, param_type); }
-	void set_param_params(name_t const & name, str_t const & param_type,
-			flt_t const & p1 )
-	{ ParamHierarchyLevel::set_param_params(name, param_type, p1); }
-	void set_param_params(name_t const & name, str_t const & param_type,
-			flt_t const & p1, flt_t const & p2 )
-	{ ParamHierarchyLevel::set_param_params(name, param_type, p1, p2); }
-	void set_param_params(name_t const & name, str_t const & param_type,
-			flt_t const & p1, flt_t const & p2, flt_t const & p3 )
-	{ ParamHierarchyLevel::set_param_params(name, param_type, p1, p2, p3); }
-	void set_param_params(name_t const & name, str_t const & param_type,
-			flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 )
-	{ ParamHierarchyLevel::set_param_params(name, param_type, p1, p2, p3, p4); }
-
-	int_t get_seed() const { return ParamHierarchyLevel::get_seed(); }
-	void set_seed( int_t const & seed ) { return ParamHierarchyLevel::set_seed(seed); }
+#define PHL_WRAPPER(name) \
+struct name##Wrap : name, wrapper<name> \
+{ \
+    void wrapped_fill_children() { this->fill_children(); } \
+ \
+	std::vector<child_t *> wrapped_get_children( str const & type_name = "" ) \
+	{ \
+		return name::get_children(extract<name_t>(type_name)); \
+	} \
+ \
+	child_t * wrapped_get_child(int const & i) { return name::get_child(i); } \
+ \
+	flt_t wrapped_get_generation_level(str const & name) \
+	{ return name::get_generation_level(extract<name_t>(name)); } \
+ \
+	int_t wrapped_get_hierarchy_level() const { return this->get_hierarchy_level(); } \
+ \
+	name_t wrapped_get_name() const { return this->get_name(); } \
+ \
+	int_t wrapped_get_local_ID() const { return name::get_local_ID(); } \
+ \
+	flt_t wrapped_get_param_value(str const & name) { return name::get_param_value(extract<name_t>(name)); } \
+ \
+	void wrapped_set_param_params(str const & name, str const & param_type ) \
+	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type)); } \
+	void wrapped_set_param_params(str const & name, str const & param_type, \
+			flt_t const & p1 ) \
+	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1); } \
+	void wrapped_set_param_params(str const & name, str const & param_type, \
+			flt_t const & p1, flt_t const & p2 ) \
+	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2); } \
+	void wrapped_set_param_params(str const & name, str const & param_type, \
+			flt_t const & p1, flt_t const & p2, flt_t const & p3 ) \
+	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3); } \
+	void wrapped_set_param_params(str const & name, str const & param_type, \
+			flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 ) \
+	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3, p4); } \
+ \
+	int_t wrapped_get_seed() const { return name::get_seed(); } \
+	void wrapped_set_seed( int_t const & seed ) { return name::set_seed(seed); } \
 };
 
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(PHL_get_children_overloads, ParamHierarchyLevelWrap::get_children, 0, 1)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(PHL_set_param_param_overloads, ParamHierarchyLevelWrap::set_param_params, 2, 6)
+PHL_WRAPPER(ParamHierarchyLevel)
+PHL_WRAPPER(Survey)
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ParamHierarchyLevel_get_children_overloads, ParamHierarchyLevelWrap::wrapped_get_children, 0, 1)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ParamHierarchyLevel_set_param_param_overloads, ParamHierarchyLevelWrap::wrapped_set_param_params, 2, 6)
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Survey_get_children_overloads, SurveyWrap::wrapped_get_children, 0, 1)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Survey_set_param_param_overloads, SurveyWrap::wrapped_set_param_params, 2, 6)
 
 BOOST_PYTHON_MODULE(SHE_SIM)
 {
-	ParamHierarchyLevel::children_t const & (ParamHierarchyLevel::*gc0)() = &ParamHierarchyLevel::get_children;
+    class_<std::vector<ParamHierarchyLevel *>>("ChildList")
+        .def(vector_indexing_suite<std::vector<ParamHierarchyLevel *>>() );
+    class_<std::vector<ImageGroup *>>("ImageGroupList")
+        .def(vector_indexing_suite<std::vector<ImageGroup *>>() );
+    class_<std::vector<Image *>>("ImageList")
+        .def(vector_indexing_suite<std::vector<Image *>>() );
+    class_<std::vector<ClusterGroup *>>("ClusterGroupList")
+        .def(vector_indexing_suite<std::vector<ClusterGroup *>>() );
+    class_<std::vector<Cluster *>>("ClusterList")
+        .def(vector_indexing_suite<std::vector<Cluster *>>() );
+    class_<std::vector<FieldGroup *>>("FieldGroupList")
+        .def(vector_indexing_suite<std::vector<FieldGroup *>>() );
+    class_<std::vector<Field *>>("FieldList")
+        .def(vector_indexing_suite<std::vector<Field *>>() );
+    class_<std::vector<GalaxyGroup *>>("GalaxyGroupList")
+        .def(vector_indexing_suite<std::vector<GalaxyGroup *>>() );
+    class_<std::vector<Galaxy *>>("GalaxyList")
+        .def(vector_indexing_suite<std::vector<Galaxy *>>() );
 
-    class_<ParamHierarchyLevelWrap, boost::noncopyable>("ParamHierarchyLevel", no_init)
+    ParamHierarchyLevel::children_t const & (ParamHierarchyLevel::*gc0)() = &ParamHierarchyLevel::get_children;
 
-        .def("num_children", &ParamHierarchyLevel::num_children)
+#define PHL_DEFS(name) \
+\
+    .add_property("num_children", &name::num_children) \
+\
+    .def("clear_children", &name::clear_children) \
+    .def("get_children", &name##Wrap::wrapped_get_children, name##_get_children_overloads( args("type_name") )) \
+    .def("children", gc0, return_value_policy<reference_existing_object>()) \
+    .def("fill_children", &name::fill_children) \
+    .def("autofill_children", &name::autofill_children) \
+\
+	.def("get_child", &name##Wrap::wrapped_get_child, return_value_policy<reference_existing_object>() ) \
+\
+	.def("get_generation_level", &name##Wrap::wrapped_get_generation_level ) \
+	.def("set_generation_level", &name::set_generation_level ) \
+\
+	.def("get_param_value", &name##Wrap::wrapped_get_param_value ) \
+	.def("set_param_params", (void(name##Wrap::*)(str const &, str const &, \
+			flt_t const &, flt_t const &, flt_t const &, flt_t const & ))0, name##_set_param_param_overloads() ) \
+\
+	.def("clear", &name::clear) \
+\
+    .add_property("hierarchy_level", &name##Wrap::wrapped_get_hierarchy_level) \
+    .add_property("name", &name##Wrap::wrapped_get_name) \
+    .add_property("local_ID", &name##Wrap::wrapped_get_local_ID) \
+    .add_property("seed", &name##Wrap::wrapped_get_seed, &name##Wrap::wrapped_set_seed)
 
-        .def("clear_children", &ParamHierarchyLevel::clear_children)
-        .def("get_children", &ParamHierarchyLevelWrap::get_children, PHL_get_children_overloads( args("type_name") ))
-        .def("children", gc0, return_value_policy<reference_existing_object>())
-        .def("fill_children", &ParamHierarchyLevel::fill_children, &ParamHierarchyLevelWrap::default_fill_children)
-        .def("autofill_children", &ParamHierarchyLevel::autofill_children)
+    class_<ParamHierarchyLevelWrap, boost::noncopyable>("name", no_init)
 
-		.def("get_child", &ParamHierarchyLevelWrap::get_child, return_value_policy<reference_existing_object>() )
-
-		.def("get_generation_level", &ParamHierarchyLevelWrap::get_generation_level )
-		.def("set_generation_level", &ParamHierarchyLevel::set_generation_level )
-
-		.def("get_param_value", &ParamHierarchyLevelWrap::get_param_value )
-		.def("set_param_params", (void(ParamHierarchyLevelWrap::*)(name_t const &, name_t const &,
-				flt_t const &, flt_t const &, flt_t const &, flt_t const & ))0, PHL_set_param_param_overloads() )
-
-		.def("clear", &ParamHierarchyLevel::clear)
-
-        .add_property("hierarchy_level", &ParamHierarchyLevelWrap::get_hierarchy_level)
-        .add_property("name", &ParamHierarchyLevelWrap::get_name)
-	    .add_property("local_ID", &ParamHierarchyLevelWrap::get_local_ID)
-	    .add_property("seed", &ParamHierarchyLevelWrap::get_seed, &ParamHierarchyLevelWrap::set_seed)
+		PHL_DEFS(ParamHierarchyLevel)
 
         .enable_pickling();
 
-	class_<Survey, bases<ParamHierarchyLevel> >("Survey")
+	class_<SurveyWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Survey")
+
+		PHL_DEFS(Survey)
+
 		.def("add_image_group", &Survey::add_image_group, return_value_policy<reference_existing_object>())
 		.def("add_image_groups", &Survey::add_image_groups)
 		.def("get_image_groups", &Survey::get_image_groups)
@@ -139,13 +168,13 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<ImageGroup, bases<ParamHierarchyLevel> >("ImageGroup", no_init)
+	class_<ImageGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ImageGroup", no_init)
 		.def("add_image", &ImageGroup::add_image, return_value_policy<reference_existing_object>())
 		.def("add_images", &ImageGroup::add_images)
 		.def("get_images", &ImageGroup::get_images)
 		.enable_pickling();
 
-	class_<Image, bases<ParamHierarchyLevel> >("Image", no_init)
+	class_<Image, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Image", no_init)
 		.def("add_cluster_group", &Image::add_cluster_group, return_value_policy<reference_existing_object>())
 		.def("add_cluster_groups", &Image::add_cluster_groups)
 		.def("get_cluster_groups", &Image::get_cluster_groups)
@@ -186,14 +215,14 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<ClusterGroup, bases<ParamHierarchyLevel> >("ClusterGroup", no_init)
+	class_<ClusterGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ClusterGroup", no_init)
 		.def("add_cluster", &ClusterGroup::add_cluster, return_value_policy<reference_existing_object>())
 		.def("add_clusters", &ClusterGroup::add_clusters)
 		.def("get_clusters", &ClusterGroup::get_clusters)
 
 		.enable_pickling();
 
-	class_<Cluster, bases<ParamHierarchyLevel> >("Cluster", no_init)
+	class_<Cluster, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Cluster", no_init)
 
 		.def("add_galaxy_group", &Cluster::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Cluster::add_galaxy_groups)
@@ -212,14 +241,14 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<FieldGroup, bases<ParamHierarchyLevel> >("FieldGroup", no_init)
+	class_<FieldGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("FieldGroup", no_init)
 		.def("add_field", &FieldGroup::add_field, return_value_policy<reference_existing_object>())
 		.def("add_fields", &FieldGroup::add_fields)
 		.def("get_fields", &FieldGroup::get_fields)
 
 		.enable_pickling();
 
-	class_<Field, bases<ParamHierarchyLevel> >("Field", no_init)
+	class_<Field, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Field", no_init)
 
 		.def("add_galaxy_group", &Field::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Field::add_galaxy_groups)
@@ -231,7 +260,7 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<GalaxyGroup, bases<ParamHierarchyLevel> >("GalaxyGroup", no_init)
+	class_<GalaxyGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("GalaxyGroup", no_init)
 		.def("add_galaxy", &GalaxyGroup::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &GalaxyGroup::add_galaxies)
 		.def("get_galaxies", &GalaxyGroup::get_galaxies)
