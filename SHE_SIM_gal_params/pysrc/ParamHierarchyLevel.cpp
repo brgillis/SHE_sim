@@ -108,6 +108,14 @@ using namespace SHE_SIM;
 
 PHL_WRAPPER(ParamHierarchyLevel)
 PHL_WRAPPER(Survey)
+PHL_WRAPPER(ImageGroup)
+PHL_WRAPPER(Image)
+PHL_WRAPPER(ClusterGroup)
+PHL_WRAPPER(Cluster)
+PHL_WRAPPER(FieldGroup)
+PHL_WRAPPER(Field)
+PHL_WRAPPER(GalaxyGroup)
+PHL_WRAPPER(Galaxy)
 
 BOOST_PYTHON_MODULE(SHE_SIM)
 {
@@ -139,7 +147,6 @@ BOOST_PYTHON_MODULE(SHE_SIM)
     .def("clear_children", &name::clear_children) \
     .def("get_children", name##_gc0 ) \
     .def("get_children", name##_gc1 ) \
-    .def("children", gc0, return_value_policy<reference_existing_object>()) \
     .def("fill_children", &name::fill_children) \
     .def("autofill_children", &name::autofill_children) \
 \
@@ -184,13 +191,19 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<ImageGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ImageGroup", no_init)
+	class_<ImageGroupWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ImageGroup", no_init)
+
+		PHL_DEFS(ImageGroup)
+
 		.def("add_image", &ImageGroup::add_image, return_value_policy<reference_existing_object>())
 		.def("add_images", &ImageGroup::add_images)
 		.def("get_images", &ImageGroup::get_images)
 		.enable_pickling();
 
-	class_<Image, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Image", no_init)
+	class_<ImageWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Image", no_init)
+
+		PHL_DEFS(Image)
+
 		.def("add_cluster_group", &Image::add_cluster_group, return_value_policy<reference_existing_object>())
 		.def("add_cluster_groups", &Image::add_cluster_groups)
 		.def("get_cluster_groups", &Image::get_cluster_groups)
@@ -231,14 +244,19 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<ClusterGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ClusterGroup", no_init)
+	class_<ClusterGroupWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ClusterGroup", no_init)
+
+		PHL_DEFS(ClusterGroup)
+
 		.def("add_cluster", &ClusterGroup::add_cluster, return_value_policy<reference_existing_object>())
 		.def("add_clusters", &ClusterGroup::add_clusters)
 		.def("get_clusters", &ClusterGroup::get_clusters)
 
 		.enable_pickling();
 
-	class_<Cluster, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Cluster", no_init)
+	class_<ClusterWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Cluster", no_init)
+
+		PHL_DEFS(Cluster)
 
 		.def("add_galaxy_group", &Cluster::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Cluster::add_galaxy_groups)
@@ -257,14 +275,19 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<FieldGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("FieldGroup", no_init)
+	class_<FieldGroupWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("FieldGroup", no_init)
+
+		PHL_DEFS(FieldGroup)
+
 		.def("add_field", &FieldGroup::add_field, return_value_policy<reference_existing_object>())
 		.def("add_fields", &FieldGroup::add_fields)
 		.def("get_fields", &FieldGroup::get_fields)
 
 		.enable_pickling();
 
-	class_<Field, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Field", no_init)
+	class_<FieldWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Field", no_init)
+
+		PHL_DEFS(Field)
 
 		.def("add_galaxy_group", &Field::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Field::add_galaxy_groups)
@@ -276,7 +299,10 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.enable_pickling();
 
-	class_<GalaxyGroup, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("GalaxyGroup", no_init)
+	class_<GalaxyGroupWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("GalaxyGroup", no_init)
+
+		PHL_DEFS(GalaxyGroup)
+
 		.def("add_galaxy", &GalaxyGroup::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &GalaxyGroup::add_galaxies)
 		.def("get_galaxies", &GalaxyGroup::get_galaxies)
