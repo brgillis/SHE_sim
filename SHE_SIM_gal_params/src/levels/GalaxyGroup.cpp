@@ -57,13 +57,4 @@ void GalaxyGroup::add_galaxies(int_t const & N)
 
 #endif
 
-// Methods to get children of specific types
-#if(1)
-
-std::vector<Galaxy *> GalaxyGroup::get_galaxies() {
-	return get_children<Galaxy>();
-}
-
-#endif
-
 } // namespace SHE_SIM

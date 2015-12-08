@@ -80,15 +80,6 @@ public:
 
 #endif
 
-	// Methods to get children of specific types
-#if(1)
-
-	std::vector<GalaxyGroup *> get_galaxy_groups();
-
-	std::vector<Galaxy *> get_galaxies();
-
-#endif
-
 	virtual ParamHierarchyLevel * clone() const override { return new Field(*this); }
 
 };

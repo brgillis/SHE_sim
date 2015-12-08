@@ -117,7 +117,7 @@ inline param_params_t make_default_param_params_map()
 
 	INSERT_CALCULATED_PARAM(apparent_mag_vis);
 	INSERT_LOGNORMAL_PARAM(apparent_size);
-	INSERT_CALCULATED_PARAM(galaxy_type);
+	INSERT_FIXED_PARAM(galaxy_type);
 	INSERT_UNIFORM_PARAM(morphology);
 	INSERT_CALCULATED_PARAM(physical_size);
 	INSERT_CALCULATED_PARAM(psf_model);

@@ -115,27 +115,6 @@ public:
 
 #endif
 
-	// Methods to get children of specific types
-#if(1)
-
-	std::vector<ClusterGroup *> get_cluster_groups();
-
-	std::vector<Cluster *> get_clusters();
-
-	std::vector<FieldGroup *> get_field_groups();
-
-	std::vector<Field *> get_fields();
-
-	std::vector<GalaxyGroup *> get_galaxy_groups();
-
-	std::vector<Galaxy *> get_galaxies();
-
-	std::vector<Galaxy *> get_background_galaxies();
-
-	std::vector<Galaxy *> get_foreground_galaxies();
-
-#endif
-
 	virtual ParamHierarchyLevel * clone() const override { return new Image(*this); }
 
 };

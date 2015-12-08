@@ -44,6 +44,33 @@
 using namespace boost::python;
 using namespace SHE_SIM;
 
+// Define a coersion function
+template <typename Tout, typename Tin>
+Tout coerce( Tin const & vin )
+{
+	Tout res;
+	res.reserve(vin.size());
+
+	for( auto & v : vin )
+	{
+		res.push_back(static_cast<typename Tout::value_type>(v));
+	}
+
+	return res;
+}
+
+// Forward-declare wrappers
+
+class ParamHierarchyLevelWrap;
+class ImageGroupWrap;
+class ImageWrap;
+class ClusterGroupWrap;
+class ClusterWrap;
+class FieldGroupWrap;
+class FieldWrap;
+class GalaxyGroupWrap;
+class GalaxyWrap;
+
 // Set up wrappers for functions we can't use directly for one reason or another
 
 #define PHL_WRAPPER(name) \
@@ -51,13 +78,87 @@ using namespace SHE_SIM;
 	{ \
 		void wrapped_fill_children() { this->fill_children(); } \
 	 \
-		std::vector<child_t *> wrapped_get_children( ) \
+		std::vector<ParamHierarchyLevelWrap *> wrapped_get_children( ) \
 		{ \
-			return name::get_children(""); \
+			auto children = name::get_children(""); \
+			return coerce<std::vector<ParamHierarchyLevelWrap *>>(children); \
 		} \
-		std::vector<child_t *> wrapped_get_children( str const & type_name ) \
+	 \
+		std::vector<ParamHierarchyLevelWrap *> wrapped_get_children( str const & type_name ) \
 		{ \
-			return name::get_children(extract<name_t>(type_name)); \
+			auto children = name::get_children(extract<name_t>(type_name)); \
+			return coerce<std::vector<ParamHierarchyLevelWrap *>>(children); \
+		} \
+	 \
+		std::vector<ImageGroupWrap *> wrapped_get_image_groups( ) \
+		{ \
+			auto children = name::get_image_groups(); \
+			return coerce<std::vector<ImageGroupWrap *>>(children); \
+		} \
+	 \
+		std::vector<ImageWrap *> wrapped_get_images( ) \
+		{ \
+			auto children = name::get_images(); \
+			return coerce<std::vector<ImageWrap *>>(children); \
+		} \
+	 \
+		std::vector<ClusterGroupWrap *> wrapped_get_cluster_groups( ) \
+		{ \
+			auto children = name::get_cluster_groups(); \
+			return coerce<std::vector<ClusterGroupWrap *>>(children); \
+		} \
+	 \
+		std::vector<ClusterWrap *> wrapped_get_clusters( ) \
+		{ \
+			auto children = name::get_clusters(); \
+			return coerce<std::vector<ClusterWrap *>>(children); \
+		} \
+	 \
+		std::vector<FieldGroupWrap *> wrapped_get_field_groups( ) \
+		{ \
+			auto children = name::get_field_groups(); \
+			return coerce<std::vector<FieldGroupWrap *>>(children); \
+		} \
+	 \
+		std::vector<FieldWrap *> wrapped_get_fields( ) \
+		{ \
+			auto children = name::get_fields(); \
+			return coerce<std::vector<FieldWrap *>>(children); \
+		} \
+	 \
+		std::vector<GalaxyGroupWrap *> wrapped_get_galaxy_groups( ) \
+		{ \
+			auto children = name::get_galaxy_groups(); \
+			return coerce<std::vector<GalaxyGroupWrap *>>(children); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_galaxies( ) \
+		{ \
+			auto children = name::get_galaxies(); \
+			return coerce<std::vector<GalaxyWrap *>>(children); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_background_galaxies( ) \
+		{ \
+			auto children = name::get_background_galaxies(); \
+			return coerce<std::vector<GalaxyWrap *>>(children); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_foreground_galaxies( ) \
+		{ \
+			auto children = name::get_foreground_galaxies(); \
+			return coerce<std::vector<GalaxyWrap *>>(children); \
+		} \
+	 \
+		GalaxyWrap * wrapped_get_central_galaxy( ) \
+		{ \
+			return static_cast<GalaxyWrap *>(name::get_central_galaxy()); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_satellite_galaxies( ) \
+		{ \
+			auto children = name::get_satellite_galaxies(); \
+			return coerce<std::vector<GalaxyWrap *>>(children); \
 		} \
 	 \
 		child_t * wrapped_get_child(int const & i) { return name::get_child(i); } \
@@ -92,8 +193,8 @@ using namespace SHE_SIM;
 		void wrapped_set_seed( int_t const & seed ) { return name::set_seed(seed); } \
 	}; \
 	 \
-	std::vector<name##Wrap::child_t *> (name##Wrap::*name##_gc0)(void) = &name##Wrap::wrapped_get_children; \
-	std::vector<name##Wrap::child_t *> (name##Wrap::*name##_gc1)(str const &) = &name##Wrap::wrapped_get_children; \
+	std::vector<ParamHierarchyLevelWrap *> (name##Wrap::*name##_gc0)(void) = &name##Wrap::wrapped_get_children; \
+	std::vector<ParamHierarchyLevelWrap *> (name##Wrap::*name##_gc1)(str const &) = &name##Wrap::wrapped_get_children; \
 	 \
 	void (name##Wrap::*name##_spp0)(str const &, str const &) = &name##Wrap::wrapped_set_param_params; \
 	void (name##Wrap::*name##_spp1)(str const &, str const &, \
@@ -106,6 +207,8 @@ using namespace SHE_SIM;
 			flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 ) = &name##Wrap::wrapped_set_param_params;
 
 
+PHL_WRAPPER(Galaxy) // Implement first due to the special get_central_galaxy() function
+
 PHL_WRAPPER(ParamHierarchyLevel)
 PHL_WRAPPER(Survey)
 PHL_WRAPPER(ImageGroup)
@@ -115,30 +218,27 @@ PHL_WRAPPER(Cluster)
 PHL_WRAPPER(FieldGroup)
 PHL_WRAPPER(Field)
 PHL_WRAPPER(GalaxyGroup)
-PHL_WRAPPER(Galaxy)
 
 BOOST_PYTHON_MODULE(SHE_SIM)
 {
-    class_<std::vector<ParamHierarchyLevel *>>("ChildList")
-        .def(vector_indexing_suite<std::vector<ParamHierarchyLevel *>>() );
-    class_<std::vector<ImageGroup *>>("ImageGroupList")
-        .def(vector_indexing_suite<std::vector<ImageGroup *>>() );
-    class_<std::vector<Image *>>("ImageList")
-        .def(vector_indexing_suite<std::vector<Image *>>() );
-    class_<std::vector<ClusterGroup *>>("ClusterGroupList")
-        .def(vector_indexing_suite<std::vector<ClusterGroup *>>() );
-    class_<std::vector<Cluster *>>("ClusterList")
-        .def(vector_indexing_suite<std::vector<Cluster *>>() );
-    class_<std::vector<FieldGroup *>>("FieldGroupList")
-        .def(vector_indexing_suite<std::vector<FieldGroup *>>() );
-    class_<std::vector<Field *>>("FieldList")
-        .def(vector_indexing_suite<std::vector<Field *>>() );
-    class_<std::vector<GalaxyGroup *>>("GalaxyGroupList")
-        .def(vector_indexing_suite<std::vector<GalaxyGroup *>>() );
-    class_<std::vector<Galaxy *>>("GalaxyList")
-        .def(vector_indexing_suite<std::vector<Galaxy *>>() );
-
-    ParamHierarchyLevel::children_t const & (ParamHierarchyLevel::*gc0)() = &ParamHierarchyLevel::get_children;
+    class_<std::vector<ParamHierarchyLevelWrap *>>("ChildList")
+        .def(vector_indexing_suite<std::vector<ParamHierarchyLevelWrap *>>() );
+    class_<std::vector<ImageGroupWrap *>>("ImageGroupList")
+        .def(vector_indexing_suite<std::vector<ImageGroupWrap *>>() );
+    class_<std::vector<ImageWrap *>>("ImageList")
+        .def(vector_indexing_suite<std::vector<ImageWrap *>>() );
+    class_<std::vector<ClusterGroupWrap *>>("ClusterGroupList")
+        .def(vector_indexing_suite<std::vector<ClusterGroupWrap *>>() );
+    class_<std::vector<ClusterWrap *>>("ClusterList")
+        .def(vector_indexing_suite<std::vector<ClusterWrap *>>() );
+    class_<std::vector<FieldGroupWrap *>>("FieldGroupList")
+        .def(vector_indexing_suite<std::vector<FieldGroupWrap *>>() );
+    class_<std::vector<FieldWrap *>>("FieldList")
+        .def(vector_indexing_suite<std::vector<FieldWrap *>>() );
+    class_<std::vector<GalaxyGroupWrap *>>("GalaxyGroupList")
+        .def(vector_indexing_suite<std::vector<GalaxyGroupWrap *>>() );
+    class_<std::vector<GalaxyWrap *>>("GalaxyList")
+        .def(vector_indexing_suite<std::vector<GalaxyWrap *>>() );
 
 #define PHL_DEFS(name) \
 \
@@ -150,7 +250,18 @@ BOOST_PYTHON_MODULE(SHE_SIM)
     .def("fill_children", &name::fill_children) \
     .def("autofill_children", &name::autofill_children) \
 \
-	.def("get_child", &name##Wrap::wrapped_get_child, return_value_policy<reference_existing_object>() ) \
+	.def("get_image_groups", &name##Wrap::wrapped_get_image_groups ) \
+	.def("get_images", &name##Wrap::wrapped_get_images ) \
+	.def("get_cluster_groups", &name##Wrap::wrapped_get_cluster_groups ) \
+	.def("get_clusters", &name##Wrap::wrapped_get_clusters ) \
+	.def("get_field_groups", &name##Wrap::wrapped_get_field_groups ) \
+	.def("get_fields", &name##Wrap::wrapped_get_fields ) \
+	.def("get_galaxy_groups", &name##Wrap::wrapped_get_galaxy_groups ) \
+	.def("get_galaxies", &name##Wrap::wrapped_get_galaxies ) \
+	.def("get_background_galaxies", &name##Wrap::wrapped_get_background_galaxies ) \
+	.def("get_foreground_galaxies", &name##Wrap::wrapped_get_foreground_galaxies ) \
+	.def("get_central_galaxy", &name##Wrap::wrapped_get_central_galaxy, return_value_policy<reference_existing_object>() ) \
+	.def("get_satellite_galaxies", &name##Wrap::wrapped_get_satellite_galaxies ) \
 \
 	.def("get_generation_level", &name##Wrap::wrapped_get_generation_level ) \
 	.def("set_generation_level", &name::set_generation_level ) \
@@ -161,6 +272,7 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 	.def("set_param_params", name##_spp2 ) \
 	.def("set_param_params", name##_spp3 ) \
 	.def("set_param_params", name##_spp4 ) \
+	.def("generate_parameters", &name::generate_parameters ) \
 \
 	.def("clear", &name::clear) \
 \
@@ -181,15 +293,15 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_image_group", &Survey::add_image_group, return_value_policy<reference_existing_object>())
 		.def("add_image_groups", &Survey::add_image_groups)
-		.def("get_image_groups", &Survey::get_image_groups)
 
 		.def("add_image", &Survey::add_image, return_value_policy<reference_existing_object>())
 		.def("add_images", &Survey::add_images)
-		.def("get_images", &Survey::get_images)
 		.def("fill_images", &Survey::fill_images)
 		.def("autofill_images", &Survey::autofill_images)
 
 		.enable_pickling();
+
+	class_<Survey, bases<SurveyWrap>, boost::noncopyable >("SurveyBase").enable_pickling();
 
 	class_<ImageGroupWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ImageGroup", no_init)
 
@@ -197,50 +309,42 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_image", &ImageGroup::add_image, return_value_policy<reference_existing_object>())
 		.def("add_images", &ImageGroup::add_images)
-		.def("get_images", &ImageGroup::get_images)
+
 		.enable_pickling();
 
-	class_<ImageWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Image", no_init)
+	class_<ImageWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("ImageT", no_init)
 
 		PHL_DEFS(Image)
 
 		.def("add_cluster_group", &Image::add_cluster_group, return_value_policy<reference_existing_object>())
 		.def("add_cluster_groups", &Image::add_cluster_groups)
-		.def("get_cluster_groups", &Image::get_cluster_groups)
 
 		.def("add_cluster", &Image::add_cluster, return_value_policy<reference_existing_object>())
 		.def("add_clusters", &Image::add_clusters)
-		.def("get_clusters", &Image::get_clusters)
 		.def("fill_clusters", &Image::fill_clusters)
 		.def("autofill_clusters", &Image::autofill_clusters)
 
 		.def("add_field_group", &Image::add_field_group, return_value_policy<reference_existing_object>())
 		.def("add_field_groups", &Image::add_field_groups)
-		.def("get_field_groups", &Image::get_field_groups)
 
 		.def("add_field", &Image::add_field, return_value_policy<reference_existing_object>())
 		.def("add_fields", &Image::add_fields)
-		.def("get_fields", &Image::get_fields)
 		.def("fill_field", &Image::fill_field)
 		.def("autofill_field", &Image::autofill_field)
 
 		.def("add_galaxy_group", &Image::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Image::add_galaxy_groups)
-		.def("get_galaxy_groups", &Image::get_galaxy_groups)
 
 		.def("add_galaxy", &Image::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &Image::add_galaxies)
-		.def("get_galaxies", &Image::get_galaxies)
 
 		.def("add_background_galaxy", &Image::add_background_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_background_galaxies", &Image::add_background_galaxies)
-		.def("get_background_galaxies", &Image::get_background_galaxies)
 		.def("fill_background_galaxies", &Image::fill_background_galaxies)
 		.def("autofill_background_galaxies", &Image::autofill_background_galaxies)
 
 		.def("add_foreground_galaxy", &Image::add_foreground_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_foreground_galaxies", &Image::add_foreground_galaxies)
-		.def("get_foreground_galaxies", &Image::get_foreground_galaxies)
 
 		.enable_pickling();
 
@@ -250,7 +354,6 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_cluster", &ClusterGroup::add_cluster, return_value_policy<reference_existing_object>())
 		.def("add_clusters", &ClusterGroup::add_clusters)
-		.def("get_clusters", &ClusterGroup::get_clusters)
 
 		.enable_pickling();
 
@@ -260,18 +363,14 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_galaxy_group", &Cluster::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Cluster::add_galaxy_groups)
-		.def("get_galaxy_groups", &Cluster::get_galaxy_groups)
 
 		.def("add_galaxy", &Cluster::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &Cluster::add_galaxies)
-		.def("get_galaxies", &Cluster::get_galaxies)
 
 		.def("add_central_galaxy", &Cluster::add_central_galaxy, return_value_policy<reference_existing_object>())
-		.def("get_central_galaxy", &Cluster::get_central_galaxy, return_value_policy<reference_existing_object>())
 
 		.def("add_satellite_galaxy", &Cluster::add_satellite_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_satellite_galaxies", &Cluster::add_satellite_galaxies)
-		.def("get_satellite_galaxies", &Cluster::get_satellite_galaxies)
 
 		.enable_pickling();
 
@@ -281,7 +380,6 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_field", &FieldGroup::add_field, return_value_policy<reference_existing_object>())
 		.def("add_fields", &FieldGroup::add_fields)
-		.def("get_fields", &FieldGroup::get_fields)
 
 		.enable_pickling();
 
@@ -291,11 +389,9 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_galaxy_group", &Field::add_galaxy_group, return_value_policy<reference_existing_object>())
 		.def("add_galaxy_groups", &Field::add_galaxy_groups)
-		.def("get_galaxy_groups", &Field::get_galaxy_groups)
 
 		.def("add_galaxy", &Field::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &Field::add_galaxies)
-		.def("get_galaxies", &Field::get_galaxies)
 
 		.enable_pickling();
 
@@ -305,7 +401,12 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 
 		.def("add_galaxy", &GalaxyGroup::add_galaxy, return_value_policy<reference_existing_object>())
 		.def("add_galaxies", &GalaxyGroup::add_galaxies)
-		.def("get_galaxies", &GalaxyGroup::get_galaxies)
+
+		.enable_pickling();
+
+	class_<GalaxyWrap, bases<ParamHierarchyLevelWrap>, boost::noncopyable >("Galaxy", no_init)
+
+		PHL_DEFS(Galaxy)
 
 		.enable_pickling();
 }

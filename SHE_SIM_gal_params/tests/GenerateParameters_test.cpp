@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file FieldGroup.cpp
+ @file GenerateParameters_test.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -27,34 +27,36 @@
 #include "config.h"
 #endif
 
-#include <utility>
+#define BOOST_TEST_DYN_LINK
+#include <boost/test/unit_test.hpp>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/params_list.hpp"
-#include "SHE_SIM_gal_params/levels/Field.hpp"
-#include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
+#include <SHE_SIM_gal_params/param_names.hpp>
+#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 
 namespace SHE_SIM
 {
 
-FieldGroup::FieldGroup(ParamHierarchyLevel * const & p_parent)
-: ParamHierarchyLevel(p_parent)
-{
+struct gen_params_fixture {
+
+	Survey survey;
+
+};
+
+
+BOOST_AUTO_TEST_SUITE (Generate_Parameters_Test)
+
+BOOST_FIXTURE_TEST_CASE(test_gen_params, gen_params_fixture) {
+
+	BOOST_CHECK_NO_THROW(survey.generate_parameters());
+
+	BOOST_CHECK_NO_THROW(survey.autofill_children());
+
+	BOOST_CHECK_NO_THROW(survey.generate_parameters());
+
 }
 
-// Methods to add children
-#if(1)
-
-Field * FieldGroup::add_field()
-{
-	return static_cast<Field *>(ParamHierarchyLevel::spawn_child<Field>());
-}
-
-void FieldGroup::add_fields(int_t const & N)
-{
-	return ParamHierarchyLevel::spawn_children<Field>(N);
-}
-
-#endif
+BOOST_AUTO_TEST_SUITE_END ()
 
 } // namespace SHE_SIM

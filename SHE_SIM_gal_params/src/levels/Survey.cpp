@@ -79,18 +79,4 @@ void Survey::fill_images()
 
 #endif
 
-// Methods to get children of specific types
-#if(1)
-
-std::vector<ImageGroup *> Survey::get_image_groups()
-{
-	return get_children<ImageGroup>();
-}
-
-std::vector<Image *> Survey::get_images() {
-	return get_children<Image>();
-}
-
-#endif
-
 } // namespace SHE_SIM

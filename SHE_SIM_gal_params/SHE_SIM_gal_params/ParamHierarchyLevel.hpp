@@ -45,6 +45,16 @@ namespace SHE_SIM
 // Forward declare ParamGenerator
 class ParamGenerator;
 
+// Forward declare level types
+class ImageGroup;
+class Image;
+class ClusterGroup;
+class Cluster;
+class FieldGroup;
+class Field;
+class GalaxyGroup;
+class Galaxy;
+
 /**
  * An abstract base class template for a level in the hierarchy of parameter generation (eg. per-image, per-galaxy, etc.)
  */
@@ -379,6 +389,25 @@ public:
 
 #endif
 
+	// Methods to get children of specific types
+#if(1)
+
+	std::vector<ImageGroup *> get_image_groups();
+	std::vector<Image *> get_images();
+	std::vector<ClusterGroup *> get_cluster_groups();
+	std::vector<Cluster *> get_clusters();
+	std::vector<FieldGroup *> get_field_groups();
+	std::vector<Field *> get_fields();
+	std::vector<GalaxyGroup *> get_galaxy_groups();
+	std::vector<Galaxy *> get_galaxies();
+	std::vector<Galaxy *> get_background_galaxies();
+	std::vector<Galaxy *> get_foreground_galaxies();
+	Galaxy * get_central_galaxy();
+	std::vector<Galaxy *> get_field_galaxies();
+	std::vector<Galaxy *> get_satellite_galaxies();
+
+#endif
+
 	// Parameter-related methods
 #if(1)
 
@@ -448,6 +477,8 @@ public:
 	}
 
 	void set_p_param_params( name_t const & name, ParamParam const * const & params );
+
+	void generate_parameters();
 
 	int_t const & get_local_ID() const noexcept { return _local_ID; }
 

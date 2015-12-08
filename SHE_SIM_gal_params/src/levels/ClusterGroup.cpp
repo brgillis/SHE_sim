@@ -57,14 +57,4 @@ void ClusterGroup::add_clusters(int_t const & N)
 
 #endif
 
-// Methods to get children of specific types
-#if(1)
-
-std::vector<Cluster *> ClusterGroup::get_clusters()
-{
-	return get_children<Cluster>();
-}
-
-#endif
-
 } // namespace SHE_SIM

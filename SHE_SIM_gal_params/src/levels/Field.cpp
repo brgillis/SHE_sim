@@ -88,19 +88,4 @@ void Field::fill_galaxies()
 
 #endif
 
-// Methods to get children of specific types
-#if(1)
-
-std::vector<GalaxyGroup *> Field::get_galaxy_groups()
-{
-	return get_children<GalaxyGroup>();
-}
-
-std::vector<Galaxy *> Field::get_galaxies()
-{
-	return get_children<Galaxy>();
-}
-
-#endif
-
 } // namespace SHE_SIM

@@ -57,13 +57,4 @@ void ImageGroup::add_images(int_t const & N)
 
 #endif
 
-// Methods to get children of specific types
-#if(1)
-
-std::vector<Image *> ImageGroup::get_images() {
-	return get_children<Image>();
-}
-
-#endif
-
 } // namespace SHE_SIM

@@ -66,13 +66,6 @@ public:
 
 #endif
 
-	// Methods to get children of specific types
-#if(1)
-
-	std::vector<Image *> get_images();
-
-#endif
-
 	virtual ParamHierarchyLevel * clone() const override { return new ImageGroup(*this); }
 
 };

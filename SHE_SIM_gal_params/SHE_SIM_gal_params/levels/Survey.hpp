@@ -83,15 +83,6 @@ public:
 
 #endif
 
-	// Methods to get children of specific types
-#if(1)
-
-	std::vector<ImageGroup *> get_image_groups();
-
-	std::vector<Image *> get_images();
-
-#endif
-
 	virtual ParamHierarchyLevel * clone() const override { return new Survey(*this); }
 
 };

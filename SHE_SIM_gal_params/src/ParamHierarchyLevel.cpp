@@ -34,6 +34,16 @@
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
+#include "SHE_SIM_gal_params/levels/Survey.hpp"
+#include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Image.hpp"
+#include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Cluster.hpp"
+#include "SHE_SIM_gal_params/levels/FieldGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Field.hpp"
+#include "SHE_SIM_gal_params/levels/GalaxyGroup.hpp"
+#include "SHE_SIM_gal_params/levels/Galaxy.hpp"
+
 namespace SHE_SIM
 {
 
@@ -347,6 +357,123 @@ void ParamHierarchyLevel::autofill_children()
 	}
 }
 
+// Methods to get children of specific types
+#if(1)
+
+std::vector<ImageGroup *> ParamHierarchyLevel::get_image_groups()
+{
+	return get_children<ImageGroup>();
+}
+std::vector<Image *> ParamHierarchyLevel::get_images()
+{
+	return get_children<Image>();
+}
+std::vector<ClusterGroup *> ParamHierarchyLevel::get_cluster_groups()
+{
+	return get_children<ClusterGroup>();
+}
+std::vector<Cluster *> ParamHierarchyLevel::get_clusters()
+{
+	return get_children<Cluster>();
+}
+std::vector<FieldGroup *> ParamHierarchyLevel::get_field_groups()
+{
+	return get_children<FieldGroup>();
+}
+std::vector<Field *> ParamHierarchyLevel::get_fields()
+{
+	return get_children<Field>();
+}
+std::vector<GalaxyGroup *> ParamHierarchyLevel::ParamHierarchyLevel::get_galaxy_groups()
+{
+	return get_children<GalaxyGroup>();
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_galaxies()
+{
+	return get_children<Galaxy>();
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_background_galaxies()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_background_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_foreground_galaxies()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_foreground_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+Galaxy * ParamHierarchyLevel::get_central_galaxy()
+{
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_central_galaxy())
+				return casted_child;
+		}
+	}
+
+	return nullptr;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_field_galaxies()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_field_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_satellite_galaxies()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_satellite_galaxy())
+				res.push_back(casted_child);
+		}
+	}
+
+	return res;
+}
+
+#endif
+
 param_t * ParamHierarchyLevel::get_param( name_t const & name )
 {
 	return _params.at(name).get();
@@ -407,6 +534,22 @@ void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam co
 	}
 
 	_drop_local_param_param(name);
+}
+
+void ParamHierarchyLevel::generate_parameters()
+{
+	// Get all parameters at this level
+	for( auto & param_name_and_ptr : _params )
+	{
+		param_name_and_ptr.second->get();
+	}
+
+	// Generate for all children as well
+	for( auto & child : _children )
+	{
+		child->generate_parameters();
+	}
+
 }
 
 std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const

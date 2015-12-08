@@ -82,19 +82,6 @@ public:
 
 #endif
 
-	// Methods to get children of specific types
-#if(1)
-
-	std::vector<GalaxyGroup *> get_galaxy_groups();
-
-	std::vector<Galaxy *> get_galaxies();
-
-	Galaxy * get_central_galaxy();
-
-	std::vector<Galaxy *> get_satellite_galaxies();
-
-#endif
-
 	virtual ParamHierarchyLevel * clone() const override { return new Cluster(*this); }
 
 };
