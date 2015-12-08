@@ -37,8 +37,7 @@ namespace SHE_SIM
 {
 
 Galaxy::Galaxy(ParamHierarchyLevel * const & p_parent)
-: ParamHierarchyLevel(p_parent,
-		get_full_params_map(*this)),
+: ParamHierarchyLevel(p_parent),
   _is_background(false)
 {
 }

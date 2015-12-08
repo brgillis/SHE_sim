@@ -146,21 +146,13 @@ void ParamHierarchyLevel::_clear_own_param_cache()
 
 // Public methods
 
-ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent,
-		params_t && params)
+ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent)
 : _p_parent(p_parent),
-  _params(std::move(params))
+  _params(get_full_params_map(*this))
 {
-
 	// Inherit parameters and generation_levels from parent if it exists
-	if(p_parent != nullptr)
+	if(p_parent)
 	{
-		for( auto const & param_name_and_ptr : _params )
-		{
-			param_name_and_ptr.second->set_p_params(p_parent->get_p_param_params(param_name_and_ptr.first));
-			param_name_and_ptr.second->set_p_generation_level(p_parent->get_p_generation_level(param_name_and_ptr.first));
-		}
-
 		// Get ID from the parent's number of children
 		_local_ID = p_parent->num_children();
 		set_seed(p_parent->get_seed());
@@ -226,7 +218,7 @@ ParamHierarchyLevel::ParamHierarchyLevel(ParamHierarchyLevel && other)
   _params(std::move(other._params))
 {
 	// Update parent's pointer to this
-	if(_p_parent != nullptr)
+	if(_p_parent)
 	{
 		_p_parent->_update_child(&other,this);
 	}
@@ -291,7 +283,7 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(ParamHierarchyLevel && othe
 	_rng = std::move(other._rng);
 
 	// Update parent's pointer to this
-	if(_p_parent != nullptr)
+	if(_p_parent)
 	{
 		_p_parent->_update_child(&other,this);
 	}
@@ -420,7 +412,7 @@ void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam co
 std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 {
 	// Append this to the parent's sequence if the parent exists
-	if(_p_parent != nullptr )
+	if(_p_parent)
 	{
 		auto res = _p_parent->get_ID_seq();
 

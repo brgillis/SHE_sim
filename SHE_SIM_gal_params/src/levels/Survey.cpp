@@ -40,8 +40,7 @@ namespace SHE_SIM
 {
 
 Survey::Survey()
-: ParamHierarchyLevel(nullptr,
-		get_full_params_map(*this))
+: ParamHierarchyLevel(nullptr)
 {
 }
 

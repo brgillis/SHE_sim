@@ -153,8 +153,7 @@ public:
 	 * @param p_generation_level_map Pointer to the generation level map this will use.
 	 * @param params Parameters map.
 	 */
-	ParamHierarchyLevel(parent_ptr_t const & p_parent = nullptr,
-			params_t && params = params_t());
+	ParamHierarchyLevel(parent_ptr_t const & p_parent = nullptr);
 
 	/**
 	 * Copy constructor. Note that the copied object will maintain a pointer

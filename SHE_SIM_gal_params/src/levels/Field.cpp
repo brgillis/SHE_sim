@@ -41,8 +41,7 @@ namespace SHE_SIM
 {
 
 Field::Field(ParamHierarchyLevel * const & p_parent)
-: ParamHierarchyLevel(p_parent,
-		get_full_params_map(*this))
+: ParamHierarchyLevel(p_parent)
 {
 }
 

@@ -38,8 +38,7 @@ namespace SHE_SIM
 {
 
 ImageGroup::ImageGroup(ParamHierarchyLevel * const & p_parent)
-: ParamHierarchyLevel(p_parent,
-		get_full_params_map(*this))
+: ParamHierarchyLevel(p_parent)
 {
 }
 

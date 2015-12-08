@@ -30,6 +30,4 @@ namespace SHE_SIM {
 const param_params_t default_param_params_map(make_default_param_params_map());
 const generation_level_map_t default_generation_levels_map(make_default_generation_levels_map());
 
-const flt_t blah = 1.;
-
 }

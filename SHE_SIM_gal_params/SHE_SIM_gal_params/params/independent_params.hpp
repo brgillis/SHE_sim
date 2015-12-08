@@ -46,7 +46,18 @@ public: \
 	param_name##_obj( owner_t & owner) \
 	: ParamGenerator(owner) \
 	{ \
-		_params = default_param_params_map.at(name()).get(); \
+		/* See if we can get generation level and params from the parent */ \
+		auto p_parent_version = _p_parent_version(); \
+		if(p_parent_version) \
+		{ \
+			_p_generation_level = p_parent_version->get_p_generation_level(); \
+			_p_params = p_parent_version->get_p_params(); \
+		} \
+		else \
+		{ \
+			_p_params = default_param_params_map.at(name()).get(); \
+			_p_generation_level = default_generation_levels_map.at(name()).get(); \
+		} \
 	} \
 \
 	virtual ~param_name##_obj() \

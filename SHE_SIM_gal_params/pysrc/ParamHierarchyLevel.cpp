@@ -47,55 +47,67 @@ using namespace SHE_SIM;
 // Set up wrappers for functions we can't use directly for one reason or another
 
 #define PHL_WRAPPER(name) \
-struct name##Wrap : name, wrapper<name> \
-{ \
-    void wrapped_fill_children() { this->fill_children(); } \
- \
-	std::vector<child_t *> wrapped_get_children( str const & type_name = "" ) \
+	struct name##Wrap : name, wrapper<name> \
 	{ \
-		return name::get_children(extract<name_t>(type_name)); \
-	} \
- \
-	child_t * wrapped_get_child(int const & i) { return name::get_child(i); } \
- \
-	flt_t wrapped_get_generation_level(str const & name) \
-	{ return name::get_generation_level(extract<name_t>(name)); } \
- \
-	int_t wrapped_get_hierarchy_level() const { return this->get_hierarchy_level(); } \
- \
-	name_t wrapped_get_name() const { return this->get_name(); } \
- \
-	int_t wrapped_get_local_ID() const { return name::get_local_ID(); } \
- \
-	flt_t wrapped_get_param_value(str const & name) { return name::get_param_value(extract<name_t>(name)); } \
- \
-	void wrapped_set_param_params(str const & name, str const & param_type ) \
-	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type)); } \
-	void wrapped_set_param_params(str const & name, str const & param_type, \
-			flt_t const & p1 ) \
-	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1); } \
-	void wrapped_set_param_params(str const & name, str const & param_type, \
-			flt_t const & p1, flt_t const & p2 ) \
-	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2); } \
-	void wrapped_set_param_params(str const & name, str const & param_type, \
-			flt_t const & p1, flt_t const & p2, flt_t const & p3 ) \
-	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3); } \
-	void wrapped_set_param_params(str const & name, str const & param_type, \
-			flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 ) \
-	{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3, p4); } \
- \
-	int_t wrapped_get_seed() const { return name::get_seed(); } \
-	void wrapped_set_seed( int_t const & seed ) { return name::set_seed(seed); } \
-};
+		void wrapped_fill_children() { this->fill_children(); } \
+	 \
+		std::vector<child_t *> wrapped_get_children( ) \
+		{ \
+			return name::get_children(""); \
+		} \
+		std::vector<child_t *> wrapped_get_children( str const & type_name ) \
+		{ \
+			return name::get_children(extract<name_t>(type_name)); \
+		} \
+	 \
+		child_t * wrapped_get_child(int const & i) { return name::get_child(i); } \
+	 \
+		flt_t wrapped_get_generation_level(str const & name) \
+		{ return name::get_generation_level(extract<name_t>(name)); } \
+	 \
+		int_t wrapped_get_hierarchy_level() const { return this->get_hierarchy_level(); } \
+	 \
+		name_t wrapped_get_name() const { return this->get_name(); } \
+	 \
+		int_t wrapped_get_local_ID() const { return name::get_local_ID(); } \
+	 \
+		flt_t wrapped_get_param_value(str const & name) { return name::get_param_value(extract<name_t>(name)); } \
+	 \
+		void wrapped_set_param_params(str const & name, str const & param_type ) \
+		{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type)); } \
+		void wrapped_set_param_params(str const & name, str const & param_type, \
+				flt_t const & p1 ) \
+		{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1); } \
+		void wrapped_set_param_params(str const & name, str const & param_type, \
+				flt_t const & p1, flt_t const & p2 ) \
+		{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2); } \
+		void wrapped_set_param_params(str const & name, str const & param_type, \
+				flt_t const & p1, flt_t const & p2, flt_t const & p3 ) \
+		{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3); } \
+		void wrapped_set_param_params(str const & name, str const & param_type, \
+				flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 ) \
+		{ name::set_param_params(extract<name_t>(name), extract<name_t>(param_type), p1, p2, p3, p4); } \
+	 \
+		int_t wrapped_get_seed() const { return name::get_seed(); } \
+		void wrapped_set_seed( int_t const & seed ) { return name::set_seed(seed); } \
+	}; \
+	 \
+	std::vector<name##Wrap::child_t *> (name##Wrap::*name##_gc0)(void) = &name##Wrap::wrapped_get_children; \
+	std::vector<name##Wrap::child_t *> (name##Wrap::*name##_gc1)(str const &) = &name##Wrap::wrapped_get_children; \
+	 \
+	void (name##Wrap::*name##_spp0)(str const &, str const &) = &name##Wrap::wrapped_set_param_params; \
+	void (name##Wrap::*name##_spp1)(str const &, str const &, \
+			flt_t const & p1 ) = &name##Wrap::wrapped_set_param_params; \
+	void (name##Wrap::*name##_spp2)(str const &, str const &, \
+			flt_t const & p1, flt_t const & p2 ) = &name##Wrap::wrapped_set_param_params; \
+	void (name##Wrap::*name##_spp3)(str const &, str const &, \
+			flt_t const & p1, flt_t const & p2, flt_t const & p3 ) = &name##Wrap::wrapped_set_param_params; \
+	void (name##Wrap::*name##_spp4)(str const &, str const &, \
+			flt_t const & p1, flt_t const & p2, flt_t const & p3, flt_t const & p4 ) = &name##Wrap::wrapped_set_param_params;
+
 
 PHL_WRAPPER(ParamHierarchyLevel)
 PHL_WRAPPER(Survey)
-
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ParamHierarchyLevel_get_children_overloads, ParamHierarchyLevelWrap::wrapped_get_children, 0, 1)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(ParamHierarchyLevel_set_param_param_overloads, ParamHierarchyLevelWrap::wrapped_set_param_params, 2, 6)
-
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Survey_get_children_overloads, SurveyWrap::wrapped_get_children, 0, 1)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Survey_set_param_param_overloads, SurveyWrap::wrapped_set_param_params, 2, 6)
 
 BOOST_PYTHON_MODULE(SHE_SIM)
 {
@@ -125,7 +137,8 @@ BOOST_PYTHON_MODULE(SHE_SIM)
     .add_property("num_children", &name::num_children) \
 \
     .def("clear_children", &name::clear_children) \
-    .def("get_children", &name##Wrap::wrapped_get_children, name##_get_children_overloads( args("type_name") )) \
+    .def("get_children", name##_gc0 ) \
+    .def("get_children", name##_gc1 ) \
     .def("children", gc0, return_value_policy<reference_existing_object>()) \
     .def("fill_children", &name::fill_children) \
     .def("autofill_children", &name::autofill_children) \
@@ -136,8 +149,11 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 	.def("set_generation_level", &name::set_generation_level ) \
 \
 	.def("get_param_value", &name##Wrap::wrapped_get_param_value ) \
-	.def("set_param_params", (void(name##Wrap::*)(str const &, str const &, \
-			flt_t const &, flt_t const &, flt_t const &, flt_t const & ))0, name##_set_param_param_overloads() ) \
+	.def("set_param_params", name##_spp0 ) \
+	.def("set_param_params", name##_spp1 ) \
+	.def("set_param_params", name##_spp2 ) \
+	.def("set_param_params", name##_spp3 ) \
+	.def("set_param_params", name##_spp4 ) \
 \
 	.def("clear", &name::clear) \
 \

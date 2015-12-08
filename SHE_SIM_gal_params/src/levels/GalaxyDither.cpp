@@ -37,8 +37,7 @@ namespace SHE_SIM
 {
 
 GalaxyDither::GalaxyDither(ParamHierarchyLevel * const & p_parent)
-: ParamHierarchyLevel(p_parent,
-		get_full_params_map(*this))
+: ParamHierarchyLevel(p_parent)
 {
 }
 

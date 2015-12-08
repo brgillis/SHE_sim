@@ -50,13 +50,13 @@ ParamGenerator * ParamGenerator::_request_param(name_t const & param_name)
 
 void ParamGenerator::_generate()
 {
-	if(_params->get_mode()==ParamParam::INDEPENDENT)
+	if(_p_params->get_mode()==ParamParam::INDEPENDENT)
 	{
-		_cached_value = _params->get_independently(_rng);
+		_cached_value = _p_params->get_independently(_rng);
 	}
 	else
 	{
-		throw bad_mode_error(_params->get_mode_name());
+		throw bad_mode_error(_p_params->get_mode_name());
 	}
 }
 
@@ -119,21 +119,37 @@ void ParamGenerator::_determine_new_value()
 	this->_determine_value();
 }
 
+ParamGenerator * ParamGenerator::_p_parent_version()
+{
+	auto p_parent = _owner.get_parent();
+	if(!p_parent) return nullptr;
+	return p_parent->get_param(name());
+}
+
+ParamGenerator const * ParamGenerator::_p_parent_version() const
+{
+	auto p_parent = _owner.get_parent();
+	if(!p_parent) return nullptr;
+	return p_parent->get_param(name());
+}
+
 ParamGenerator & ParamGenerator::_parent_version()
 {
-	return *(_owner.get_parent()->get_param(name()));
+	assert(_p_parent_version());
+	return *_p_parent_version();
 }
 
-const ParamGenerator & ParamGenerator::_parent_version() const
+ParamGenerator const & ParamGenerator::_parent_version() const
 {
-	return *(_owner.get_parent()->get_param(name()));
+	assert(_p_parent_version());
+	return *_p_parent_version();
 }
 
-ParamGenerator::ParamGenerator( owner_t & owner, level_t const * const & p_generation_level )
+ParamGenerator::ParamGenerator( owner_t & owner )
 : _cached_value(UNCACHED_VALUE),
   _owner(owner),
-  _params(nullptr),
-  _generation_level(p_generation_level),
+  _p_params(nullptr),
+  _p_generation_level(nullptr),
   _rng(_owner._rng)
 {
 }
@@ -141,27 +157,27 @@ ParamGenerator::ParamGenerator( owner_t & owner, level_t const * const & p_gener
 void ParamGenerator::set_p_params(ParamParam const * const & p)
 {
 	_clear_cache();
-	_params = p;
+	_p_params = p;
 }
 
 ParamParam const & ParamGenerator::get_params() const
 {
-	return *_params;
+	return *_p_params;
 }
 
 ParamParam const * const & ParamGenerator::get_p_params() const noexcept
 {
-	return _params;
+	return _p_params;
 }
 
 level_t const & ParamGenerator::get_generation_level() const
 {
-	return *_generation_level;
+	return *_p_generation_level;
 }
 
 level_t const * const & ParamGenerator::get_p_generation_level() const
 {
-	return _generation_level;
+	return _p_generation_level;
 }
 
 void ParamGenerator::set_generation_level( level_t const & level )
@@ -172,7 +188,7 @@ void ParamGenerator::set_generation_level( level_t const & level )
 void ParamGenerator::set_p_generation_level( level_t const * const & p_level )
 {
 	_clear_cache();
-	_generation_level = p_level;
+	_p_generation_level = p_level;
 }
 
 flt_t const & ParamGenerator::get()

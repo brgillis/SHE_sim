@@ -65,31 +65,30 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(gain);
 	INSERT_PARAM(num_images);
 	INSERT_PARAM(mag_i_inst_zp);
+	INSERT_PARAM(mag_i_zp);
 	INSERT_PARAM(mag_vis_inst_zp);
+	INSERT_PARAM(mag_vis_zp);
 	INSERT_PARAM(pixel_scale);
 	INSERT_PARAM(read_noise);
 
-	INSERT_PARAM(mag_i_zp);
-	INSERT_PARAM(mag_vis_zp);
 
 	// Image level
 	INSERT_PARAM(background_galaxy_density);
 	INSERT_PARAM(background_noise);
 	INSERT_PARAM(cluster_density);
 	INSERT_PARAM(field_galaxy_density);
+	INSERT_PARAM(image_area);
 	INSERT_PARAM(image_size_xp);
 	INSERT_PARAM(image_size_yp);
+	INSERT_PARAM(num_background_galaxies);
+	INSERT_PARAM(num_clusters);
 	INSERT_PARAM(num_fields);
+	INSERT_PARAM(num_stars);
 	INSERT_PARAM(psf_params);
 	INSERT_PARAM(star_density);
 	INSERT_PARAM(subtracted_background);
 	INSERT_PARAM(unsubtracted_background);
 
-	INSERT_PARAM(image_area);
-	INSERT_PARAM(num_background_galaxies);
-	INSERT_PARAM(num_clusters);
-	INSERT_PARAM(num_field_galaxies);
-	INSERT_PARAM(num_stars);
 
 	// Cluster level
 	INSERT_PARAM(cluster_mass);
@@ -97,6 +96,9 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(cluster_num_satellites);
 	INSERT_PARAM(cluster_xp);
 	INSERT_PARAM(cluster_yp);
+
+	// Field level
+	INSERT_PARAM(num_field_galaxies);
 
 	// Galaxy-level params here
 

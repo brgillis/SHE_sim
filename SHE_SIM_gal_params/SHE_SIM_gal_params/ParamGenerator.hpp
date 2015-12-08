@@ -55,8 +55,8 @@ protected:
 	flt_t _cached_value;
 	owner_t & _owner;
 	std::unordered_set<name_t> _dependant_names;
-	const ParamParam * _params;
-	const level_t * _generation_level;
+	const ParamParam * _p_params;
+	const level_t * _p_generation_level;
 	gen_t & _rng;
 
 	// Protected methods
@@ -68,7 +68,11 @@ protected:
 
 	bool _generated_at_this_level() const;
 
+	ParamGenerator * _p_parent_version();
+	ParamGenerator const * _p_parent_version() const;
+
 	ParamGenerator & _parent_version();
+	ParamGenerator const & _parent_version() const;
 
 private:
 
@@ -85,8 +89,6 @@ private:
 
 	void _determine_new_value();
 
-	const ParamGenerator & _parent_version() const;
-
 	friend class ParamHierarchyLevel; // So it can access _clear_cache
 
 public:
@@ -96,7 +98,7 @@ public:
 	 *
 	 * @param level_determined_at Which level of the hierarchy this will be generated at.
 	 */
-	ParamGenerator( owner_t & owner, level_t const * const & p_generation_level = nullptr );
+	ParamGenerator( owner_t & owner );
 
 	/**
 	 * Virtual destructor.
