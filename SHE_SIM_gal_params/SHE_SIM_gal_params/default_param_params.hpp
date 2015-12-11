@@ -132,12 +132,6 @@ inline param_params_t make_default_param_params_map()
 	INSERT_UNIFORM_PARAM(xp);
 	INSERT_UNIFORM_PARAM(yp);
 
-
-	// GalaxyDither level
-
-	INSERT_FIXED_PARAM(dither_xp_shift);
-	INSERT_FIXED_PARAM(dither_yp_shift);
-
 #undef INSERT_CALCULATED_PARAM
 #undef INSERT_CONTRAYLEIGH_PARAM
 #undef INSERT_FIXED_PARAM
@@ -219,12 +213,6 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(tilt, dv::galaxy_level);
 	INSERT_LEVEL(xp, dv::galaxy_level);
 	INSERT_LEVEL(yp, dv::galaxy_level);
-
-
-	// GalaxyDither level
-
-	INSERT_LEVEL(dither_xp_shift, dv::galaxy_dither_level);
-	INSERT_LEVEL(dither_yp_shift, dv::galaxy_dither_level);
 
 #undef INSERT_LEVEL
 

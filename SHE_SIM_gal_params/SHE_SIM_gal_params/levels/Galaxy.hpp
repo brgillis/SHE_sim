@@ -34,9 +34,6 @@
 namespace SHE_SIM
 {
 
-// Forward-declare children
-class GalaxyDither;
-
 /**
  * TODO Auto-generated comment stub
  */
@@ -57,15 +54,6 @@ public:
 	virtual int_t get_hierarchy_level() const override {return dv::galaxy_level;}
 
 	virtual name_t get_name() const override {return galaxy_name;}
-
-	// Methods to add children
-#if(1)
-
-	GalaxyDither * add_galaxy_dither();
-
-	void add_galaxy_dithers(int_t const & N);
-
-#endif
 
 	/**
 	 * Set up so that parameters will be generated in background-galaxy mode.

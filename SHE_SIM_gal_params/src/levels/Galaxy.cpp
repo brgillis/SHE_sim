@@ -31,7 +31,6 @@
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
-#include "SHE_SIM_gal_params/levels/GalaxyDither.hpp"
 
 namespace SHE_SIM
 {
@@ -41,21 +40,6 @@ Galaxy::Galaxy(ParamHierarchyLevel * const & p_parent)
   _is_background(false)
 {
 }
-
-// Methods to add children
-#if(1)
-
-GalaxyDither * Galaxy::add_galaxy_dither()
-{
-	return static_cast<GalaxyDither *>(ParamHierarchyLevel::spawn_child<GalaxyDither>());
-}
-
-void Galaxy::add_galaxy_dithers(int_t const & N)
-{
-	return ParamHierarchyLevel::spawn_children<GalaxyDither>(N);
-}
-
-#endif
 
 void Galaxy::set_as_background_galaxy()
 {

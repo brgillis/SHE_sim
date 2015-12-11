@@ -34,6 +34,8 @@
 #include <utility>
 #include <vector>
 
+#include <boost/algorithm/string.hpp>
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
@@ -322,6 +324,84 @@ public:
 	}
 
 	/**
+	 * Get a vector of this object's descendants (children, children's children, etc.) of a given type
+	 *
+	 * @param type_name The name of the desired type.
+	 * @return A vector of this object's descendants of the passed type.
+	 */
+	std::vector<child_t *> get_descendants( name_t const & type_name );
+
+	/**
+	 * Get a vector of this object's descendants (children, children's children, etc.) of a given type
+	 *
+	 * @param type_name The name of the desired type.
+	 * @return A vector of this object's descendants of the passed type.
+	 */
+	std::vector<const child_t *> get_descendants( name_t const & type_name ) const;
+
+	/**
+	 * Get a vector of this object's descendants (children, children's children, etc.) of a given type
+	 *
+	 * @return A vector of this object's descendants of the passed type.
+	 */
+	template< typename T_child >
+	std::vector<T_child *> get_descendants()
+	{
+		std::vector<T_child *> res;
+
+		for( auto & child : _children )
+		{
+			T_child * casted_child = dynamic_cast<T_child *>(child.get());
+			if( casted_child != nullptr )
+			{
+				res.push_back(casted_child);
+			}
+			else
+			{
+				// Otherwise check if this one has any descendants of the desired type
+				std::vector<T_child *> childs_descendants = child->get_descendants<T_child>();
+				for( auto & descendant : childs_descendants )
+				{
+					res.push_back(descendant);
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
+	 * Get a vector of this object's descendants (children, children's children, etc.) of a given type
+	 *
+	 * @return A vector of this object's descendants of the passed type.
+	 */
+	template< typename T_child >
+	std::vector<const T_child *> get_descendants() const
+	{
+		std::vector<const T_child *> res;
+
+		for( auto & child : _children )
+		{
+			T_child * casted_child = dynamic_cast<const T_child *>(child.get());
+			if( casted_child != nullptr )
+			{
+				res.push_back(casted_child);
+			}
+			else
+			{
+				// Otherwise check if this one has any descendants of the desired type
+				std::vector<const T_child *> childs_descendants = child->get_descendants<T_child>();
+				for( auto & descendant : childs_descendants )
+				{
+					res.push_back(descendant);
+				}
+			}
+		}
+
+		return res;
+	}
+
+	/**
 	 * Get a pointer to a specific child. Will throw an exception if no child with that index exists.
 	 *
 	 * @param i Index of the desired child.
@@ -408,6 +488,25 @@ public:
 
 #endif
 
+	// Methods to get descendants of specific types
+#if(1)
+
+	std::vector<ImageGroup *> get_image_group_descendants();
+	std::vector<Image *> get_image_descendants();
+	std::vector<ClusterGroup *> get_cluster_group_descendants();
+	std::vector<Cluster *> get_cluster_descendants();
+	std::vector<FieldGroup *> get_field_group_descendants();
+	std::vector<Field *> get_field_descendants();
+	std::vector<GalaxyGroup *> get_galaxy_group_descendants();
+	std::vector<Galaxy *> get_galaxy_descendants();
+	std::vector<Galaxy *> get_background_galaxy_descendants();
+	std::vector<Galaxy *> get_foreground_galaxy_descendants();
+	std::vector<Galaxy *> get_central_galaxy_descendants();
+	std::vector<Galaxy *> get_field_galaxy_descendants();
+	std::vector<Galaxy *> get_satellite_galaxy_descendants();
+
+#endif
+
 	// Parameter-related methods
 #if(1)
 
@@ -436,7 +535,7 @@ public:
 	 * @param name Name of the desired parameter.
 	 * @return The value of the desired parameter.
 	 */
-	flt_t const & get_param_value(name_t const & name);
+	flt_t const & get_param_value(name_t name);
 
 	/**
 	 * Get the level at which a parameter should be generated
@@ -445,7 +544,7 @@ public:
 	 *
 	 * @return The level it's generated at
 	 */
-	level_t const & get_generation_level( name_t const & name ) const;
+	level_t const & get_generation_level( name_t name ) const;
 
 	/**
 	 * Get a pointer to a value which contains the level at which a parameter should be generated
@@ -456,22 +555,25 @@ public:
 	 */
 	level_t const * const & get_p_generation_level( name_t const & name ) const;
 
-	void set_generation_level( name_t const & name, level_t const & level );
+	void set_generation_level( name_t name, level_t const & level );
 
 	void set_p_generation_level( name_t const & name, level_t const * const & p_level );
 
 	ParamParam const * const & get_p_param_params(name_t const & name) const;
 
 	template< typename T_pp, typename... Args >
-	void set_param_params(name_t const & name, Args... args)
+	void set_param_params(name_t name, Args... args)
 	{
+		boost::algorithm::to_lower(name);
 		_local_param_params[name] = param_param_ptr_t(new T_pp(args...));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
 
 	template< typename... Args >
-	void set_param_params(name_t const & name, str_t const & param_type, Args... args)
+	void set_param_params(name_t name, name_t param_type, Args... args)
 	{
+		boost::algorithm::to_lower(name);
+		boost::algorithm::to_lower(param_type);
 		_local_param_params[name] = param_param_ptr_t(param_params_map.at(param_type)->recreate({args...}));
 		set_p_param_params( name, _local_param_params.at(name).get() );
 	}
@@ -481,6 +583,7 @@ public:
 	void generate_parameters();
 
 	int_t const & get_local_ID() const noexcept { return _local_ID; }
+	long_int_t get_full_ID() const;
 
 	std::vector<int_t> get_ID_seq() const;
 
@@ -489,6 +592,7 @@ public:
 	void clear() { clear_children(); _clear_own_param_cache(); }
 
 	int_t const & get_seed() const noexcept { return _seed; }
+	long_int_t get_full_seed() const;
 	void set_seed();
 	void set_seed( int_t const & seed );
 

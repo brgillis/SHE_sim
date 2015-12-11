@@ -77,7 +77,7 @@ class GalaxyWrap;
 	struct name##Wrap : name, wrapper<name> \
 	{ \
 		void wrapped_fill_children() { this->fill_children(); } \
-	 \
+		 \
 		std::vector<ParamHierarchyLevelWrap *> wrapped_get_children( ) \
 		{ \
 			auto children = name::get_children(""); \
@@ -159,6 +159,90 @@ class GalaxyWrap;
 		{ \
 			auto children = name::get_satellite_galaxies(); \
 			return coerce<std::vector<GalaxyWrap *>>(children); \
+		} \
+	 \
+		std::vector<ParamHierarchyLevelWrap *> wrapped_get_descendants( ) \
+		{ \
+			auto descendants = name::get_descendants(""); \
+			return coerce<std::vector<ParamHierarchyLevelWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<ParamHierarchyLevelWrap *> wrapped_get_descendants( str const & type_name ) \
+		{ \
+			auto descendants = name::get_descendants(extract<name_t>(type_name)); \
+			return coerce<std::vector<ParamHierarchyLevelWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<ImageGroupWrap *> wrapped_get_image_group_descendants( ) \
+		{ \
+			auto descendants = name::get_image_group_descendants(); \
+			return coerce<std::vector<ImageGroupWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<ImageWrap *> wrapped_get_image_descendants( ) \
+		{ \
+			auto descendants = name::get_image_descendants(); \
+			return coerce<std::vector<ImageWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<ClusterGroupWrap *> wrapped_get_cluster_group_descendants( ) \
+		{ \
+			auto descendants = name::get_cluster_group_descendants(); \
+			return coerce<std::vector<ClusterGroupWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<ClusterWrap *> wrapped_get_cluster_descendants( ) \
+		{ \
+			auto descendants = name::get_cluster_descendants(); \
+			return coerce<std::vector<ClusterWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<FieldGroupWrap *> wrapped_get_field_group_descendants( ) \
+		{ \
+			auto descendants = name::get_field_group_descendants(); \
+			return coerce<std::vector<FieldGroupWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<FieldWrap *> wrapped_get_field_descendants( ) \
+		{ \
+			auto descendants = name::get_field_descendants(); \
+			return coerce<std::vector<FieldWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<GalaxyGroupWrap *> wrapped_get_galaxy_group_descendants( ) \
+		{ \
+			auto descendants = name::get_galaxy_group_descendants(); \
+			return coerce<std::vector<GalaxyGroupWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_galaxy_descendants( ) \
+		{ \
+			auto descendants = name::get_galaxy_descendants(); \
+			return coerce<std::vector<GalaxyWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_background_galaxy_descendants( ) \
+		{ \
+			auto descendants = name::get_background_galaxy_descendants(); \
+			return coerce<std::vector<GalaxyWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_foreground_galaxy_descendants( ) \
+		{ \
+			auto descendants = name::get_foreground_galaxy_descendants(); \
+			return coerce<std::vector<GalaxyWrap *>>(descendants); \
+		} \
+	 \
+	 	 std::vector<GalaxyWrap *> wrapped_get_central_galaxy_descendants( ) \
+		{ \
+			auto descendants = name::get_central_galaxy_descendants(); \
+			return coerce<std::vector<GalaxyWrap *>>(descendants); \
+		} \
+	 \
+		std::vector<GalaxyWrap *> wrapped_get_satellite_galaxy_descendants( ) \
+		{ \
+			auto descendants = name::get_satellite_galaxy_descendants(); \
+			return coerce<std::vector<GalaxyWrap *>>(descendants); \
 		} \
 	 \
 		child_t * wrapped_get_child(int const & i) { return name::get_child(i); } \
@@ -279,7 +363,9 @@ BOOST_PYTHON_MODULE(SHE_SIM)
     .add_property("hierarchy_level", &name##Wrap::wrapped_get_hierarchy_level) \
     .add_property("name", &name##Wrap::wrapped_get_name) \
     .add_property("local_ID", &name##Wrap::wrapped_get_local_ID) \
-    .add_property("seed", &name##Wrap::wrapped_get_seed, &name##Wrap::wrapped_set_seed)
+    .add_property("full_ID", &name::get_full_ID) \
+    .add_property("seed", &name##Wrap::wrapped_get_seed, &name##Wrap::wrapped_set_seed) \
+    .add_property("full_seed", &name::get_full_seed)
 
     class_<ParamHierarchyLevelWrap, boost::noncopyable>("name", no_init)
 

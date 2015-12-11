@@ -333,6 +333,46 @@ std::vector<const ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_child
 	return res;
 }
 
+std::vector<ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_descendants( name_t const & type_name )
+{
+	std::vector<child_t *> res;
+
+	for( auto & child : _children )
+	{
+		if( ( child->get_name()==type_name ) or ( type_name == "" ) )
+			res.push_back( child.get() );
+
+		// Check if this one has any descendants of the desired type
+		std::vector<child_t *> childs_descendants = child->get_descendants(type_name);
+		for( auto & descendant : childs_descendants )
+		{
+			res.push_back(descendant);
+		}
+	}
+
+	return res;
+}
+
+std::vector<const ParamHierarchyLevel::child_t *> ParamHierarchyLevel::get_descendants( name_t const & type_name ) const
+{
+	std::vector<const child_t *> res;
+
+	for( const auto & child : _children )
+	{
+		if( ( child->get_name()==type_name ) or ( type_name == "" ) )
+			res.push_back( child.get() );
+
+		// Check if this one has any descendants of the desired type
+		std::vector<child_t *> childs_descendants = child->get_descendants(type_name);
+		for( auto & descendant : childs_descendants )
+		{
+			res.push_back(descendant);
+		}
+	}
+
+	return res;
+}
+
 ParamHierarchyLevel::child_t * ParamHierarchyLevel::get_child(const int & i)
 {
 	return _children.at(i).get();
@@ -472,7 +512,170 @@ std::vector<Galaxy *> ParamHierarchyLevel::get_satellite_galaxies()
 	return res;
 }
 
-#endif
+#endif // Methods to get children of specific types
+
+// Methods to get descendants of specific types
+#if(1)
+
+std::vector<ImageGroup *> ParamHierarchyLevel::get_image_group_descendants()
+{
+	return get_descendants<ImageGroup>();
+}
+std::vector<Image *> ParamHierarchyLevel::get_image_descendants()
+{
+	return get_descendants<Image>();
+}
+std::vector<ClusterGroup *> ParamHierarchyLevel::get_cluster_group_descendants()
+{
+	return get_descendants<ClusterGroup>();
+}
+std::vector<Cluster *> ParamHierarchyLevel::get_cluster_descendants()
+{
+	return get_descendants<Cluster>();
+}
+std::vector<FieldGroup *> ParamHierarchyLevel::get_field_group_descendants()
+{
+	return get_descendants<FieldGroup>();
+}
+std::vector<Field *> ParamHierarchyLevel::get_field_descendants()
+{
+	return get_descendants<Field>();
+}
+std::vector<GalaxyGroup *> ParamHierarchyLevel::ParamHierarchyLevel::get_galaxy_group_descendants()
+{
+	return get_descendants<GalaxyGroup>();
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_galaxy_descendants()
+{
+	return get_descendants<Galaxy>();
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_background_galaxy_descendants()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_background_galaxy())
+				res.push_back(casted_child);
+		}
+		else
+		{
+			// Otherwise check if this one has any descendants of the desired type
+			std::vector<Galaxy *> childs_descendants = child->get_descendants<Galaxy>();
+			for( auto & descendant : childs_descendants )
+			{
+				res.push_back(descendant);
+			}
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_foreground_galaxy_descendants()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_foreground_galaxy())
+				res.push_back(casted_child);
+		}
+		else
+		{
+			// Otherwise check if this one has any descendants of the desired type
+			std::vector<Galaxy *> childs_descendants = child->get_descendants<Galaxy>();
+			for( auto & descendant : childs_descendants )
+			{
+				res.push_back(descendant);
+			}
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_central_galaxy_descendants()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_central_galaxy())
+				res.push_back(casted_child);
+		}
+		else
+		{
+			// Otherwise check if this one has any descendants of the desired type
+			std::vector<Galaxy *> childs_descendants = child->get_descendants<Galaxy>();
+			for( auto & descendant : childs_descendants )
+			{
+				res.push_back(descendant);
+			}
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_field_galaxy_descendants()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_field_galaxy())
+				res.push_back(casted_child);
+		}
+		else
+		{
+			// Otherwise check if this one has any descendants of the desired type
+			std::vector<Galaxy *> childs_descendants = child->get_descendants<Galaxy>();
+			for( auto & descendant : childs_descendants )
+			{
+				res.push_back(descendant);
+			}
+		}
+	}
+
+	return res;
+}
+std::vector<Galaxy *> ParamHierarchyLevel::get_satellite_galaxy_descendants()
+{
+	std::vector<Galaxy *> res;
+
+	for( auto & child : get_children() )
+	{
+		Galaxy * casted_child = dynamic_cast<Galaxy *>(child.get());
+		if( casted_child != nullptr )
+		{
+			if( casted_child->is_satellite_galaxy())
+				res.push_back(casted_child);
+		}
+		else
+		{
+			// Otherwise check if this one has any descendants of the desired type
+			std::vector<Galaxy *> childs_descendants = child->get_descendants<Galaxy>();
+			for( auto & descendant : childs_descendants )
+			{
+				res.push_back(descendant);
+			}
+		}
+	}
+
+	return res;
+}
+
+#endif // Methods to get descendants of specific types
 
 param_t * ParamHierarchyLevel::get_param( name_t const & name )
 {
@@ -484,13 +687,15 @@ const param_t * ParamHierarchyLevel::get_param( name_t const & name) const
 	return _params.at(name).get();
 }
 
-flt_t const & ParamHierarchyLevel::get_param_value( name_t const & name )
+flt_t const & ParamHierarchyLevel::get_param_value( name_t name )
 {
+	boost::algorithm::to_lower(name);
 	return _params.at(name).get()->get();
 }
 
-level_t const & ParamHierarchyLevel::get_generation_level( name_t const & name ) const
+level_t const & ParamHierarchyLevel::get_generation_level( name_t name ) const
 {
+	boost::algorithm::to_lower(name);
 	return get_param(name)->get_generation_level();
 }
 
@@ -512,8 +717,9 @@ void ParamHierarchyLevel::set_p_generation_level( name_t const & name, level_t c
 	_drop_local_generation_level(name);
 }
 
-void ParamHierarchyLevel::set_generation_level( name_t const & name, level_t const & level )
+void ParamHierarchyLevel::set_generation_level( name_t name, level_t const & level )
 {
+	boost::algorithm::to_lower(name);
 	_local_generation_levels[name] = level_ptr_t( new level_t(level) );
 	set_p_generation_level( name, _local_generation_levels.at(name).get() );
 }
@@ -525,6 +731,7 @@ ParamParam const * const & ParamHierarchyLevel::get_p_param_params( name_t const
 
 void ParamHierarchyLevel::set_p_param_params( name_t const & name, ParamParam const * const & params )
 {
+
 	get_param(name)->set_p_params(params);
 
 	// Pass this along to all children
@@ -552,6 +759,25 @@ void ParamHierarchyLevel::generate_parameters()
 
 }
 
+long_int_t ParamHierarchyLevel::get_full_ID() const
+{
+	long_int_t ID = get_local_ID();
+
+	// Add the proper parent ID
+	if(_p_parent)
+	{
+		long_int_t parent_ID = _p_parent->get_local_ID();
+
+		// Multiply the parent ID by 256^(num levels above this)
+		for( int i = _p_parent->get_hierarchy_level(); i<get_hierarchy_level(); ++i)
+		{
+			parent_ID *= 256;
+		}
+	}
+
+	return ID;
+}
+
 std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 {
 	// Append this to the parent's sequence if the parent exists
@@ -569,6 +795,23 @@ std::vector<int_t> ParamHierarchyLevel::get_ID_seq() const
 
 		return res;
 	}
+}
+
+long_int_t ParamHierarchyLevel::get_full_seed() const
+{
+	// Start with the actual seed value
+	long_int_t seed = get_seed();
+
+	// Multiply it by 256^(depth of this level)
+	for( int i = 0; i<get_hierarchy_level(); ++i)
+	{
+		seed *= 256;
+	}
+
+	// Add the full ID, so that each object will get a unique value for this function
+	seed += get_full_ID();
+
+	return seed;
 }
 
 void ParamHierarchyLevel::set_seed()

@@ -45,11 +45,11 @@ constexpr const flt_t vis_filter_response = 1; // FIXME dummy value
 
 // ImageGroup-level
 
-constexpr const int_t image_group_level = 10;
+constexpr const int_t image_group_level = 1;
 
 // Image-level
 
-constexpr const int_t image_level = 20;
+constexpr const int_t image_level = 2;
 
 constexpr const flt_t background_galaxy_density = 60.; // #/arcmin^2
 constexpr const flt_t cluster_density = 1.; // #/arcmin^2
@@ -73,15 +73,15 @@ constexpr const flt_t psf_params = 0.; // FIXME dummy value
 
 // ClusterGroup-level
 
-constexpr const int_t cluster_group_level = 30;
+constexpr const int_t cluster_group_level = 3;
 
 // FieldGroup-level
 
-constexpr const int_t field_group_level = 30;
+constexpr const int_t field_group_level = 3;
 
 // Cluster-level
 
-constexpr const int_t cluster_level = 40;
+constexpr const int_t cluster_level = 4;
 
 constexpr const flt_t cluster_mass_l10_mean = 14; // log10 Msun
 constexpr const flt_t cluster_mass_l10_stddev = 0.5; // log10 Msun
@@ -101,15 +101,19 @@ constexpr const flt_t cluster_num_satellites = 10;
 
 // Field-level
 
-constexpr const int_t field_level = 40;
+constexpr const int_t field_level = 4;
 
 // GalaxyGroup-level
 
-constexpr const int_t galaxy_group_level = 50;
+constexpr const int_t galaxy_group_level = 5;
+
+// GalaxyGroup-level
+
+constexpr const int_t galaxy_pair_level = 6;
 
 // Galaxy-level
 
-constexpr const int_t galaxy_level = 60;
+constexpr const int_t galaxy_level = 7;
 
 constexpr const flt_t apparent_mag_vis_min = 17;
 constexpr const flt_t apparent_mag_vis_max = 24.5;
@@ -152,13 +156,6 @@ constexpr const flt_t xp_max = image_size_xp;
 
 constexpr const flt_t yp_min = 0.;
 constexpr const flt_t yp_max = image_size_yp;
-
-// GalaxyDither-level
-
-constexpr const int_t galaxy_dither_level = 70;
-
-constexpr const flt_t dither_xp_shift = 0.;
-constexpr const flt_t dither_yp_shift = 0.;
 
 } } // namespace SHE_SIM{ namespace dv{
 
