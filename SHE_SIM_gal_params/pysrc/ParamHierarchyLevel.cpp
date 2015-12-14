@@ -347,6 +347,19 @@ BOOST_PYTHON_MODULE(SHE_SIM)
 	.def("get_central_galaxy", &name##Wrap::wrapped_get_central_galaxy, return_value_policy<reference_existing_object>() ) \
 	.def("get_satellite_galaxies", &name##Wrap::wrapped_get_satellite_galaxies ) \
 \
+	.def("get_image_group_descendants", &name##Wrap::wrapped_get_image_group_descendants ) \
+	.def("get_image_descendants", &name##Wrap::wrapped_get_image_descendants ) \
+	.def("get_cluster_group_descendants", &name##Wrap::wrapped_get_cluster_group_descendants ) \
+	.def("get_cluster_descendants", &name##Wrap::wrapped_get_cluster_descendants ) \
+	.def("get_field_group_descendants", &name##Wrap::wrapped_get_field_group_descendants ) \
+	.def("get_field_descendants", &name##Wrap::wrapped_get_field_descendants ) \
+	.def("get_galaxy_group_descendants", &name##Wrap::wrapped_get_galaxy_group_descendants ) \
+	.def("get_galaxy_descendants", &name##Wrap::wrapped_get_galaxy_descendants ) \
+	.def("get_background_galaxy_descendants", &name##Wrap::wrapped_get_background_galaxy_descendants ) \
+	.def("get_foreground_galaxy_descendants", &name##Wrap::wrapped_get_foreground_galaxy_descendants ) \
+	.def("get_central_galaxy_descendants", &name##Wrap::wrapped_get_foreground_galaxy_descendants ) \
+	.def("get_satellite_galaxy_descendants", &name##Wrap::wrapped_get_satellite_galaxy_descendants ) \
+\
 	.def("get_generation_level", &name##Wrap::wrapped_get_generation_level ) \
 	.def("set_generation_level", &name::set_generation_level ) \
 \

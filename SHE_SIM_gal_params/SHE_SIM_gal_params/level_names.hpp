@@ -37,7 +37,6 @@ DEF_NAME(field_group);
 DEF_NAME(field);
 DEF_NAME(galaxy_group);
 DEF_NAME(galaxy);
-DEF_NAME(galaxy_dither);
 
 #undef DEF_NAME
 

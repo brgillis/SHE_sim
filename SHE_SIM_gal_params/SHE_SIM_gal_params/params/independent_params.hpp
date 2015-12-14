@@ -108,10 +108,6 @@ INDEPENDENT_PARAM(cluster_yp);
 INDEPENDENT_PARAM(galaxy_type);
 INDEPENDENT_PARAM(theta_sat);
 
-// GalaxyDither level
-INDEPENDENT_PARAM(dither_xp_shift);
-INDEPENDENT_PARAM(dither_yp_shift);
-
 // Undef the macro
 #undef INDEPENDENT_PARAM
 

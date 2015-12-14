@@ -118,11 +118,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(xp);
 	INSERT_PARAM(yp);
 
-	// Galaxy-dither-level
-
-	INSERT_PARAM(dither_xp_shift);
-	INSERT_PARAM(dither_yp_shift);
-
 	return res;
 
 } // params_t get_full_params_map()

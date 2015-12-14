@@ -87,10 +87,6 @@ DEF_NAME(tilt);
 DEF_NAME(xp);
 DEF_NAME(yp);
 
-// GalaxyDither level
-DEF_NAME(dither_xp_shift);
-DEF_NAME(dither_yp_shift);
-
 #undef DEF_NAME
 
 #endif // SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_
