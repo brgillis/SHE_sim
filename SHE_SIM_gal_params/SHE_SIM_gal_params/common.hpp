@@ -28,8 +28,6 @@
 
 #include <stdint.h>
 
-#include <Eigen/Core>
-
 #include <memory>
 #include <random>
 #include <string>
@@ -54,14 +52,6 @@ typedef std::unordered_map<name_t,level_ptr_t> generation_level_map_t;
 
 typedef std::ranlux48 gen_t;
 typedef gen_t::result_type seed_t;
-
-// Arrays
-
-template< typename T> using array_t = Eigen::Array<T,Eigen::Dynamic,1>;
-typedef array_t<flt_t> array_1d_t;
-typedef Eigen::Array<flt_t,Eigen::Dynamic,Eigen::Dynamic> array_2d_t;
-typedef array_t<array_1d_t> array_1d_array_t;
-typedef array_t<array_2d_t> array_2d_array_t;
 
 // Class forward-declarations
 class ParamHierarchyLevel;

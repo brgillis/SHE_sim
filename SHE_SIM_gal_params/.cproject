@@ -22,9 +22,9 @@
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 				<configuration artifactExtension="so" artifactName="SHE_SIM" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.lib.debug.1189930295" name="Debug" parent="cdt.managedbuild.config.gnu.lib.debug">
 					<folderInfo id="cdt.managedbuild.config.gnu.lib.debug.1189930295." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.lib.debug.2088992216" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.lib.debug">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.lib.debug.2088992216" name="Linux GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.lib.debug" superClass="cdt.managedbuild.toolchain.gnu.lib.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.lib.debug.1256656548" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.lib.debug"/>
-							<builder buildPath="${workspace_loc:/SHE_SIM_gal_params}/Debug" id="cdt.managedbuild.target.gnu.builder.lib.debug.2093986166" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.lib.debug"/>
+							<builder buildPath="${workspace_loc:/SHE_SIM_gal_params}/Debug" id="cdt.managedbuild.target.gnu.builder.lib.debug.1911769169" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.lib.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.lib.debug.1682619096" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.lib.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug.440915108" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.lib.debug">
 								<option id="gnu.cpp.compiler.lib.debug.option.optimization.level.1997539639" name="Optimization Level" superClass="gnu.cpp.compiler.lib.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -47,10 +47,10 @@
 								<option id="gnu.c.compiler.lib.debug.option.debugging.level.1461868658" name="Debug Level" superClass="gnu.c.compiler.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1706973998" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
+								<option id="gnu.c.compiler.option.misc.pic.2144795105" name="Position Independent Code (-fPIC)" superClass="gnu.c.compiler.option.misc.pic" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2043977185" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1832445677" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base">
@@ -71,14 +71,13 @@
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
-								<outputType id="cdt.managedbuild.tool.gnu.cpp.linker.output.so.1915566264" outputPrefix="" superClass="cdt.managedbuild.tool.gnu.cpp.linker.output.so"/>
+								<outputType id="cdt.managedbuild.tool.gnu.cpp.linker.output.so.1915566264" outputPrefix="_" superClass="cdt.managedbuild.tool.gnu.cpp.linker.output.so"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.debug.787084305" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.debug">
 								<option id="gnu.both.asm.option.include.paths.1509387246" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1149921784" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -135,9 +134,8 @@
 								<option id="gnu.c.compiler.lib.release.option.debugging.level.2081377164" name="Debug Level" superClass="gnu.c.compiler.lib.release.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1942088643" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.854497985" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -159,14 +157,13 @@
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
-								<outputType id="cdt.managedbuild.tool.gnu.cpp.linker.output.so.1824748091" outputPrefix="" superClass="cdt.managedbuild.tool.gnu.cpp.linker.output.so"/>
+								<outputType id="cdt.managedbuild.tool.gnu.cpp.linker.output.so.1824748091" outputPrefix="_" superClass="cdt.managedbuild.tool.gnu.cpp.linker.output.so"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.release.1559736017" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.release">
 								<option id="gnu.both.asm.option.include.paths.1897247034" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.375041327" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -221,9 +218,8 @@
 								<option id="gnu.c.compiler.lib.debug.option.debugging.level.1958583433" name="Debug Level" superClass="gnu.c.compiler.lib.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1135437769" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.564413054" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -248,9 +244,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.lib.debug.2077667445" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.lib.debug">
 								<option id="gnu.both.asm.option.include.paths.1488533027" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/home/brg/include"/>
-									<listOptionValue builtIn="false" value="../python2.7"/>
-									<listOptionValue builtIn="false" value="/home/brg/include/boost_python"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
+									<listOptionValue builtIn="false" value="/usr/include/python2.7"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.841399549" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -267,6 +262,9 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Test">
+			<resource resourceType="PROJECT" workspacePath="/SHE_SIM_gal_params"/>
+		</configuration>
+		<configuration configurationName="Swig">
 			<resource resourceType="PROJECT" workspacePath="/SHE_SIM_gal_params"/>
 		</configuration>
 		<configuration configurationName="Debug">

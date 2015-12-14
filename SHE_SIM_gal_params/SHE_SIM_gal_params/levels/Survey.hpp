@@ -43,7 +43,7 @@ class Image;
 /**
  * TODO Auto-generated comment stub
  */
-class Survey: public virtual ParamHierarchyLevel
+class Survey: public ParamHierarchyLevel
 {
 
 public:

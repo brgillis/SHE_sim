@@ -582,7 +582,7 @@ public:
 
 	void generate_parameters();
 
-	int_t const & get_local_ID() const noexcept { return _local_ID; }
+	int_t get_local_ID() const { return _local_ID; }
 	long_int_t get_full_ID() const;
 
 	std::vector<int_t> get_ID_seq() const;
@@ -591,7 +591,7 @@ public:
 
 	void clear() { clear_children(); _clear_own_param_cache(); }
 
-	int_t const & get_seed() const noexcept { return _seed; }
+	int_t get_seed() const { return _seed; }
 	long_int_t get_full_seed() const;
 	void set_seed();
 	void set_seed( int_t const & seed );
