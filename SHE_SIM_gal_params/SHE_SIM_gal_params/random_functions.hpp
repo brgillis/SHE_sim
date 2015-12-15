@@ -213,10 +213,10 @@ T Pois_rand( T_in && lambda=1., gen_t & gen=rng )
 	return std::poisson_distribution<T>(std::forward<T_in>(lambda))(gen);
 } // T Pois_rand( T_in && lambda=1., gen_t & gen=rng )
 
-flt_t rand_from_cdf( std::function<flt_t(flt_t)> const & f, int_t const & N_samples=1000,
+flt_t rand_from_cdf( std::function<flt_t(flt_t const &)> const & f, int_t const & N_samples=1000,
 		flt_t const & xlow=-5., flt_t const & xhigh=5., gen_t & gen = rng );
 
-flt_t rand_from_pdf( std::function<flt_t(flt_t)> const & f, int_t const & N_samples=1000,
+flt_t rand_from_pdf( std::function<flt_t(flt_t const &)> const & f, int_t const & N_samples=1000,
 		flt_t const & xlow=-5., flt_t const & xhigh=5., gen_t & gen = rng );
 
 #endif // End global function declarations

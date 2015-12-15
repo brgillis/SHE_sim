@@ -25,6 +25,7 @@
 
 #include <cassert>
 #include <Eigen/Core>
+#include <functional>
 #include <numeric>
 
 #include <SHE_SIM_gal_params/common.hpp>
@@ -35,6 +36,7 @@ namespace SHE_SIM {
 // Implement the random number generator engine
 gen_t rng;
 
+#include <functional>
 typedef Eigen::Array<flt_t,Eigen::Dynamic,1> flt_array_t;
 
 flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t & gen = rng )
@@ -43,16 +45,18 @@ flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t 
 
 	// Quietly normalize the cvals
 	cvals -= cvals[0];
-	cvals /= cvals[-1];
+	cvals /= cvals[cvals.size()-1];
 
 	// Generate a random value
 	flt_t const r = drand(0.,1.,rng);
 
 	// Get the index on the cdf where this lies
-	int_t i = (cvals-r).abs().minCoeff();
+	flt_array_t diffs = (cvals-r).abs();
+	int_t i,j;
+	diffs.minCoeff(&i,&j);
 
-	// If the value at the index is below r, move up one index
-	if((cvals[i]>r) and (i<cvals.size())) ++i;
+	// If the value at the index is below r, or the index is zero, move up one index
+	if(((cvals[i]<r) and (i<cvals.size())) or (i==0)) ++i;
 
 	// Due to the way random generation works, we can safely ignore the pathological edge cases here
 	// Interpolate to estimate the value
@@ -67,7 +71,7 @@ flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t 
 
 }
 
-flt_t rand_from_cdf( std::function<flt_t(flt_t)> const & f, int_t const & N_samples,
+flt_t rand_from_cdf( std::function<flt_t(flt_t const &)> const & f, int_t const & N_samples,
 		flt_t const & xlow, flt_t const & xhigh, gen_t & gen )
 {
 	// Get an array of x points and cdf values at those points
@@ -79,7 +83,7 @@ flt_t rand_from_cdf( std::function<flt_t(flt_t)> const & f, int_t const & N_samp
 	return res;
 }
 
-flt_t rand_from_pdf( std::function<flt_t(flt_t)> const & f, int_t const & N_samples,
+flt_t rand_from_pdf( std::function<flt_t(flt_t const &)> const & f, int_t const & N_samples,
 		flt_t const & xlow, flt_t const & xhigh, gen_t & gen )
 {
 	// Get an array of x points and pdf values at those points
