@@ -26,8 +26,6 @@
 #ifndef SHE_SIM_GAL_PARAMS_COMMON_HPP_
 #define SHE_SIM_GAL_PARAMS_COMMON_HPP_
 
-#include <stdint.h>
-
 #include <memory>
 #include <random>
 #include <string>
@@ -37,9 +35,9 @@
 
 namespace SHE_SIM {
 
-typedef int16_t short_int_t;
-typedef int32_t int_t;
-typedef int64_t long_int_t;
+typedef short int short_int_t;
+typedef int int_t;
+typedef long int long_int_t;
 
 typedef double flt_t;
 

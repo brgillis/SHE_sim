@@ -69,7 +69,7 @@ public:
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
 	{
-		return std::pow(10.,Gaus_rand(_l10_mean,_l10_stddev,gen));
+		return log10Gaus_rand(_l10_mean,_l10_stddev,gen);
 	}
 
 	virtual ParamParam * clone() const override

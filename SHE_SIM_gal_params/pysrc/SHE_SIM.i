@@ -23,10 +23,17 @@
 
 \**********************************************************************/
 
- %module SHE_SIM
- %{
+// SWIG includes
+%include "typemaps.i"
+%include "std_string.i"
+%include "std_vector.i"
+
+%module SHE_SIM
+
+%{
 	 
 	/* Includes the header in the wrapper code */
+	#include "SHE_SIM_gal_params/common.hpp"
 	#include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 	#include "SHE_SIM_gal_params/levels/Cluster.hpp"
 	#include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
@@ -38,9 +45,9 @@
 	#include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 	#include "SHE_SIM_gal_params/levels/Survey.hpp"
 	 
- %}
+%}
  
-/* Parse the header file to generate wrappers */
+// Parse the header files to generate wrappers
 %include "../SHE_SIM_gal_params/common.hpp"
 %include "../SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 %include "../SHE_SIM_gal_params/levels/Cluster.hpp"
@@ -53,10 +60,46 @@
 %include "../SHE_SIM_gal_params/levels/ImageGroup.hpp"
 %include "../SHE_SIM_gal_params/levels/Survey.hpp"
 
-// SWIG includes
-%include "typemaps.i"
-%include "std_vector.i"
+%apply int& {SHE_SIM::level_t&};
 
+namespace SHE_SIM {
+
+%extend ParamHierarchyLevel { 
+	void set_param_params(name_t name, name_t param_type )
+	{
+		return $self->set_param_params( name, param_type );
+	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1 )
+	{
+		return $self->set_param_params( name, param_type, arg1 );
+	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1, flt_t arg2 )
+	{
+		return $self->set_param_params( name, param_type, arg1, arg2 );
+	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1, flt_t arg2, flt_t arg3 )
+	{
+		return $self->set_param_params( name, param_type, arg1, arg2, arg3 );
+	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1, flt_t arg2, flt_t arg3, flt_t arg4 )
+	{
+		return $self->set_param_params( name, param_type, arg1, arg2, arg3, arg4 );
+	}
+	
+//	void set_seed( long int seed )
+//	{
+//		return $self->set_seed( seed );
+//	}
+//	
+//	void set_generation_level( name_t name, short int level )
+//	{
+//		return $self->set_generation_level( name, level );
+//	}
+}
+
+}
+
+// Tell SWIG to implement vectors of the PHL types as lists
 namespace std {
 
 %template(PHLVector) vector<SHE_SIM::ParamHierarchyLevel *>;
