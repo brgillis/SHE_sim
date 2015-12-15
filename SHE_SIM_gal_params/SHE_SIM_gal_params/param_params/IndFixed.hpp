@@ -77,9 +77,11 @@ public:
 		return new IndFixed(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndFixed(*params.begin());
+		if(params.size() != 1) throw std::runtime_error("Invalid number of arguments used for fixed param param.\n"
+				"Exactly 1 argument is required.");
+		return new IndFixed(params[0]);
 	}
 };
 

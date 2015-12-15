@@ -74,8 +74,10 @@ public:
 		return new Calculated(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
+		if(params.size() != 0) throw std::runtime_error("Invalid number of arguments used for alt_calculated param param.\n"
+				"Exactly 0 arguments are required.");
 		return new Calculated();
 	}
 };

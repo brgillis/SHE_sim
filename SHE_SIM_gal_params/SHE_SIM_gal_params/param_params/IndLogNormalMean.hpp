@@ -64,7 +64,7 @@ public:
 	virtual ~IndLogNormalMean() {}
 
 	// Get the name of this
-	virtual name_t name() const override { return "lognormal_peak"; };
+	virtual name_t name() const override { return "lognormal_mean"; };
 
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
@@ -77,9 +77,11 @@ public:
 		return new IndLogNormalMean(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndLogNormalMean(*params.begin(),*(params.begin()+1));
+		if(params.size() != 2) throw std::runtime_error("Invalid number of arguments used for lognormal_mean param param.\n"
+				"Exactly 2 arguments are required.");
+		return new IndLogNormalMean(params[0],params[1]);
 	}
 };
 

@@ -77,9 +77,11 @@ public:
 		return new IndUniform(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndUniform(*params.begin(),*(params.begin()+1));
+		if(params.size() != 2) throw std::runtime_error("Invalid number of arguments used for uniform param param.\n"
+				"Exactly 2 arguments are required.");
+		return new IndUniform(params[0],params[1]);
 	}
 };
 

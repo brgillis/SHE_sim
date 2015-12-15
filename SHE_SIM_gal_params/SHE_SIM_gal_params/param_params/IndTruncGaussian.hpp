@@ -81,9 +81,11 @@ public:
 		return new IndTruncGaussian(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndTruncGaussian(*params.begin(),*(params.begin()+1),*(params.begin()+2),*(params.begin()+3));
+		if(params.size() != 4) throw std::runtime_error("Invalid number of arguments used for truncated_gaussian param param.\n"
+				"Exactly 4 arguments are required.");
+		return new IndTruncGaussian(params[0],params[1],params[2],params[3]);
 	}
 };
 

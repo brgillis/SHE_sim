@@ -81,9 +81,11 @@ public:
 		return new IndContRayleigh(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndContRayleigh(*params.begin(),*(params.begin()+1),*(params.begin()+2));
+		if(params.size() != 3) throw std::runtime_error("Invalid number of arguments used for contracted_rayleigh param param.\n"
+				"Exactly 3 arguments are required.");
+		return new IndContRayleigh(params[0],params[1],params[2]);
 	}
 };
 

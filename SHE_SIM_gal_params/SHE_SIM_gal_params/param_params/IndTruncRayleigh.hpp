@@ -64,7 +64,7 @@ public:
 	virtual ~IndTruncRayleigh() {}
 
 	// Get the name of this
-	virtual name_t name() const override { return "truncated_Rayleigh"; };
+	virtual name_t name() const override { return "truncated_rayleigh"; };
 
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
@@ -77,9 +77,11 @@ public:
 		return new IndTruncRayleigh(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndTruncRayleigh(*params.begin(),*(params.begin()+1));
+		if(params.size() != 2) throw std::runtime_error("Invalid number of arguments used for truncated_rayleigh param param.\n"
+				"Exactly 2 arguments are required.");
+		return new IndTruncRayleigh(params[0],params[1]);
 	}
 };
 

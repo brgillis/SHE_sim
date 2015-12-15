@@ -77,9 +77,11 @@ public:
 		return new IndPoisson(*this);
 	}
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const override
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		return new IndPoisson(*params.begin());
+		if(params.size() != 16) throw std::runtime_error("Invalid number of arguments used for poisson param param.\n"
+				"Exactly 1 argument is required.");
+		return new IndPoisson(params[0]);
 	}
 };
 

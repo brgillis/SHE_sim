@@ -108,7 +108,7 @@ public:
 
 	virtual ParamParam * clone() const = 0;
 
-	virtual ParamParam * recreate(const std::initializer_list<flt_t> & params) const = 0;
+	virtual ParamParam * recreate(const std::vector<flt_t> & params) const = 0;
 
 };
 
