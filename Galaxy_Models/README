@@ -15,7 +15,7 @@ To run 3DCOLORFIT, do the following:
 using the Makefile
 
 2) Run the model generation - these generate models with the following Sersic indices for the bulge:
-n=4(bulge only), n=4(bulge+exponential disk), n=3.5, n=3, 2.71, 2.56, 2,1.78,1.8
+n=4(bulge only), n=4(bulge+exponential disk), n=3.5, n=3, 2.71, 2.56, 2, 1.78, 1.8
 ./run3dmodels_sim.sh
 
 For each case, we generate bulge and then disk model with the following arguments:

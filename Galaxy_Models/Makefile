@@ -11,11 +11,11 @@
 # -- compiler options
 #
 
-CCFLAGS = -L/opt/local/lib -I/opt/local/include -lnlopt -lgsl -lgslcblas -lfftw3 ${INCLUDE} -lm ${LDLIBS}  
-FITSIO_INCDIR =/Users/n_welikala/software/cfitsio/include
+CCFLAGS = -g3 -L/home/brg/lib -I/home/brg/include -lgsl -lgslcblas -lfftw3 ${INCLUDE} -lm ${LDLIBS}  
+FITSIO_INCDIR =/home/brg/include/cfitsio
 
 INCLUDE=-I${FITSIO_INCDIR} 
-LDLIBS = -L/Users/n_welikala/software/cfitsio/lib -lcfitsio 
+LDLIBS = -L/home/brg/lib/cfitsio -lcfitsio 
 
 
 image=galsim3d_gen_models
