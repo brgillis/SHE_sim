@@ -118,17 +118,29 @@ constexpr const int_t galaxy_level = 7;
 constexpr const flt_t apparent_mag_vis_min = 17;
 constexpr const flt_t apparent_mag_vis_max = 24.5;
 
-constexpr const flt_t apparent_size = std::pow(10.,-0.5); // arcsec
+constexpr const flt_t apparent_size_bulge = std::pow(10.,-0.5); // arcsec
 
-constexpr const flt_t apparent_size_l10_mean = -0.5; // log10 arcsec
-constexpr const flt_t apparent_size_l10_stddev = 0.15; // log10 arcsec
+constexpr const flt_t apparent_size_bulge_l10_mean = -0.5; // log10 arcsec
+constexpr const flt_t apparent_size_bulge_l10_stddev = 0.15; // log10 arcsec
+
+constexpr const flt_t apparent_size_disk = std::pow(10.,-0.5); // arcsec
+
+constexpr const flt_t apparent_size_disk_l10_mean = -0.5; // log10 arcsec
+constexpr const flt_t apparent_size_disk_l10_stddev = 0.15; // log10 arcsec
+
+constexpr const flt_t bulge_fraction_l10_mean = -0.5; // log10
+constexpr const flt_t bulge_fraction_l10_stddev = 0.15; // log10
+constexpr const flt_t bulge_fraction_l10_max = 1; // log10
+constexpr const flt_t bulge_fraction_l10_min = -999; // log10
 
 constexpr const int_t galaxy_type = 0.; // 0 = field, <0 = central, >0 = satellite
 
 constexpr const flt_t morphology_min = 0.5; // Sersic index
 constexpr const flt_t morphology_max = 6.5; // Sersic index
 
-constexpr const flt_t physical_size = 1.; // kpc
+constexpr const flt_t physical_size_bulge = 1.; // kpc
+
+constexpr const flt_t physical_size_disk = 1.; // kpc
 
 constexpr const flt_t redshift_min = 0.2;
 constexpr const flt_t redshift_max = 1.3;

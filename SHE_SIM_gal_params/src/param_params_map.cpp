@@ -29,6 +29,4 @@ namespace SHE_SIM {
 
 const param_params_t param_params_map(make_full_param_params_map());
 
-const flt_t blah = 1.;
-
 }

@@ -149,8 +149,13 @@ DEPENDENT_PARAM(cluster_num_satellites,
 DEPENDENT_PARAM(apparent_mag_vis,
 		_cached_value = get_apparent_mag_vis(REQUEST(stellar_mass), REQUEST(redshift)));
 
-DEPENDENT_PARAM(physical_size,
-		_cached_value = generate_physical_size(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng));
+DEPENDENT_PARAM(physical_size_bulge,
+		_cached_value = generate_physical_size_bulge(REQUEST(galaxy_type), REQUEST(redshift),
+				REQUEST(stellar_mass), _rng));
+
+DEPENDENT_PARAM(physical_size_disk,
+		_cached_value = generate_physical_size_disk(REQUEST(galaxy_type), REQUEST(redshift),
+				REQUEST(stellar_mass), _rng));
 
 DEPENDENT_PARAM(redshift,
 		if(is_field_galaxy(REQUEST(galaxy_type)))

@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file IndExpQuadratic.hpp
+ @file IndTruncLogNormalMean.hpp
  ------------------
 
  TODO <Insert file description here>
@@ -23,8 +23,8 @@
 
  \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDEXPQUADRATIC_HPP_
-#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDEXPQUADRATIC_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDTRUNCLOGNORMALMEAN_HPP_
+#define SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDTRUNCLOGNORMALMEAN_HPP_
 
 #include <initializer_list>
 
@@ -38,70 +38,57 @@ namespace SHE_SIM
 /**
  * TODO Auto-generated comment stub
  */
-class IndExpQuadratic: public ParamParam
+class IndTruncLogNormalMean: public ParamParam
 {
 private:
 
-	flt_t _N_scale, _hinge_mag, _beta_0, _d_beta, _mag_min, _mag_max;
+	flt_t _l10_mean, _l10_stddev, _l10_min, _l10_max;
 
 	// Private methods
 	virtual bool is_equal( ParamParam const * const & other ) const override
 	{
-		IndExpQuadratic const * other_derived = dynamic_cast<IndExpQuadratic const *>(other);
+		IndTruncLogNormalMean const * other_derived = dynamic_cast<IndTruncLogNormalMean const *>(other);
 		if(other_derived==nullptr) return false;
-		return (_N_scale==other_derived->_N_scale) and (_hinge_mag==other_derived->_hinge_mag) and
-				(_beta_0==other_derived->_beta_0) and (_d_beta==other_derived->_d_beta) and
-				(_mag_min==other_derived->_mag_min) and (_mag_max==other_derived->_mag_max);
+		return (_l10_mean==other_derived->_l10_mean) and (_l10_stddev==other_derived->_l10_stddev) and
+				(_l10_min==other_derived->_l10_min) and (_l10_max==other_derived->_l10_max);
 	}
 
 public:
 
 	// Constructor and destructor
-	IndExpQuadratic( flt_t const & N_scale = 0., flt_t const & hinge_mag = 1.,
-			flt_t const & beta_0 = -1., flt_t const & d_beta = 1.,
-			flt_t const & mag_min = -1., flt_t const & mag_max = 1.)
+	IndTruncLogNormalMean( flt_t const & l10_mean = 0., flt_t const & l10_stddev = 1.,
+			flt_t const & l10_min = -5, flt_t const & l10_max = 5.)
 	: ParamParam(ParamParam::INDEPENDENT),
-	  _N_scale(N_scale),
-	  _hinge_mag(hinge_mag),
-	  _beta_0(beta_0),
-	  _d_beta(d_beta),
-	  _mag_min(mag_min),
-	  _mag_max(mag_max)
+	  _l10_mean(l10_mean),
+	  _l10_stddev(l10_stddev),
+	  _l10_min(l10_min),
+	  _l10_max(l10_max)
 	{
 	}
-	virtual ~IndExpQuadratic() {}
+	virtual ~IndTruncLogNormalMean() {}
 
 	// Get the name of this
-	virtual name_t name() const override { return "exp_quadratic"; };
-
-	// PDF generation function
-	flt_t get_pdf(flt_t const & mag) const
-	{
-		flt_t m = mag-_hinge_mag;
-		flt_t p = _N_scale*std::exp(_beta_0*m + _d_beta*m*m);
-		return p;
-	}
+	virtual name_t name() const override { return "trunc_lognormal_mean"; };
 
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = rng ) const override
 	{
-		auto const & f = [=] (flt_t const & mag) { return get_pdf(mag); };
-		return rand_from_pdf(f,1000,_mag_min,_mag_max,gen);
+		return trunc_log10Gaus_rand(_l10_mean,_l10_stddev,_l10_min,_l10_max,gen);
 	}
 
 	virtual ParamParam * clone() const override
 	{
-		return new IndExpQuadratic(*this);
+		return new IndTruncLogNormalMean(*this);
 	}
 
 	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		if(params.size() != 6) throw std::runtime_error("Invalid number of arguments used for exp_quadratic param param.\n"
-				"Exactly 6 arguments are required.");
-		return new IndExpQuadratic(params[0],params[1],params[2],params[3],params[4],params[5]);
+		if(params.size() != 4) throw std::runtime_error("Invalid number of arguments used for trunc_lognormal_mean param param.\n"
+				"Exactly 4 arguments are required.");
+		return new IndTruncLogNormalMean(params[0],params[1],params[2],params[3]);
 	}
 };
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDEXPQUADRATIC_HPP_
+#endif // SHE_SIM_GAL_PARAMS_PARAM_PARAMS_INDTRUNCLOGNORMALMEAN_HPP_

@@ -37,6 +37,23 @@
 
 namespace SHE_SIM {
 
+flt_t generate_bulge_fraction( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, flt_t const & morphology, gen_t & rng  )
+{
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_bulge_fraction used.";
+
+	return trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
+			dv::bulge_fraction_l10_min, dv::bulge_fraction_l10_max, rng );
+}
+
+flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & morphology, gen_t & rng  )
+{
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_bulge_fraction (alt) used.";
+
+	return trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
+			dv::bulge_fraction_l10_min, dv::bulge_fraction_l10_max, rng );
+}
+
 flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_morphology used.";
@@ -51,11 +68,20 @@ flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng  )
 	return drand( dv::morphology_min, dv::morphology_max, rng );
 }
 
-flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng  )
+flt_t generate_physical_size_bulge( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, gen_t & rng  )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_physical_size used.";
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_physical_size_bulge used.";
 
-	return dv::physical_size;
+	return dv::physical_size_bulge;
+}
+
+flt_t generate_physical_size_disk( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, gen_t & rng  )
+{
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_physical_size_disk used.";
+
+	return dv::physical_size_disk;
 }
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,

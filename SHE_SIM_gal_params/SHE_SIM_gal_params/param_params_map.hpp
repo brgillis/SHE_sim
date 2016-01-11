@@ -39,6 +39,7 @@
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
 #include "SHE_SIM_gal_params/param_params/DepUniform.hpp"
 #include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
+#include "SHE_SIM_gal_params/param_params/IndExpQuadratic.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalPeak.hpp"
@@ -46,6 +47,8 @@
 #include "SHE_SIM_gal_params/param_params/IndPoisson.hpp"
 #include "SHE_SIM_gal_params/param_params/IndRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndTruncGaussian.hpp"
+#include "SHE_SIM_gal_params/param_params/IndTruncLogNormalPeak.hpp"
+#include "SHE_SIM_gal_params/param_params/IndTruncLogNormalMean.hpp"
 #include "SHE_SIM_gal_params/param_params/IndTruncRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndUniform.hpp"
 
@@ -71,6 +74,7 @@ inline param_params_t make_full_param_params_map()
 	insert_param_param<AltCalculated>(res);
 	insert_param_param<Calculated>(res);
 	insert_param_param<DepUniform>(res);
+	insert_param_param<IndExpQuadratic>(res);
 	insert_param_param<IndFixed>(res);
 	insert_param_param<IndContRayleigh>(res);
 	insert_param_param<IndGaussian>(res);
@@ -79,6 +83,8 @@ inline param_params_t make_full_param_params_map()
 	insert_param_param<IndPoisson>(res);
 	insert_param_param<IndRayleigh>(res);
 	insert_param_param<IndTruncGaussian>(res);
+	insert_param_param<IndTruncLogNormalPeak>(res);
+	insert_param_param<IndTruncLogNormalMean>(res);
 	insert_param_param<IndTruncRayleigh>(res);
 	insert_param_param<IndUniform>(res);
 

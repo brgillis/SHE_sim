@@ -85,16 +85,14 @@ namespace SHE_SIM {
 	{
 		return $self->set_param_params( name, param_type, arg1, arg2, arg3, arg4 );
 	}
-	
-//	void set_seed( long int seed )
-//	{
-//		return $self->set_seed( seed );
-//	}
-//	
-//	void set_generation_level( name_t name, short int level )
-//	{
-//		return $self->set_generation_level( name, level );
-//	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1, flt_t arg2, flt_t arg3, flt_t arg4, flt_t arg5 )
+	{
+		return $self->set_param_params( name, param_type, arg1, arg2, arg3, arg4, arg5 );
+	}
+	void set_param_params(name_t name, name_t param_type, flt_t arg1, flt_t arg2, flt_t arg3, flt_t arg4, flt_t arg5, flt_t arg6 )
+	{
+		return $self->set_param_params( name, param_type, arg1, arg2, arg3, arg4, arg5, arg6 );
+	}
 }
 
 }

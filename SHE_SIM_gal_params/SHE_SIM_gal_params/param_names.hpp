@@ -71,10 +71,13 @@ DEF_NAME(cluster_yp);
 // Galaxy level
 
 DEF_NAME(apparent_mag_vis);
-DEF_NAME(apparent_size);
+DEF_NAME(apparent_size_bulge);
+DEF_NAME(apparent_size_disk);
+DEF_NAME(bulge_fraction);
 DEF_NAME(galaxy_type);
 DEF_NAME(morphology);
-DEF_NAME(physical_size);
+DEF_NAME(physical_size_bulge);
+DEF_NAME(physical_size_disk);
 DEF_NAME(psf_model);
 DEF_NAME(redshift);
 DEF_NAME(rotation);

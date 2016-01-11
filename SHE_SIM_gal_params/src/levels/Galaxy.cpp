@@ -45,14 +45,16 @@ void Galaxy::set_as_background_galaxy()
 {
 	set_param_params(galaxy_type_name,"fixed",field_galaxy_type);
 	set_param_params(apparent_mag_vis_name,"alt_calculated");
-	set_param_params(apparent_size_name,"alt_calculated");
+	set_param_params(apparent_size_bulge_name,"alt_calculated");
+	set_param_params(apparent_size_disk_name,"alt_calculated");
 	_is_background = true;
 }
 
 void Galaxy::set_as_foreground_galaxy()
 {
 	set_param_params(apparent_mag_vis_name,"calculated");
-	set_param_params(apparent_size_name,"calculated");
+	set_param_params(apparent_size_bulge_name,"calculated");
+	set_param_params(apparent_size_disk_name,"calculated");
 }
 
 bool Galaxy::is_central_galaxy()

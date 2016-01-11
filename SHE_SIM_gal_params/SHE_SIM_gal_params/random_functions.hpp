@@ -135,7 +135,7 @@ T trunc_log10Gaus_rand( T_in && mean, T_in && stddev, T_in && min, T_in && max, 
 	while( (!good_value) and (attempt_counter < 1000) )
 	{
 		flt_t test_result = log10Gaus_rand(mean,stddev,gen);
-		if((test_result >= p10_min)and(test_result <= p10_min))
+		if((test_result >= p10_min)and(test_result <= p10_max))
 		{
 			return test_result;
 		}

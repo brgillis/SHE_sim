@@ -78,13 +78,24 @@ flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
 
 flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift );
 
-flt_t generate_apparent_size( flt_t const & apparent_mag_vis, gen_t & rng );
+flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng );
+
+flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );
+
+flt_t generate_bulge_fraction( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, flt_t const & morphology, gen_t & rng );
+
+flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & morphology, gen_t & rng );
 
 flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng );
 
-flt_t generate_physical_size( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng );
+flt_t generate_physical_size_bulge( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, gen_t & rng );
+
+flt_t generate_physical_size_disk( flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );

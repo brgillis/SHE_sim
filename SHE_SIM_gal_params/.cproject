@@ -61,7 +61,6 @@
 								<option id="gnu.cpp.link.option.libs.1434307218" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
 									<listOptionValue builtIn="false" value="boost_log"/>
-									<listOptionValue builtIn="false" value="boost_python"/>
 									<listOptionValue builtIn="false" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.860336375" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
@@ -147,7 +146,6 @@
 								<option id="gnu.cpp.link.option.libs.1644812259" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
 									<listOptionValue builtIn="false" value="boost_log"/>
-									<listOptionValue builtIn="false" value="boost_python"/>
 									<listOptionValue builtIn="false" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1451189813" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
@@ -228,7 +226,6 @@
 								<option id="gnu.cpp.link.option.libs.153584923" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_log"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_python"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1543331253" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">

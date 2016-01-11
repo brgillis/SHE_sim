@@ -40,6 +40,7 @@
 #include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"
+#include "SHE_SIM_gal_params/param_params/IndTruncLogNormalMean.hpp"
 #include "SHE_SIM_gal_params/param_params/IndUniform.hpp"
 
 namespace SHE_SIM {
@@ -60,11 +61,13 @@ inline param_params_t make_default_param_params_map()
 {
 	param_params_t res;
 
-#define INSERT_FIXED_PARAM(param) insert_default_param_param<IndFixed>(res, param##_name, dv::param);
-#define INSERT_LOGNORMAL_PARAM(param) insert_default_param_param<IndLogNormalMean>(res, param##_name, dv::param##_l10_mean, dv::param##_l10_stddev);
-#define INSERT_UNIFORM_PARAM(param) insert_default_param_param<IndUniform>(res, param##_name, dv::param##_min, dv::param##_max);
-#define INSERT_CONTRAYLEIGH_PARAM(param) insert_default_param_param<IndContRayleigh>(res, param##_name, dv::param##_sigma, dv::param##_max, dv::param##_p);
 #define INSERT_CALCULATED_PARAM(param) insert_default_param_param<Calculated>(res, param##_name);
+#define INSERT_CONTRAYLEIGH_PARAM(param) insert_default_param_param<IndContRayleigh>(res, param##_name, dv::param##_sigma, \
+		dv::param##_max, dv::param##_p);
+#define INSERT_FIXED_PARAM(param) insert_default_param_param<IndFixed>(res, param##_name, dv::param);
+#define INSERT_LOGNORMAL_PARAM(param) insert_default_param_param<IndLogNormalMean>(res, param##_name, dv::param##_l10_mean, \
+		dv::param##_l10_stddev);
+#define INSERT_UNIFORM_PARAM(param) insert_default_param_param<IndUniform>(res, param##_name, dv::param##_min, dv::param##_max);
 
 	// Insert all defaults  here
 
@@ -116,10 +119,13 @@ inline param_params_t make_default_param_params_map()
 	// Galaxy level
 
 	INSERT_CALCULATED_PARAM(apparent_mag_vis);
-	INSERT_LOGNORMAL_PARAM(apparent_size);
+	INSERT_LOGNORMAL_PARAM(apparent_size_bulge);
+	INSERT_LOGNORMAL_PARAM(apparent_size_disk);
+	INSERT_CALCULATED_PARAM(bulge_fraction);
 	INSERT_FIXED_PARAM(galaxy_type);
 	INSERT_UNIFORM_PARAM(morphology);
-	INSERT_CALCULATED_PARAM(physical_size);
+	INSERT_CALCULATED_PARAM(physical_size_bulge);
+	INSERT_CALCULATED_PARAM(physical_size_disk);
 	INSERT_CALCULATED_PARAM(psf_model);
 	INSERT_UNIFORM_PARAM(redshift);
 	INSERT_UNIFORM_PARAM(rotation);
@@ -199,10 +205,13 @@ inline generation_level_map_t make_default_generation_levels_map()
 	// Galaxy level
 
 	INSERT_LEVEL(apparent_mag_vis, dv::galaxy_level);
-	INSERT_LEVEL(apparent_size, dv::galaxy_level);
+	INSERT_LEVEL(apparent_size_bulge, dv::galaxy_level);
+	INSERT_LEVEL(apparent_size_disk, dv::galaxy_level);
+	INSERT_LEVEL(bulge_fraction, dv::galaxy_level);
 	INSERT_LEVEL(galaxy_type, dv::galaxy_level);
 	INSERT_LEVEL(morphology, dv::galaxy_level);
-	INSERT_LEVEL(physical_size, dv::galaxy_level);
+	INSERT_LEVEL(physical_size_bulge, dv::galaxy_level);
+	INSERT_LEVEL(physical_size_disk, dv::galaxy_level);
 	INSERT_LEVEL(redshift, dv::galaxy_level);
 	INSERT_LEVEL(rotation, dv::galaxy_level);
 	INSERT_LEVEL(rp, dv::galaxy_level);

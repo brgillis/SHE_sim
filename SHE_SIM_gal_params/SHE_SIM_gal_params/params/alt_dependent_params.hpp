@@ -114,9 +114,18 @@ public: \
 
 // Galaxy level
 
-ALT_DEPENDENT_PARAM(apparent_size,
-		_cached_value = get_apparent_size(REQUEST(physical_size), REQUEST(redshift)),
-		_cached_value = generate_apparent_size(REQUEST(apparent_mag_vis), _rng));
+ALT_DEPENDENT_PARAM(apparent_size_bulge,
+		_cached_value = get_apparent_size(REQUEST(physical_size_bulge), REQUEST(redshift)),
+		_cached_value = generate_apparent_size_bulge(REQUEST(apparent_mag_vis), _rng));
+
+ALT_DEPENDENT_PARAM(apparent_size_disk,
+		_cached_value = get_apparent_size(REQUEST(physical_size_bulge), REQUEST(redshift)),
+		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), _rng));
+
+ALT_DEPENDENT_PARAM(bulge_fraction,
+		_cached_value = generate_bulge_fraction(REQUEST(galaxy_type), REQUEST(redshift),
+				REQUEST(stellar_mass), REQUEST(morphology), _rng),
+		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(morphology), _rng));
 
 ALT_DEPENDENT_PARAM(morphology,
 		_cached_value = generate_morphology(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng),

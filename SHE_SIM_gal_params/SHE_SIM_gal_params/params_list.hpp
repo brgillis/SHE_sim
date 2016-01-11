@@ -103,10 +103,13 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	// Galaxy-level params here
 
 	INSERT_PARAM(apparent_mag_vis);
-	INSERT_PARAM(apparent_size);
+	INSERT_PARAM(apparent_size_bulge);
+	INSERT_PARAM(apparent_size_disk);
+	INSERT_PARAM(bulge_fraction);
 	INSERT_PARAM(galaxy_type);
 	INSERT_PARAM(morphology);
-	INSERT_PARAM(physical_size);
+	INSERT_PARAM(physical_size_bulge);
+	INSERT_PARAM(physical_size_disk);
 	INSERT_PARAM(redshift);
 	INSERT_PARAM(rotation);
 	INSERT_PARAM(rp);
