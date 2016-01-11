@@ -32,6 +32,7 @@
 #include <cassert>
 #include <vector>
 
+#include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
@@ -115,11 +116,11 @@ public: \
 // Galaxy level
 
 ALT_DEPENDENT_PARAM(apparent_size_bulge,
-		_cached_value = get_apparent_size(REQUEST(physical_size_bulge), REQUEST(redshift)),
+		_cached_value = get_angle_from_distance(REQUEST(physical_size_bulge), REQUEST(redshift)),
 		_cached_value = generate_apparent_size_bulge(REQUEST(apparent_mag_vis), _rng));
 
 ALT_DEPENDENT_PARAM(apparent_size_disk,
-		_cached_value = get_apparent_size(REQUEST(physical_size_bulge), REQUEST(redshift)),
+		_cached_value = get_angle_from_distance(REQUEST(physical_size_bulge), REQUEST(redshift)),
 		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), _rng));
 
 ALT_DEPENDENT_PARAM(bulge_fraction,

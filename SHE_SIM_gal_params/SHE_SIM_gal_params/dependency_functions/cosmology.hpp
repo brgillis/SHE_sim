@@ -31,13 +31,22 @@
 namespace SHE_SIM {
 
 /**
- * Get the a transverse distance in kpc from an angle in arcsec
+ * Get a transverse distance in kpc from an angle in arcsec
  *
  * @param theta_arcsec angle in arcsec
  * @param z
  * @return distance in kpc
  */
 flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z );
+
+/**
+ * Get an angle in kpc from a transverse distance in kpc
+ *
+ * @param d_kpc transverse distance in kpc
+ * @param z
+ * @return angle in arcsec
+ */
+flt_t get_angle_from_distance( const flt_t & d_kpc, const flt_t & z );
 
 } // namespace SHE_SIM
 

@@ -33,7 +33,7 @@
 
 namespace SHE_SIM {
 
-flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )
+flt_t get_dfa( const flt_t & z )
 {
 	dfa_array_t z_array = dfa_cache.first;
 	dfa_array_t dfa_array = dfa_cache.second;
@@ -53,7 +53,19 @@ flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )
 
 	flt_t dfa = dfa_lo + (dfa_hi-dfa_lo)/(z_hi-z_lo) * (z-z_lo);
 
-	flt_t res = theta_arcsec * dfa;
+	return dfa;
+}
+
+flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )
+{
+	flt_t res = theta_arcsec * get_dfa(z);
+
+	return res;
+}
+
+flt_t get_angle_from_distance( const flt_t & d_kpc, const flt_t & z )
+{
+	flt_t res = d_kpc / get_dfa(z);
 
 	return res;
 }

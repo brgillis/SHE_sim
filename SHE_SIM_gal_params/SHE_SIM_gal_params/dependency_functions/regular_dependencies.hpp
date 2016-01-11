@@ -76,8 +76,6 @@ flt_t get_cluster_richness( flt_t const & cluster_mass, flt_t const & cluster_re
 
 flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift );
 
-flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift );
-
 flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng );
 
 flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );

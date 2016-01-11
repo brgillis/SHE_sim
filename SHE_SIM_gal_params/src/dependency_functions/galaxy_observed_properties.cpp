@@ -44,23 +44,16 @@ flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
 	return drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, rng );
 }
 
-flt_t get_apparent_size( flt_t const & physical_size, flt_t const & redshift )
-{
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
-
-	return dv::apparent_size_bulge;
-}
-
 flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_apparent_size_bulge used.";
 
 	return dv::apparent_size_bulge;
 }
 
 flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_size used.";
+	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_apparent_size_disk used.";
 
 	return dv::apparent_size_disk;
 }

@@ -88,6 +88,17 @@ BOOST_FIXTURE_TEST_CASE(test_cosmo_funcs, cosmo_funcs_fixture) {
 	flt_t d_22 = SHE_SIM::get_distance_from_angle(test_theta_2,test_z_2);
 	BOOST_CHECK_CLOSE(d_22,exp_d_22,tolerance);
 
+	// Check inverse
+
+	flt_t a_11 = SHE_SIM::get_angle_from_distance(exp_d_11,test_z_1);
+	BOOST_CHECK_CLOSE(a_11,test_theta_1,tolerance);
+	flt_t a_12 = SHE_SIM::get_angle_from_distance(exp_d_12,test_z_2);
+	BOOST_CHECK_CLOSE(a_12,test_theta_1,tolerance);
+	flt_t a_21 = SHE_SIM::get_angle_from_distance(exp_d_21,test_z_1);
+	BOOST_CHECK_CLOSE(a_21,test_theta_2,tolerance);
+	flt_t a_22 = SHE_SIM::get_angle_from_distance(exp_d_22,test_z_2);
+	BOOST_CHECK_CLOSE(a_22,test_theta_2,tolerance);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
