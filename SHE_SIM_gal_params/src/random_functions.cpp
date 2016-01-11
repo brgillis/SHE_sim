@@ -56,16 +56,22 @@ flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t 
 	diffs.minCoeff(&i,&j);
 
 	// If the value at the index is below r, or the index is zero, move up one index
-	if(((cvals[i]<r) and (i<cvals.size())) or (i==0)) ++i;
+	while(((cvals[i]<r) and (i<cvals.size())) or (i==0))
+	{
+		++i;
+	}
 
-	// Due to the way random generation works, we can safely ignore the pathological edge cases here
 	// Interpolate to estimate the value
 	flt_t const clow = cvals[i - 1];
 	flt_t const chi = cvals[i];
 	flt_t const xlow = xvals[i - 1];
 	flt_t const xhi = xvals[i];
 
-	flt_t const res = xlow + (xhi - xlow) / (chi - clow) * (r - clow);
+	flt_t res = xlow + (xhi - xlow) / (chi - clow) * (r - clow);
+
+	// Check for edge cases
+	if( res < xvals[0] ) res = xvals[0];
+	if( res > xvals[xvals.size()-1] ) res = xvals[xvals.size()-1];
 
 	return res;
 

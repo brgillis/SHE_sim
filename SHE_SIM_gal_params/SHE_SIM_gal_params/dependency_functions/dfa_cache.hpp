@@ -1,12 +1,12 @@
 /**********************************************************************\
- @file cosmology.hpp
+ @file dfa_cache.hpp
  ------------------
 
  TODO <Insert file description here>
 
  **********************************************************************
 
- Copyright (C) 2015 brg
+ Copyright (C) 2016 brg
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -23,22 +23,26 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
-#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_DFA_CACHE_HPP_
+#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_DFA_CACHE_HPP_
+
+#include <utility>
+
+#include <Eigen/Core>
 
 #include "SHE_SIM_gal_params/common.hpp"
 
 namespace SHE_SIM {
 
-/**
- * Get the a transverse distance in kpc from an angle in arcsec
- *
- * @param theta_arcsec angle in arcsec
- * @param z
- * @return distance in kpc
- */
-flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z );
+typedef Eigen::Array<flt_t,Eigen::Dynamic,1> dfa_array_t;
+typedef std::pair< dfa_array_t, dfa_array_t > dfa_cache_t;
+
+extern const dfa_cache_t dfa_cache;
+
+dfa_cache_t load_dfa_cache();
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
+
+
+#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_DFA_CACHE_HPP_

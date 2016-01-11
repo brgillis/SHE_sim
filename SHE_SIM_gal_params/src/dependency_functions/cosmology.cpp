@@ -1,12 +1,12 @@
 /**********************************************************************\
- @file cosmology.hpp
+ @file cosmology.cpp
  ------------------
 
  TODO <Insert file description here>
 
  **********************************************************************
 
- Copyright (C) 2015 brg
+ Copyright (C) 2016 brg
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -23,22 +23,41 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
-#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/dfa_cache.hpp"
 
 namespace SHE_SIM {
 
-/**
- * Get the a transverse distance in kpc from an angle in arcsec
- *
- * @param theta_arcsec angle in arcsec
- * @param z
- * @return distance in kpc
- */
-flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z );
+flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )
+{
+	dfa_array_t z_array = dfa_cache.first;
+	dfa_array_t dfa_array = dfa_cache.second;
+
+	dfa_array_t diffs = (z_array-z).abs();
+	int_t z_i,z_j;
+	diffs.minCoeff(&z_i,&z_j);
+
+	// We want the lower index around this redshift if possible
+	if(z_array[z_i] > z) --z_i;
+	if(z_i<0) z_i = 0;
+
+	flt_t z_lo = z_array[z_i];
+	flt_t z_hi = z_array[z_i+1];
+	flt_t dfa_lo = dfa_array[z_i];
+	flt_t dfa_hi = dfa_array[z_i+1];
+
+	flt_t dfa = dfa_lo + (dfa_hi-dfa_lo)/(z_hi-z_lo) * (z-z_lo);
+
+	flt_t res = theta_arcsec * dfa;
+
+	return res;
+}
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_COSMOLOGY_HPP_
+
