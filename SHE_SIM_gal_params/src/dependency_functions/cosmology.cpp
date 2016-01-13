@@ -27,33 +27,34 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/dfa_cache.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {
+
+flt_t H( flt_t const & z )
+{
+	if(z==0) return H_0;
+
+	// Friedmann equation, assuming omega = -1
+
+	flt_t zp1 = 1.+z;
+
+	return H_0 * std::sqrt( Omega_r * square( zp1 )*square( zp1 )
+							+ Omega_m * zp1 * square( zp1 )
+							+ Omega_k * square( zp1 ) + Omega_l );
+}
 
 flt_t get_dfa( const flt_t & z )
 {
 	dfa_array_t z_array = dfa_cache.first;
 	dfa_array_t dfa_array = dfa_cache.second;
 
-	dfa_array_t diffs = (z_array-z).abs();
-	int_t z_i,z_j;
-	diffs.minCoeff(&z_i,&z_j);
-
-	// We want the lower index around this redshift if possible
-	if(z_array[z_i] > z) --z_i;
-	if(z_i<0) z_i = 0;
-
-	flt_t z_lo = z_array[z_i];
-	flt_t z_hi = z_array[z_i+1];
-	flt_t dfa_lo = dfa_array[z_i];
-	flt_t dfa_hi = dfa_array[z_i+1];
-
-	flt_t dfa = dfa_lo + (dfa_hi-dfa_lo)/(z_hi-z_lo) * (z-z_lo);
-
-	return dfa;
+	return interpolate(z,z_array,dfa_array);
 }
 
 flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )

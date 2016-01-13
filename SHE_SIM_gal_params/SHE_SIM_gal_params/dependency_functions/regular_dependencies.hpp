@@ -89,9 +89,28 @@ flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, fl
 
 flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng );
 
+/**
+ * Generates a random physical bulge size in kpc from galaxy type, redshift, and stellar mass in M_sun.
+ *
+ * @param galaxy_type Value indicating whether the galaxy is a field galaxy, central, or satellite.
+ * @param redshift Redshift
+ * @param stellar_mass Stellar mass of the galaxy in M_sun
+ * @param rng Random-number generating engine
+ *
+ * @return Physical size of the bulge in kpc
+ */
 flt_t generate_physical_size_bulge( flt_t const & galaxy_type, flt_t const & redshift,
 		flt_t const & stellar_mass, gen_t & rng );
-
+/**
+ * Generates a random physical disk size in kpc from galaxy type, redshift, and stellar mass in M_sun.
+ *
+ * @param galaxy_type Value indicating whether the galaxy is a field galaxy, central, or satellite.
+ * @param redshift Redshift
+ * @param stellar_mass Stellar mass of the galaxy in M_sun
+ * @param rng Random-number generating engine
+ *
+ * @return Physical size of the disk in kpc
+ */
 flt_t generate_physical_size_disk( flt_t const & galaxy_type, flt_t const & redshift,
 		flt_t const & stellar_mass, gen_t & rng );
 
