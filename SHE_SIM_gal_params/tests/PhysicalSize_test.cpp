@@ -47,6 +47,8 @@ struct physical_size_fixture {
 
 	int_t const num_gals = 1000;
 
+	int_t const test_seed = 12344;
+
 	flt_t const z_1 = 0.25;
 	flt_t const z_2 = 1.25;
 
@@ -55,12 +57,12 @@ struct physical_size_fixture {
 
 	flt_t const ex_mean_l10_r_bulge_11 = std::log10(1.9);
 	flt_t const ex_mean_l10_r_bulge_12 = std::log10(8.7);
-	flt_t const ex_mean_l10_r_bulge_21 = std::log10(1.8);
+	flt_t const ex_mean_l10_r_bulge_21 = std::log10(1.7);
 	flt_t const ex_mean_l10_r_bulge_22 = std::log10(4.0);
 
 	flt_t const ex_scatter_l10_r_bulge_11 = 0.10;
-	flt_t const ex_scatter_l10_r_bulge_12 = 0.12;
-	flt_t const ex_scatter_l10_r_bulge_21 = 0.10;
+	flt_t const ex_scatter_l10_r_bulge_12 = 0.10;
+	flt_t const ex_scatter_l10_r_bulge_21 = 0.12;
 	flt_t const ex_scatter_l10_r_bulge_22 = 0.12;
 
 	flt_t const ex_mean_l10_r_disk_11 = std::log10(4.1);
@@ -69,12 +71,12 @@ struct physical_size_fixture {
 	flt_t const ex_mean_l10_r_disk_22 = std::log10(6.3);
 
 	flt_t const ex_scatter_l10_r_disk_11 = 0.16;
-	flt_t const ex_scatter_l10_r_disk_12 = 0.17;
-	flt_t const ex_scatter_l10_r_disk_21 = 0.16;
+	flt_t const ex_scatter_l10_r_disk_12 = 0.16;
+	flt_t const ex_scatter_l10_r_disk_21 = 0.17;
 	flt_t const ex_scatter_l10_r_disk_22 = 0.17;
 
 	flt_t const tol_mean = 10; // Since I'm guessing from a graph here
-	flt_t const tol_scatter = 4;
+	flt_t const tol_scatter = 5; // More reliable, but more noisy
 
 };
 
@@ -89,6 +91,8 @@ BOOST_FIXTURE_TEST_CASE(test_physical_size, physical_size_fixture) {
 
 	survey.set_generation_level(redshift_name,dv::survey_level);
 	survey.set_generation_level(stellar_mass_name,dv::survey_level);
+
+	survey.set_seed(test_seed);
 
 	survey.autofill_children();
 
@@ -121,6 +125,75 @@ BOOST_FIXTURE_TEST_CASE(test_physical_size, physical_size_fixture) {
 
 	BOOST_CHECK_CLOSE(scatter_r_bulge,ex_scatter_l10_r_bulge_11,tol_scatter);
 	BOOST_CHECK_CLOSE(scatter_r_disk,ex_scatter_l10_r_disk_11,tol_scatter);
+
+	// 1-2
+
+	survey.set_param_params(redshift_name,"fixed",z_1);
+	survey.set_param_params(stellar_mass_name,"fixed",std::pow(10.,l10_ms_2));
+
+	for( int_t i=0; i<num_gals; ++i )
+	{
+		l10_r_bulge_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_bulge_name));
+		l10_r_disk_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_disk_name));
+	}
+
+	mean_r_bulge = l10_r_bulge_array.mean();
+	mean_r_disk = l10_r_disk_array.mean();
+
+	scatter_r_bulge = std::sqrt(square(l10_r_bulge_array).mean() - square(l10_r_bulge_array.mean()));
+	scatter_r_disk = std::sqrt(square(l10_r_disk_array).mean() - square(l10_r_disk_array.mean()));
+
+	BOOST_CHECK_CLOSE(mean_r_bulge,ex_mean_l10_r_bulge_12,tol_mean);
+	BOOST_CHECK_CLOSE(mean_r_disk,ex_mean_l10_r_disk_12,tol_mean);
+
+	BOOST_CHECK_CLOSE(scatter_r_bulge,ex_scatter_l10_r_bulge_12,tol_scatter);
+	BOOST_CHECK_CLOSE(scatter_r_disk,ex_scatter_l10_r_disk_12,tol_scatter);
+
+	// 2-1
+
+	survey.set_param_params(redshift_name,"fixed",z_2);
+	survey.set_param_params(stellar_mass_name,"fixed",std::pow(10.,l10_ms_1));
+
+	for( int_t i=0; i<num_gals; ++i )
+	{
+		l10_r_bulge_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_bulge_name));
+		l10_r_disk_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_disk_name));
+	}
+
+	mean_r_bulge = l10_r_bulge_array.mean();
+	mean_r_disk = l10_r_disk_array.mean();
+
+	scatter_r_bulge = std::sqrt(square(l10_r_bulge_array).mean() - square(l10_r_bulge_array.mean()));
+	scatter_r_disk = std::sqrt(square(l10_r_disk_array).mean() - square(l10_r_disk_array.mean()));
+
+	BOOST_CHECK_CLOSE(mean_r_bulge,ex_mean_l10_r_bulge_21,tol_mean);
+	BOOST_CHECK_CLOSE(mean_r_disk,ex_mean_l10_r_disk_21,tol_mean);
+
+	BOOST_CHECK_CLOSE(scatter_r_bulge,ex_scatter_l10_r_bulge_21,tol_scatter);
+	BOOST_CHECK_CLOSE(scatter_r_disk,ex_scatter_l10_r_disk_21,tol_scatter);
+
+	// 2-2
+
+	survey.set_param_params(redshift_name,"fixed",z_2);
+	survey.set_param_params(stellar_mass_name,"fixed",std::pow(10.,l10_ms_2));
+
+	for( int_t i=0; i<num_gals; ++i )
+	{
+		l10_r_bulge_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_bulge_name));
+		l10_r_disk_array[i] = std::log10(galaxies.at(i)->get_param_value(physical_size_disk_name));
+	}
+
+	mean_r_bulge = l10_r_bulge_array.mean();
+	mean_r_disk = l10_r_disk_array.mean();
+
+	scatter_r_bulge = std::sqrt(square(l10_r_bulge_array).mean() - square(l10_r_bulge_array.mean()));
+	scatter_r_disk = std::sqrt(square(l10_r_disk_array).mean() - square(l10_r_disk_array.mean()));
+
+	BOOST_CHECK_CLOSE(mean_r_bulge,ex_mean_l10_r_bulge_22,tol_mean);
+	BOOST_CHECK_CLOSE(mean_r_disk,ex_mean_l10_r_disk_22,tol_mean);
+
+	BOOST_CHECK_CLOSE(scatter_r_bulge,ex_scatter_l10_r_bulge_22,tol_scatter);
+	BOOST_CHECK_CLOSE(scatter_r_disk,ex_scatter_l10_r_disk_22,tol_scatter);
 
 }
 
