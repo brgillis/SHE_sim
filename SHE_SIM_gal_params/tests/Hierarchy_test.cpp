@@ -36,6 +36,7 @@
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
+#include "SHE_SIM_gal_params/levels/Galaxy.hpp"
 
 namespace SHE_SIM
 {
@@ -49,17 +50,20 @@ struct hierarchy_fixture {
 
 	const IndFixed exp_time0 = IndFixed(1);
 	const IndFixed exp_time1 = IndFixed(1234.5);
-	const IndFixed exp_time2 = IndFixed(2468.0);
-	const IndFixed exp_time3 = IndFixed(3451.1);
+	const flt_t exp_time2 = 2468.0;
+	const flt_t exp_time3 = 3451.1;
 
 	const flt_t expected_mag_vis_zp10 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time0.get_independently());
 	const flt_t expected_mag_vis_zp11 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time1.get_independently());
-	const flt_t expected_mag_vis_zp12 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time2.get_independently());
-	const flt_t expected_mag_vis_zp13 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time3.get_independently());
+	const flt_t expected_mag_vis_zp12 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time2);
+	const flt_t expected_mag_vis_zp13 = mag_vis_inst_zp1.get_independently() + 2.5 * std::log10(exp_time3);
 	const flt_t expected_mag_vis_zp20 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time0.get_independently());
 	const flt_t expected_mag_vis_zp21 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time1.get_independently());
-	const flt_t expected_mag_vis_zp22 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time2.get_independently());
-	const flt_t expected_mag_vis_zp23 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time3.get_independently());
+	const flt_t expected_mag_vis_zp22 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time2);
+	const flt_t expected_mag_vis_zp23 = mag_vis_inst_zp2.get_independently() + 2.5 * std::log10(exp_time3);
+
+	const flt_t ex_z_1 = -0.1;
+	const flt_t ex_z_2 = -0.2;
 
 };
 
@@ -88,8 +92,8 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	Image & image11 = *image_group1.add_image();
 
 	image_group1.set_p_param_params(exp_time_name,&exp_time1);
-	image_group2.set_p_param_params(exp_time_name,&exp_time2);
-	image_group3.set_p_param_params(exp_time_name,&exp_time3);
+	image_group2.set_param_params(exp_time_name,"fixed",exp_time2);
+	image_group3.set_param_params(exp_time_name,"fixed",exp_time3);
 
 	Image & image12 = *image_group1.add_image();
 	Image & image21 = *image_group2.add_image();
@@ -153,6 +157,23 @@ BOOST_FIXTURE_TEST_CASE(test_hierarchy, hierarchy_fixture) {
 	BOOST_CHECK_CLOSE(image13.get_param_value(mag_vis_zp_name),expected_mag_vis_zp21,1e-9);
 	Image & image22 = *image_group2.add_image();
 	BOOST_CHECK_CLOSE(image22.get_param_value(mag_vis_zp_name),expected_mag_vis_zp20,1e-9);
+
+	// Now see if we can inherit all the way down to the galaxy level
+	survey.set_param_params(num_clusters_name,"fixed",0.);
+	survey.set_param_params(num_field_galaxies_name,"fixed",1.);
+
+	survey.set_generation_level(redshift_name,dv::survey_level); // Redshift was giving me trouble
+	survey.set_param_params(redshift_name,"fixed",ex_z_1);
+
+	survey.autofill_children();
+
+	auto galaxies = survey.get_galaxy_descendants();
+
+	BOOST_CHECK_CLOSE(galaxies.at(0)->get_param_value(redshift_name),ex_z_1,0.01);
+
+	survey.set_param_params(redshift_name,"fixed",ex_z_2);
+
+	BOOST_CHECK_CLOSE(galaxies.at(0)->get_param_value(redshift_name),ex_z_2,0.01);
 
 }
 
