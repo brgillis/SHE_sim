@@ -28,7 +28,6 @@
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
-//#include <gsl/gsl_complex.h>
 
 #define pi M_PI
 #define c 3e8 // ms-1
@@ -161,19 +160,10 @@ void make2Dgalaxymodelunconvolved_acs(int componenttype, int filtertype,
 				(u_lambda * 8500.0 * 8500.0) + (v_lambda * 8500.0) + w_lambda;
 	} //Z
 
-	//double *model_unconv;
 	double x_final_bulge, y_final_bulge, x_final_disk, y_final_disk, summodel;
 	double disk_flux_tot = 0.0;
 	double bulge_flux_tot = 0.0;
 	double pixelsize_kpc, norm_disk, norm_bulge;
-
-	/*
-	 printf("xcentre: %lf\n",xcentre);
-	 printf("ycentre: %lf\n",ycentre);
-	 printf("scaling: %lf\n", scaling);
-	 printf("e1: %lf\n", e1);
-	 printf("e2: %lf\n", e2);
-	 */
 
 	int i_index = 0, j_index = 0;
 	int i = 0, j = 0, k = 0, ncols, nrows, pix, npixels, ii, jj, ifz = 0;
@@ -198,26 +188,12 @@ void make2Dgalaxymodelunconvolved_acs(int componenttype, int filtertype,
 	ymin = -(nrows_tot / 2) * pixelsize_kpc;
 	ymax = (nrows_tot / 2) * pixelsize_kpc;
 
-	/*
-	 printf("Npix_side: %d\n",Npix_side);
-	 printf("pixelsize_arcsec arcsecstokpc: %lf %lf\n", pixelsize_arcsec, arcsecstokpc);
-	 printf("xmin: %lf\n",xmin);
-	 printf("xmax: %lf\n",xmax);
-	 printf("ymin: %lf\n",ymin);
-	 printf("ymax: %lf\n",ymax);
-	 */
-
 	npixels = nrows_tot * ncols_tot;
-
-	//printf("npixels: %d\n", npixels);
 
 	theta_rad = asin(sqrt((e1 * e1) + (e2 * e2)));
 	posangle_rad = 0.5 * atan2(e2, e1);
 
 	double theta_e1e2;
-
-	//printf("theta_deg: %lf\n",theta_rad * (180.0/M_PI));
-	//printf("posangle_deg: %lf\n", posangle_rad * (180.0/M_PI));
 
 	double x_scaled, y_scaled, z_scaled, x_inclined, y_inclined;
 
@@ -233,7 +209,6 @@ void make2Dgalaxymodelunconvolved_acs(int componenttype, int filtertype,
 	if (componenttype == 1)
 	{
 
-		//double *x_final_disk, *y_final_disk;
 		disk_flux_tot = 0.0;
 		norm_disk = 0.0;
 
@@ -259,7 +234,6 @@ void make2Dgalaxymodelunconvolved_acs(int componenttype, int filtertype,
 
 			/* Now apply rotation about new z axis (line of sight) -- in plane of sky */
 			/* Added a positional offset */
-			//printf("xcentre, ycentre: %lf %lf\n",xcentre,ycentre);
 			x_final_disk = ((cos(posangle_rad) * x_inclined)
 					- (sin(posangle_rad) * y_inclined));
 			y_final_disk = ((sin(posangle_rad) * x_inclined)
@@ -282,8 +256,6 @@ void make2Dgalaxymodelunconvolved_acs(int componenttype, int filtertype,
 			}
 
 		}
-
-		//printf("disk_flux_tot: %lf\n",disk_flux_tot);
 
 		/* Normalize */
 
@@ -385,14 +357,6 @@ void make2Dgalaxymodelunconvolved_wfc3(int componenttype, int filtertype,
 	double bulge_flux_tot = 0.0;
 	double pixelsize_kpc, norm_disk, norm_bulge;
 
-	/*
-	 printf("xcentre: %lf\n",xcentre);
-	 printf("ycentre: %lf\n",ycentre);
-	 printf("scaling: %lf\n", scaling);
-	 printf("e1: %lf\n", e1);
-	 printf("e2: %lf\n", e2);
-	 */
-
 	int i_index = 0, j_index = 0;
 	int i = 0, j = 0, k = 0, ncols, nrows, pix, npixels, ii, jj, ifz = 0;
 	int nrows_tot, ncols_tot, ii_o, jj_o, pix_o, pix_tot, jj_o_psf, ii_o_psf,
@@ -416,26 +380,12 @@ void make2Dgalaxymodelunconvolved_wfc3(int componenttype, int filtertype,
 	ymin = -(nrows_tot / 2) * pixelsize_kpc;
 	ymax = (nrows_tot / 2) * pixelsize_kpc;
 
-	/*
-	 printf("Npix_side: %d\n",Npix_side);
-	 printf("pixelsize_arcsec arcsecstokpc: %lf %lf\n", pixelsize_arcsec, arcsecstokpc);
-	 printf("xmin: %lf\n",xmin);
-	 printf("xmax: %lf\n",xmax);
-	 printf("ymin: %lf\n",ymin);
-	 printf("ymax: %lf\n",ymax);
-	 */
-
 	npixels = nrows_tot * ncols_tot;
-
-	//printf("npixels: %d\n", npixels);
 
 	theta_rad = asin(sqrt((e1 * e1) + (e2 * e2)));
 	posangle_rad = 0.5 * atan2(e2, e1);
 
 	double theta_e1e2;
-
-	//printf("theta_deg: %lf\n",theta_rad * (180.0/M_PI));
-	//printf("posangle_deg: %lf\n", posangle_rad * (180.0/M_PI));
 
 	double x_scaled, y_scaled, z_scaled, x_inclined, y_inclined;
 
@@ -477,7 +427,6 @@ void make2Dgalaxymodelunconvolved_wfc3(int componenttype, int filtertype,
 
 			/* Now apply rotation about new z axis (line of sight) -- in plane of sky */
 			/* Added a positional offset */
-			//printf("xcentre, ycentre: %lf %lf\n",xcentre,ycentre);
 			x_final_disk = ((cos(posangle_rad) * x_inclined)
 					- (sin(posangle_rad) * y_inclined));
 			y_final_disk = ((sin(posangle_rad) * x_inclined)
@@ -500,8 +449,6 @@ void make2Dgalaxymodelunconvolved_wfc3(int componenttype, int filtertype,
 			}
 
 		}
-
-		//printf("disk_flux_tot: %lf\n",disk_flux_tot);
 
 		/* Normalize */
 
@@ -558,8 +505,6 @@ void make2Dgalaxymodelunconvolved_wfc3(int componenttype, int filtertype,
 			}
 
 		}
-
-		//printf("bulge_flux_tot: %lf\n",bulge_flux_tot);
 
 		for (pix = 0; pix < npixels; pix++)
 		{

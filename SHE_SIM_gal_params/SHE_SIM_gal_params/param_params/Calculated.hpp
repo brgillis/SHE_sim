@@ -55,7 +55,6 @@ public:
 	// Constructor and destructor
 	Calculated()
 	: ParamParam(ParamParam::DEPENDENT)
-
 	{
 	}
 	virtual ~Calculated() {}

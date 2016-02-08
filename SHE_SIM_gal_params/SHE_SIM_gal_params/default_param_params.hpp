@@ -29,6 +29,7 @@
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
+#include <SHE_SIM_gal_params/param_params/DepFieldRedshift.hpp>
 #include <memory>
 #include <unordered_map>
 #include <utility>
@@ -37,7 +38,6 @@
 
 // Include all needed param param headers here
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
-#include <SHE_SIM_gal_params/param_params/DepRedshift.hpp>
 #include <SHE_SIM_gal_params/param_params/IndClusterRedshift.hpp>
 #include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
@@ -131,7 +131,7 @@ inline param_params_t make_default_param_params_map()
 	INSERT_CALCULATED_PARAM(physical_size_bulge);
 	INSERT_CALCULATED_PARAM(physical_size_disk);
 	INSERT_CALCULATED_PARAM(psf_model);
-	insert_default_param_param<DepRedshift>(res, redshift_name,
+	insert_default_param_param<DepFieldRedshift>(res, redshift_name,
 			dv::redshift_scale, dv::redshift_median, dv::redshift_min, dv::redshift_max);
 	INSERT_UNIFORM_PARAM(rotation);
 	INSERT_CALCULATED_PARAM(rp);

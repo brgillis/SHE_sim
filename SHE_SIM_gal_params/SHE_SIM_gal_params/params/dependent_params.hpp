@@ -29,6 +29,7 @@
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
+#include <SHE_SIM_gal_params/param_params/DepFieldRedshift.hpp>
 #include <cassert>
 #include <vector>
 
@@ -159,9 +160,23 @@ DEPENDENT_PARAM(physical_size_disk,
 
 DEPENDENT_PARAM(redshift,
 		if(is_field_galaxy(REQUEST(galaxy_type)))
-			_cached_value = _p_params->get_independently(_rng);
+		{
+			const DepFieldRedshift * p_redshift_pp = dynamic_cast<const DepFieldRedshift *>(_p_params);
+			if(p_redshift_pp==nullptr)
+			{
+				_cached_value = _p_params->get_independently(_rng);
+			}
+			else
+			{
+				_cached_value = p_redshift_pp->get_dependently(
+						_request_param(cluster_redshift_name)->get_p_params(),
+						_rng);
+			}
+		}
 		else
-			_cached_value = REQUEST(cluster_redshift);)
+		{
+			_cached_value = REQUEST(cluster_redshift);
+		})
 
 DEPENDENT_PARAM(rotation,
 		if(is_satellite_galaxy(REQUEST(galaxy_type)))

@@ -52,7 +52,6 @@
 
 double cum_integral(double r[], double rstart, double rmax, double y[],
 		int npoints);   // find cumulative integral at each r point
-double convolvesed(char sedfile[], char filterfile[], double);
 
 int main(int argc, char *argv[])
 {
@@ -228,13 +227,8 @@ int main(int argc, char *argv[])
 		}
 		if (strncmp(galaxytype, "bulge", 5) == 0)
 		{
-			//I_r_inf[ir] = I_bulge_r0_i * exp( -log(10) * 0.4 * 1.086 * bn * ( pow( (radius_inf[ir]/r0bulge_kpc_i),1/nsersic) -1 ) ) * 2 * PI * radius_inf[ir] ;
-			I_r_inf[ir] = I_bulge_r0_i
-					* exp(
-							-bn
-									* (pow((radius_inf[ir] / r0bulge_kpc_i),
-											1 / nsersic) - 1)) * 2 * PI
-					* radius_inf[ir];
+			I_r_inf[ir] = I_bulge_r0_i * exp( -bn * (pow((radius_inf[ir] / r0bulge_kpc_i),
+										1 / nsersic) - 1)) * 2 * PI * radius_inf[ir];
 		}
 
 	}
@@ -246,18 +240,12 @@ int main(int argc, char *argv[])
 	{
 		if (strncmp(galaxytype, "disk", 4) == 0)
 		{
-			I_r[ir] = I_disk_r0_i * exp(-radius[ir] / r0disk_kpc_i) * 2 * PI
-					* radius[ir];
+			I_r[ir] = I_disk_r0_i * exp(-radius[ir] / r0disk_kpc_i) * 2 * PI * radius[ir];
 		}
 		if (strncmp(galaxytype, "bulge", 5) == 0)
 		{
-			//I_r[ir] = I_bulge_r0_i * exp( -log(10) * 0.4 * 1.086 * bn * ( pow( (radius[ir]/r0bulge_kpc_i),1/nsersic) -1 ) ) * 2 * PI * radius[ir] ;
-			I_r[ir] = I_bulge_r0_i
-					* exp(
-							-bn
-									* (pow((radius[ir] / r0bulge_kpc_i),
-											1 / nsersic) - 1)) * 2 * PI
-					* radius[ir];
+			I_r[ir] = I_bulge_r0_i * exp( -bn * (pow((radius[ir] / r0bulge_kpc_i),
+											1 / nsersic) - 1)) * 2 * PI * radius[ir];
 		}
 		F_r[ir] = cum_integral(radius, 0.0, radius[ir], I_r, rpoints) / F_r_inf;
 		fprintf(cum_f_r_file, "%lf %lf\n", radius[ir], F_r[ir]);
@@ -279,7 +267,6 @@ int main(int argc, char *argv[])
 		/* choose mid-point of the integral */
 
 		F_new = (F_interval * (0.5 + ifr));
-		//F_new =  ((double)rand() / (double)RAND_MAX) ;
 
 		/* Use high resolution grid of F_r_new and get the r_new at this F_new value */
 
@@ -308,15 +295,8 @@ int main(int argc, char *argv[])
 
 					x[ifr] = radius_store[ifr] * cos(theta_store[ifr]); //; * sin(phi_store[ifr]) ;
 					y[ifr] = radius_store[ifr] * sin(theta_store[ifr]); //;* sin(phi_store[ifr]) ;
-					//z_store[ifr] = squeeze_bulge_zfactor * radius_store[ifr] * cos(phi_store[ifr]) ;
-					//I_r_new[ifr] = I_bulge_r0_i * exp( -7.6692 * ( pow( (radius_store[ifr]/r0bulge_kpc_i),0.25) -1 ) );
-					//I_r_new[ifr] = ( I_bulge_r0_i * exp( -log(10) * 0.4 * 1.086 * bn * ( pow( (radius_store[ifr]/r0bulge_kpc_i),1/nsersic) -1 ) ) ) ;
 					I_r_new[ifr] = I_bulge_r0_i
-							* exp(
-									-bn
-											* (pow(
-													(radius_store[ifr]
-															/ r0bulge_kpc_i),
+							* exp( -bn * (pow( (radius_store[ifr] / r0bulge_kpc_i),
 													1 / nsersic) - 1));
 					I_xyz[ifr] = I_r_new[ifr]; // * 1e23 * (1+redshift) * L_solar/(4 * PI * 3.08568025e24 * 3.08568025e24 * d_L * d_L) ;
 
@@ -359,8 +339,6 @@ int main(int argc, char *argv[])
 		{
 			z_inf[iz] = zmin_inf + (iz * kpc_unit);
 
-			//I_z_inf[iz] = I_z0 * pow(2.0/( exp(-fabs(z_inf[iz])/(2*z0_kpc_i)) + exp(fabs(z_inf[iz])/(2*z0_kpc_i)) )  ,2); // I(z) = sech^2(z)
-
 			I_z_inf[iz] = I_z0 / pow(cosh(z_inf[iz] / z0_kpc_i), 2);
 
 		}
@@ -376,7 +354,6 @@ int main(int argc, char *argv[])
 		{
 			z[iz] = zmin + (iz * kpc_unit);
 
-			//I_z[iz] =  I_z0 * pow(2.0/( exp(-fabs(z[iz])/(2*z0_kpc_i)) + exp(fabs(z[iz])/(2*z0_kpc_i)) )  ,2);  // sech^2 profile
 			I_z[iz] = I_z0 / pow(cosh(z[iz] / z0_kpc_i), 2);
 			fprintf(f_z_file, "%lf %lf\n", z[iz], I_z[iz]);
 
@@ -413,7 +390,6 @@ int main(int argc, char *argv[])
 				{
 					z_store[ifz] = z[iz]; // store that r value
 
-					//I_z_new[ifz] = I_z0 * pow(2.0/( exp(-fabs(z_store[ifz])/(2*z0_kpc_i)) + exp(fabs(z_store[ifz])/(2*z0_kpc_i)) )  ,2); // I(z) = sech^2(z)  ;
 					I_z_new[ifz] =
 							(I_z0 / pow(cosh(z_store[ifz] / z0_kpc_i), 2));
 
