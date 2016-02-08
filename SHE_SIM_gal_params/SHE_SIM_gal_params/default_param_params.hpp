@@ -37,6 +37,8 @@
 
 // Include all needed param param headers here
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
+#include <SHE_SIM_gal_params/param_params/DepRedshift.hpp>
+#include <SHE_SIM_gal_params/param_params/IndClusterRedshift.hpp>
 #include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndLogNormalMean.hpp"
@@ -106,7 +108,9 @@ inline param_params_t make_default_param_params_map()
 	// Cluster level
 
 	INSERT_LOGNORMAL_PARAM(cluster_mass);
-	INSERT_UNIFORM_PARAM(cluster_redshift);
+	insert_default_param_param<IndClusterRedshift>(res, cluster_redshift_name,
+			dv::cluster_redshift_scale, dv::cluster_redshift_median,
+			dv::cluster_redshift_min, dv::cluster_redshift_max);
 	INSERT_UNIFORM_PARAM(cluster_xp);
 	INSERT_UNIFORM_PARAM(cluster_yp);
 
@@ -127,7 +131,8 @@ inline param_params_t make_default_param_params_map()
 	INSERT_CALCULATED_PARAM(physical_size_bulge);
 	INSERT_CALCULATED_PARAM(physical_size_disk);
 	INSERT_CALCULATED_PARAM(psf_model);
-	INSERT_UNIFORM_PARAM(redshift);
+	insert_default_param_param<DepRedshift>(res, redshift_name,
+			dv::redshift_scale, dv::redshift_median, dv::redshift_min, dv::redshift_max);
 	INSERT_UNIFORM_PARAM(rotation);
 	INSERT_CALCULATED_PARAM(rp);
 	INSERT_UNIFORM_PARAM(shear_angle);

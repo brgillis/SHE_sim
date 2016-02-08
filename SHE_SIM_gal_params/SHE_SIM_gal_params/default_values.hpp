@@ -86,8 +86,10 @@ constexpr const int_t cluster_level = 4;
 constexpr const flt_t cluster_mass_l10_mean = 14; // log10 Msun
 constexpr const flt_t cluster_mass_l10_stddev = 0.5; // log10 Msun
 
-constexpr const flt_t cluster_redshift_min = 0.2;
-constexpr const flt_t cluster_redshift_max = 1.3;
+constexpr const flt_t cluster_redshift_scale = 1.;
+constexpr const flt_t cluster_redshift_median = 0.5;
+constexpr const flt_t cluster_redshift_min = 0.05;
+constexpr const flt_t cluster_redshift_max = 2.00;
 
 constexpr const flt_t cluster_richness = 10.;
 
@@ -142,8 +144,10 @@ constexpr const flt_t physical_size_bulge = 1.; // kpc
 
 constexpr const flt_t physical_size_disk = 1.; // kpc
 
-constexpr const flt_t redshift_min = 0.2;
-constexpr const flt_t redshift_max = 1.3;
+constexpr const flt_t redshift_scale = 1.;
+constexpr const flt_t redshift_median = 1.00;
+constexpr const flt_t redshift_min = 0.05;
+constexpr const flt_t redshift_max = 2.00;
 
 constexpr const flt_t rotation_min = 0.; // degrees
 constexpr const flt_t rotation_max = 180.; // degrees

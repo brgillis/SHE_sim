@@ -24,9 +24,11 @@
 \**********************************************************************/
 
 #include <cassert>
-#include <Eigen/Core>
 #include <functional>
 #include <numeric>
+#include <stdexcept>
+
+#include <Eigen/Core>
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/random_functions.hpp>
@@ -45,7 +47,15 @@ flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t 
 
 	// Quietly normalize the cvals
 	cvals -= cvals[0];
-	cvals /= cvals[cvals.size()-1];
+
+	flt_t cmax = cvals[cvals.size()-1];
+
+	if(cmax<=0)
+	{
+		throw std::runtime_error("Invalid values used for generating random value: Final CDF value is <= 0.");
+	}
+
+	cvals /= cmax;
 
 	// Generate a random value
 	flt_t const r = drand(0.,1.,rng);

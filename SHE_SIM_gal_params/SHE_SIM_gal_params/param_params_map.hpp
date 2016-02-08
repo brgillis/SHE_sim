@@ -37,8 +37,9 @@
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 #include "SHE_SIM_gal_params/param_params/AltCalculated.hpp"
 #include "SHE_SIM_gal_params/param_params/Calculated.hpp"
+#include "SHE_SIM_gal_params/param_params/DepRedshift.hpp"
 #include "SHE_SIM_gal_params/param_params/DepUniform.hpp"
-#include <SHE_SIM_gal_params/param_params/IndContRayleigh.hpp>
+#include "SHE_SIM_gal_params/param_params/IndContRayleigh.hpp"
 #include "SHE_SIM_gal_params/param_params/IndExpQuadratic.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 #include "SHE_SIM_gal_params/param_params/IndGaussian.hpp"
@@ -73,6 +74,7 @@ inline param_params_t make_full_param_params_map()
 	// Insert all param_params here
 	insert_param_param<AltCalculated>(res);
 	insert_param_param<Calculated>(res);
+	insert_param_param<DepRedshift>(res);
 	insert_param_param<DepUniform>(res);
 	insert_param_param<IndExpQuadratic>(res);
 	insert_param_param<IndFixed>(res);
