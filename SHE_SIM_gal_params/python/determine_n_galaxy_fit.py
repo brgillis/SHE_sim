@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-""" @file /disk2/brg/git/SHE_sim/SHE_SIM_gal_params/python/determine_n_cluster_fit.py
+""" @file /disk2/brg/git/SHE_sim/SHE_SIM_gal_params/python/determine_n_galaxy_fit.py
 
     Created 9 Feb 2016
 
@@ -29,6 +29,7 @@ from matplotlib import pyplot
 import numpy as np
 from scipy.optimize import fmin
 import sys
+from astropy.io import ascii
 
 matplotlib.rcParams['ps.useafm'] = True
 matplotlib.rcParams['pdf.use14corefonts'] = True
@@ -39,21 +40,27 @@ def main(argv):
     """
 
     # Data
-    N_clusters = np.array((1161,1521,2248,2935,2456,2331,2364))
-    zs = np.array((0.2,0.3,0.4,0.5,0.6,0.7,0.8))
-    field_size_sq_deg = 154
+    table = ascii.read("/disk2/brg/git/CFHTLenS_cat/Data/full_tables/W1m0m0_i.dat")
+    gal_zs = table["Z_B"]
+    field_size_sq_deg = 0.893539028901
+    
+    z_edges = np.linspace(0.3,2.0,18)
+    zs = (z_edges[:-1] + z_edges[1:]) / 2.
+    
+    N_gals, _ = np.histogram(gal_zs,z_edges)
+    
     field_size_sq_arcsec = field_size_sq_deg*np.power(60.,2)
-    z_bin_width = 0.1
+    z_bin_width = z_edges[1] - z_edges[0]
     
     # Poisson error in number of clusters
-    sigma_N_clusters = np.sqrt(N_clusters)
+    sigma_N_gals = np.sqrt(N_gals)
     
     # Normalize by field size
-    n_clusters = N_clusters/field_size_sq_arcsec/z_bin_width
-    sigma_n_clusters = sigma_N_clusters/field_size_sq_arcsec/z_bin_width
+    n_gals = N_gals/field_size_sq_arcsec/z_bin_width
+    sigma_n_gals = sigma_N_gals/field_size_sq_arcsec/z_bin_width
     
     # Determine guess values for the fit
-    guess_n_scale = n_clusters[0]/np.square(zs[0])
+    guess_n_scale = n_gals[0]/np.square(zs[0])
     guess_z_median = (zs[0]+zs[-1])/2
     guess = np.array((guess_n_scale,guess_z_median))
     
@@ -62,19 +69,19 @@ def main(argv):
     
     def get_chi2_of_fit(scale_and_median):
         chi2 = np.sum( np.square( ( get_n_of_z(zs,scale_and_median[0],scale_and_median[1])
-                                     - n_clusters ) / sigma_n_clusters ) )
+                                     - n_gals ) / sigma_n_gals ) )
         return chi2
     
     fit_n_scale, fit_z_median = fmin(get_chi2_of_fit,guess)
     
     chi2 = np.sum( np.square( ( fit_n_scale * np.square(zs) * np.exp( -np.power(1.412*zs/fit_z_median,1.5) )
-                                     - n_clusters ) / sigma_n_clusters ) )
+                                     - n_gals ) / sigma_n_gals ) )
     
-    print("n_scale = " + str(fit_n_scale) + " clusters per arcmin^2 per unit redshift")
+    print("n_scale = " + str(fit_n_scale) + " galaxies per arcmin^2 per unit redshift")
     print("z_median = " + str(fit_z_median))
     print("chi^2 = " + str(chi2))
     
-    sample_zs = np.linspace(0.,1.,101)
+    sample_zs = np.linspace(0.,2.,101)
     fit_ns = get_n_of_z(sample_zs,fit_n_scale,fit_z_median)
     
     fig = pyplot.figure()
@@ -84,15 +91,17 @@ def main(argv):
     ax.set_xlabel(r"$z$",labelpad=10,fontsize=16)
     ax.set_ylabel(r"$N/\mathrm{arcmin}^2/\mathrm{unit}\;\mathrm{redshift}$",labelpad=10,fontsize=16)
     
-    ax.plot(sample_zs,fit_ns,color='r',label='Fit')
+    ax.plot(sample_zs,fit_ns,color='r',label="Fit")
     
-    ax.errorbar(zs,n_clusters,sigma_n_clusters,color='k',marker='.',label='Ford et al. 2014')
+    ax.errorbar(zs,n_gals,sigma_n_gals,color='k',marker='.',label='CFHTLenS W1m0m0')
     
     ax.legend(loc='upper left')
     
-    pyplot.savefig("n_cluster_fit.png", format="png", bbox_inches="tight", pad_inches=0.05)
+    pyplot.savefig("n_galaxy_fit.png", format="png", bbox_inches="tight", pad_inches=0.05)
     
     pyplot.show()
+    
+    return
 
 if __name__ == "__main__":
     main(sys.argv)
