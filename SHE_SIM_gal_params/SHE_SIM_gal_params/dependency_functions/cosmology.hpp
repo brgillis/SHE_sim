@@ -49,13 +49,24 @@ flt_t H( flt_t const & z );
 flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z );
 
 /**
- * Get an angle in kpc from a transverse distance in kpc
+ * Get an angle in arcsec from a transverse distance in kpc
  *
  * @param d_kpc transverse distance in kpc
  * @param z
  * @return angle in arcsec
  */
 flt_t get_angle_from_distance( const flt_t & d_kpc, const flt_t & z );
+
+/**
+ * Get the ratio of the luminosity distance at redshift 1 to that at redshift 2.
+ *
+ * @param z1
+ * @param z2
+ * @return The ratio of Dl(z1) to Dl(z2)
+ */
+flt_t get_relative_luminosity_distance( const flt_t & z1, const flt_t & z2 );
+
+flt_t get_apparent_magnitude_at_other_redshift( const flt_t & mag1, const flt_t & z1, const flt_t & z2);
 
 } // namespace SHE_SIM
 

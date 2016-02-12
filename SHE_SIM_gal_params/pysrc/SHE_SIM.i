@@ -32,7 +32,7 @@
 
 %{
 	 
-	/* Includes the header in the wrapper code */
+	/* Include the headers in the wrapper code */
 	#include "SHE_SIM_gal_params/common.hpp"
 	#include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 	#include "SHE_SIM_gal_params/levels/Cluster.hpp"
@@ -44,6 +44,9 @@
 	#include "SHE_SIM_gal_params/levels/Image.hpp"
 	#include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 	#include "SHE_SIM_gal_params/levels/Survey.hpp"
+	
+	// Include headers containing other useful functions
+	#include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 	 
 %}
  
@@ -59,6 +62,8 @@
 %include "../SHE_SIM_gal_params/levels/Image.hpp"
 %include "../SHE_SIM_gal_params/levels/ImageGroup.hpp"
 %include "../SHE_SIM_gal_params/levels/Survey.hpp"
+
+%include "../SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 
 %apply int& {SHE_SIM::level_t&};
 

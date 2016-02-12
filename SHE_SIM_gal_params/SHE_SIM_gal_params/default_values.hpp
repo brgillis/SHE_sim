@@ -145,9 +145,9 @@ constexpr const flt_t physical_size_bulge = 1.; // kpc
 constexpr const flt_t physical_size_disk = 1.; // kpc
 
 constexpr const flt_t redshift_scale = 205.075335391;
-constexpr const flt_t redshift_median = 0.822973515094;
+constexpr const flt_t redshift_median = 0.98251953;
 constexpr const flt_t redshift_min = 0.2;
-constexpr const flt_t redshift_max = 1.3;
+constexpr const flt_t redshift_max = 2.0;
 
 constexpr const flt_t rotation_min = 0.; // degrees
 constexpr const flt_t rotation_max = 180.; // degrees

@@ -71,6 +71,22 @@ flt_t get_angle_from_distance( const flt_t & d_kpc, const flt_t & z )
 	return res;
 }
 
+flt_t get_relative_luminosity_distance( const flt_t & z1, const flt_t & z2 )
+{
+	flt_t res = get_dfa(z1)*square(1+z1)/(get_dfa(z2)*square(1+z2));
+
+	return res;
+}
+
+flt_t get_apparent_magnitude_at_other_redshift( const flt_t & mag1, const flt_t & z1, const flt_t & z2)
+{
+	flt_t Dl21_ratio = get_relative_luminosity_distance( z2, z1 );
+
+	flt_t mag2 = mag1 + 5*std::log10(Dl21_ratio);
+
+	return mag2;
+}
+
 } // namespace SHE_SIM
 
 
