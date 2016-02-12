@@ -32,7 +32,7 @@
 
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -60,7 +60,7 @@ inline flt_t generate_cluster_z( flt_t const & z_m, flt_t const & z_min, flt_t c
 		{
 			return get_total_pz(z,z_m);
 		};
-	return rand_from_pdf(get_cluster_pz_for_zm,40,z_min,z_max,rng);
+	return IceBRG::rand_from_pdf(get_cluster_pz_for_zm,40,z_min,z_max,rng);
 }
 
 inline flt_t generate_field_z( flt_t const & total_scale, flt_t const & total_z_m,
@@ -75,7 +75,7 @@ inline flt_t generate_field_z( flt_t const & total_scale, flt_t const & total_z_
 	// Use a fallback here in case the cluster distribution is bad
 	try
 	{
-		return rand_from_pdf(get_field_pz_for_zm,40,z_min,z_max,rng);
+		return IceBRG::rand_from_pdf(get_field_pz_for_zm,40,z_min,z_max,rng);
 	}
 	catch(std::runtime_error & e)
 	{
@@ -84,7 +84,7 @@ inline flt_t generate_field_z( flt_t const & total_scale, flt_t const & total_z_
 			{
 				return get_total_pz(z,total_z_m);
 			};
-		return rand_from_pdf(get_total_pz_for_zm,40,z_min,z_max,rng);
+		return IceBRG::rand_from_pdf(get_total_pz_for_zm,40,z_min,z_max,rng);
 	}
 }
 

@@ -31,7 +31,7 @@
 #include <Eigen/Core>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include <SHE_SIM_gal_params/random_functions.hpp>
+#include <IceBRG_main/math/random/random_functions.hpp>
 
 namespace SHE_SIM {
 
@@ -58,7 +58,7 @@ flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t 
 	cvals /= cmax;
 
 	// Generate a random value
-	flt_t const r = drand(0.,1.,rng);
+	flt_t const r = IceBRG::drand(0.,1.,rng);
 
 	// Get the index on the cdf where this lies
 	flt_array_t diffs = (cvals-r).abs();

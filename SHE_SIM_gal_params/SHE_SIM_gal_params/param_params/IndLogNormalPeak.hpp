@@ -30,7 +30,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamParam.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -67,9 +67,9 @@ public:
 	virtual name_t name() const override { return "lognormal_peak"; };
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
-		return std::pow(10.,Gaus_rand(_l10_peak,_l10_stddev,gen));
+		return std::pow(10.,IceBRG::Gaus_rand(_l10_peak,_l10_stddev,gen));
 	}
 
 	virtual ParamParam * clone() const override

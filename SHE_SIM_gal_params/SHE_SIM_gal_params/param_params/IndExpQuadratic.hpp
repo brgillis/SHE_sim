@@ -30,7 +30,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamParam.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -83,10 +83,10 @@ public:
 	}
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
 		auto const & f = [=] (flt_t const & mag) { return get_pdf(mag); };
-		return rand_from_pdf(f,1000,_mag_min,_mag_max,gen);
+		return IceBRG::rand_from_pdf(f,1000,_mag_min,_mag_max,gen);
 	}
 
 	virtual ParamParam * clone() const override

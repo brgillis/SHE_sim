@@ -30,7 +30,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/ParamParam.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -67,9 +67,9 @@ public:
 	virtual name_t name() const override { return "dependent_uniform"; };
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
-		return drand(_min,_max,gen);
+		return IceBRG::drand(_min,_max,gen);
 	}
 
 	virtual ParamParam * clone() const override

@@ -28,7 +28,7 @@
 
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -54,7 +54,7 @@ inline flt_t get_zp( flt_t const & inst_zp, flt_t const & exp_time)
 
 inline flt_t generate_count( flt_t const & lambda, gen_t & rng )
 {
-	return Pois_rand( lambda , rng);
+	return IceBRG::Pois_rand( lambda , rng);
 }
 
 // Non-inlined functions

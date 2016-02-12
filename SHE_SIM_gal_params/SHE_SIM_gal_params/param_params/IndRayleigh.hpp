@@ -29,7 +29,7 @@
 #include <initializer_list>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
@@ -67,9 +67,9 @@ public:
 	virtual name_t name() const override { return "rayleigh"; };
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
-		return Rayleigh_rand(_sigma, gen);
+		return IceBRG::Rayleigh_rand(_sigma, gen);
 	}
 
 	virtual ParamParam * clone() const override

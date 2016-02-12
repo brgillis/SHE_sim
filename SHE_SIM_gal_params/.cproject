@@ -60,11 +60,13 @@
 								<option defaultValue="true" id="gnu.cpp.link.option.shared.281036144" name="Shared (-shared)" superClass="gnu.cpp.link.option.shared" valueType="boolean"/>
 								<option id="gnu.cpp.link.option.libs.1434307218" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
+									<listOptionValue builtIn="false" value="IceBRG_main"/>
 									<listOptionValue builtIn="false" value="boost_log"/>
 									<listOptionValue builtIn="false" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.860336375" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/brg/lib"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/IceBRG_main/Debug}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.663912943" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -145,11 +147,13 @@
 								<option defaultValue="true" id="gnu.cpp.link.option.shared.603697165" name="Shared (-shared)" superClass="gnu.cpp.link.option.shared" valueType="boolean"/>
 								<option id="gnu.cpp.link.option.libs.1644812259" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
+									<listOptionValue builtIn="false" value="IceBRG_main"/>
 									<listOptionValue builtIn="false" value="boost_log"/>
 									<listOptionValue builtIn="false" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1451189813" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/brg/lib"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/IceBRG_main/Release}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.531180921" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -225,11 +229,13 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.1692580857" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.153584923" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="boost_unit_test_framework"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_log"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="python2.7"/>
+									<listOptionValue builtIn="false" value="IceBRG_main"/>
+									<listOptionValue builtIn="false" value="boost_log"/>
+									<listOptionValue builtIn="false" value="python2.7"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1543331253" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/home/brg/lib"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/IceBRG_main/Debug}&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.flags.988296096" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-Wl,-rpath,/home/brg/lib" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.2132624889" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">

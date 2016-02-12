@@ -33,7 +33,7 @@
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_size_detail.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -67,7 +67,7 @@ flt_t generate_physical_size( flt_t const & redshift,
 
 	flt_t sigma_l10_gal_size = interpolate(redshift,z_array,sigma_l10_R_array);
 
-	flt_t l10_gal_size = Gaus_rand(l10_med_gal_size,sigma_l10_gal_size,rng);
+	flt_t l10_gal_size = IceBRG::Gaus_rand(l10_med_gal_size,sigma_l10_gal_size,rng);
 
 	return std::pow(10.,l10_gal_size);
 

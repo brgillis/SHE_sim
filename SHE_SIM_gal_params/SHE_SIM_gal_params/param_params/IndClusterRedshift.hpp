@@ -72,9 +72,9 @@ public:
 	virtual name_t name() const override { return "cluster_redshift"; };
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
-		return generate_cluster_z(_z_m,_z_min,_z_max,rng);
+		return generate_cluster_z(_z_m,_z_min,_z_max,gen);
 	}
 
 	virtual ParamParam * clone() const override

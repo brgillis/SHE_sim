@@ -29,7 +29,7 @@
 #include <initializer_list>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 #include "SHE_SIM_gal_params/ParamParam.hpp"
 
 namespace SHE_SIM
@@ -64,7 +64,7 @@ public:
 	virtual name_t name() const override { return "alt_calculated"; };
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
 		throw std::logic_error("AltCalculated parameters cannot use the 'get_independently' method.");
 	}

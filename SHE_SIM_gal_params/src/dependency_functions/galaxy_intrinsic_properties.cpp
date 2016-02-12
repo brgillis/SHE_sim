@@ -33,7 +33,7 @@
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/default_values.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -42,7 +42,7 @@ flt_t generate_bulge_fraction( flt_t const & galaxy_type, flt_t const & redshift
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_bulge_fraction used.";
 
-	return trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
+	return IceBRG::trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
 			dv::bulge_fraction_l10_min, dv::bulge_fraction_l10_max, rng );
 }
 
@@ -50,7 +50,7 @@ flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & mor
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_bulge_fraction (alt) used.";
 
-	return trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
+	return IceBRG::trunc_log10Gaus_rand( dv::bulge_fraction_l10_mean, dv::bulge_fraction_l10_stddev,
 			dv::bulge_fraction_l10_min, dv::bulge_fraction_l10_max, rng );
 }
 
@@ -58,14 +58,14 @@ flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, fl
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_morphology used.";
 
-	return drand( dv::morphology_min, dv::morphology_max, rng );
+	return IceBRG::drand( dv::morphology_min, dv::morphology_max, rng );
 }
 
 flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng  )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_morphology (alt) used.";
 
-	return drand( dv::morphology_min, dv::morphology_max, rng );
+	return IceBRG::drand( dv::morphology_min, dv::morphology_max, rng );
 }
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
@@ -73,7 +73,7 @@ flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & clust
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_rotation used.";
 
-	return drand( dv::rotation_min, dv::rotation_max, rng );
+	return IceBRG::drand( dv::rotation_min, dv::rotation_max, rng );
 }
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
@@ -81,7 +81,7 @@ flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_x
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_tilt used.";
 
-	return drand( dv::tilt_min, dv::tilt_max, rng );
+	return IceBRG::drand( dv::tilt_min, dv::tilt_max, rng );
 }
 
 flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng  )

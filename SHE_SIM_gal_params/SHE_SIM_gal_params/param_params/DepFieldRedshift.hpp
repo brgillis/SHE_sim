@@ -73,25 +73,26 @@ public:
 	virtual name_t name() const override { return "field_redshift"; };
 
 	// Get the value
-	virtual flt_t get_dependently( const ParamParam * cluster_z_param_param, gen_t & gen = rng ) const
+	virtual flt_t get_dependently( const ParamParam * cluster_z_param_param,
+			gen_t & gen = IceBRG::rng ) const
 	{
 		const IndClusterRedshift * p_cluster_redshift_pp =
 				dynamic_cast<const IndClusterRedshift *>(cluster_z_param_param);
 
 		if(p_cluster_redshift_pp==nullptr)
 		{
-			return generate_field_z(_N_scale,_z_m,0.,_z_m,_z_min,_z_max,rng);
+			return generate_field_z(_N_scale,_z_m,0.,_z_m,_z_min,_z_max,gen);
 		}
 		else
 		{
 			flt_t const & cluster_N_scale = p_cluster_redshift_pp->get_N_scale();
 			flt_t const & cluster_z_m = p_cluster_redshift_pp->get_N_scale();
-			return generate_field_z(_N_scale,_z_m,cluster_N_scale,cluster_z_m,_z_min,_z_max,rng);
+			return generate_field_z(_N_scale,_z_m,cluster_N_scale,cluster_z_m,_z_min,_z_max,gen);
 		}
 	}
 
 	// Get the value
-	virtual flt_t get_independently( gen_t & gen = rng ) const override
+	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
 		throw std::logic_error("Field redshift parameters cannot use the 'get_independently' method.");
 	}

@@ -33,7 +33,7 @@
 #include <Eigen/Core>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -81,19 +81,19 @@ BOOST_FIXTURE_TEST_CASE(test_cdf_rand, cdf_rand_fixture) {
 	std::function<flt_t(flt_t const &)> const & get_from_pdf_low_array = [&] ( flt_t const & x ) { return get_from_array(x,pdf_low); };
 	std::function<flt_t(flt_t const &)> const & get_from_pdf_high_array = [&] ( flt_t const & x ) { return get_from_array(x,pdf_high); };
 
-	flt_t r_cdf_low = SHE_SIM::rand_from_cdf(get_from_cdf_low_array,6,0,5);
+	flt_t r_cdf_low = IceBRG::rand_from_cdf(get_from_cdf_low_array,6.,0.,5.);
 	BOOST_CHECK_GE(r_cdf_low,0.);
 	BOOST_CHECK_LE(r_cdf_low,1.);
 
-	flt_t r_cdf_high = SHE_SIM::rand_from_cdf(get_from_cdf_high_array,6,0,5);
+	flt_t r_cdf_high = IceBRG::rand_from_cdf(get_from_cdf_high_array,6.,0.,5.);
 	BOOST_CHECK_GE(r_cdf_high,3.);
 	BOOST_CHECK_LE(r_cdf_high,4.);
 
-	flt_t r_pdf_low = SHE_SIM::rand_from_pdf(get_from_pdf_low_array,6,0,5);
+	flt_t r_pdf_low = IceBRG::rand_from_pdf(get_from_pdf_low_array,6.,0.,5.);
 	BOOST_CHECK_GE(r_pdf_low,0.);
 	BOOST_CHECK_LE(r_pdf_low,1.);
 
-	flt_t r_pdf_high = SHE_SIM::rand_from_pdf(get_from_pdf_high_array,6,0,5);
+	flt_t r_pdf_high = IceBRG::rand_from_pdf(get_from_pdf_high_array,6.,0.,5.);
 	BOOST_CHECK_GE(r_pdf_high,3.);
 	BOOST_CHECK_LE(r_pdf_high,4.);
 

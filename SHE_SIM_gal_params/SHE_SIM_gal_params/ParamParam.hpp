@@ -34,7 +34,7 @@
 #include <boost/bimap.hpp>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM
 {
@@ -102,7 +102,7 @@ public:
 		return _get_name_from_mode(_mode);
 	}
 
-	virtual flt_t get_independently( gen_t & gen=rng ) const = 0;
+	virtual flt_t get_independently( gen_t & gen=IceBRG::rng ) const = 0;
 
 	virtual name_t name() const = 0;
 

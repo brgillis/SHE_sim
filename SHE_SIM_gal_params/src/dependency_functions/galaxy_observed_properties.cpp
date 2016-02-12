@@ -33,7 +33,7 @@
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/default_values.hpp"
-#include "SHE_SIM_gal_params/random_functions.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -41,7 +41,7 @@ flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_mag_vis used.";
 
-	return drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, rng );
+	return IceBRG::drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, IceBRG::rng );
 }
 
 flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng )
@@ -62,14 +62,15 @@ flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng  )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_shear_angle used.";
 
-	return drand( dv::shear_angle_min, dv::shear_angle_max, rng );
+	return IceBRG::drand( dv::shear_angle_min, dv::shear_angle_max, rng );
 }
 
 flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const & redshift, gen_t & rng  )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_shear_magnitude used.";
 
-	return contracted_Rayleigh_rand( dv::shear_magnitude_sigma, dv::shear_magnitude_max, dv::shear_magnitude_p , rng );
+	return IceBRG::contracted_Rayleigh_rand( dv::shear_magnitude_sigma,
+			dv::shear_magnitude_max, dv::shear_magnitude_p , rng );
 }
 
 
