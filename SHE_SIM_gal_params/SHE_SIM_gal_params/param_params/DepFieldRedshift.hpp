@@ -43,26 +43,25 @@ class DepFieldRedshift: public ParamParam
 {
 private:
 
-	flt_t _N_scale, _z_m, _z_min, _z_max;
+	flt_t _enhancement, _z_min, _z_max;
 
 	// Private methods
 	virtual bool is_equal( ParamParam const * const & other ) const override
 	{
 		DepFieldRedshift const * other_derived = dynamic_cast<DepFieldRedshift const *>(other);
 		if(other_derived==nullptr) return false;
-		return (_N_scale==other_derived->_N_scale) and (_z_m==other_derived->_z_m)
+		return (_enhancement==other_derived->_enhancement)
 				and (_z_min==other_derived->_z_min) and (_z_max==other_derived->_z_max);
 	}
 
 public:
 
 	// Constructor and destructor
-	DepFieldRedshift( flt_t const & N_scale = 1., flt_t const & z_m = 1.,
+	DepFieldRedshift( flt_t const & enhancement = 1.,
 			flt_t const & z_min = 1., flt_t const & z_max = 1.
 			)
 	: ParamParam(ParamParam::DEPENDENT),
-	  _N_scale(N_scale),
-	  _z_m(z_m),
+	  _enhancement(enhancement),
 	  _z_min(z_min),
 	  _z_max(z_max)
 	{
@@ -73,22 +72,28 @@ public:
 	virtual name_t name() const override { return "field_redshift"; };
 
 	// Get the value
-	virtual flt_t get_dependently( const ParamParam * cluster_z_param_param,
+	virtual flt_t get_dependently( ParamParam const * cluster_z_param_param,
+			const flt_t & total_density, const flt_t & cluster_density,
 			gen_t & gen = IceBRG::rng ) const
 	{
 		const IndClusterRedshift * p_cluster_redshift_pp =
 				dynamic_cast<const IndClusterRedshift *>(cluster_z_param_param);
 
+		flt_t total_enhancement = get_total_enhancement(total_density,_z_min,_z_max);
+
+		flt_t cluster_enhancement;
 		if(p_cluster_redshift_pp==nullptr)
 		{
-			return generate_field_z(_N_scale,_z_m,0.,_z_m,_z_min,_z_max,gen);
+			cluster_enhancement = get_cluster_enhancement(cluster_density,_z_min,_z_max);
 		}
 		else
 		{
-			flt_t const & cluster_N_scale = p_cluster_redshift_pp->get_N_scale();
-			flt_t const & cluster_z_m = p_cluster_redshift_pp->get_N_scale();
-			return generate_field_z(_N_scale,_z_m,cluster_N_scale,cluster_z_m,_z_min,_z_max,gen);
+			flt_t const & cluster_z_min = p_cluster_redshift_pp->get_z_min();
+			flt_t const & cluster_z_max = p_cluster_redshift_pp->get_z_max();
+			cluster_enhancement = get_cluster_enhancement(cluster_density,cluster_z_min,cluster_z_max);
 		}
+
+		return generate_field_z(total_enhancement,cluster_enhancement,_z_min,_z_max,gen);
 	}
 
 	// Get the value
@@ -104,9 +109,9 @@ public:
 
 	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		if(params.size() != 4) throw std::runtime_error("Invalid number of arguments used for redshift param param.\n"
-				"Exactly 4 arguments are required.");
-		return new DepFieldRedshift(params[0],params[1],params[2],params[3]);
+		if(params.size() != 3) throw std::runtime_error("Invalid number of arguments used for redshift param param.\n"
+				"Exactly 3 arguments are required.");
+		return new DepFieldRedshift(params[0],params[1],params[2]);
 	}
 };
 

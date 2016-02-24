@@ -89,7 +89,7 @@ INDEPENDENT_PARAM(read_noise);
 // Image level
 INDEPENDENT_PARAM(background_galaxy_density);
 INDEPENDENT_PARAM(cluster_density);
-INDEPENDENT_PARAM(field_galaxy_density);
+INDEPENDENT_PARAM(galaxy_density);
 INDEPENDENT_PARAM(num_fields);
 INDEPENDENT_PARAM(psf_params);
 INDEPENDENT_PARAM(star_density);

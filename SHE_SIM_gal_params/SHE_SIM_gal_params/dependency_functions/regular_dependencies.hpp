@@ -68,8 +68,6 @@ flt_t get_background_noise( flt_t const & subtracted_background, flt_t const & u
 
 flt_t generate_cluster_mass( flt_t const & cluster_redshift, gen_t & _rng );
 
-flt_t generate_cluster_redshift( gen_t & _rng );
-
 flt_t get_cluster_richness( flt_t const & cluster_mass, flt_t const & cluster_redshift );
 
 // Galaxy-level
@@ -117,7 +115,8 @@ flt_t generate_physical_size_disk( flt_t const & galaxy_type, flt_t const & reds
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );
 
-flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift, gen_t & rng );
+flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift,
+		flt_t const & pixel_scale, gen_t & rng );
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
 				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );

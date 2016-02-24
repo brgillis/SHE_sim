@@ -91,7 +91,7 @@ inline param_params_t make_default_param_params_map()
 	INSERT_FIXED_PARAM(exp_time);
 	INSERT_FIXED_PARAM(background_galaxy_density);
 	INSERT_FIXED_PARAM(cluster_density);
-	INSERT_FIXED_PARAM(field_galaxy_density);
+	INSERT_FIXED_PARAM(galaxy_density);
 	INSERT_CALCULATED_PARAM(image_area);
 	INSERT_FIXED_PARAM(image_size_xp);
 	INSERT_FIXED_PARAM(image_size_yp);
@@ -109,7 +109,7 @@ inline param_params_t make_default_param_params_map()
 
 	INSERT_LOGNORMAL_PARAM(cluster_mass);
 	insert_default_param_param<IndClusterRedshift>(res, cluster_redshift_name,
-			dv::cluster_redshift_scale, dv::cluster_redshift_median,
+			dv::cluster_redshift_enhancement,
 			dv::cluster_redshift_min, dv::cluster_redshift_max);
 	INSERT_UNIFORM_PARAM(cluster_xp);
 	INSERT_UNIFORM_PARAM(cluster_yp);
@@ -132,7 +132,7 @@ inline param_params_t make_default_param_params_map()
 	INSERT_CALCULATED_PARAM(physical_size_disk);
 	INSERT_CALCULATED_PARAM(psf_model);
 	insert_default_param_param<DepFieldRedshift>(res, redshift_name,
-			dv::redshift_scale, dv::redshift_median, dv::redshift_min, dv::redshift_max);
+			dv::galaxy_redshift_enhancement, dv::galaxy_redshift_min, dv::galaxy_redshift_max);
 	INSERT_UNIFORM_PARAM(rotation);
 	INSERT_CALCULATED_PARAM(rp);
 	INSERT_UNIFORM_PARAM(shear_angle);
@@ -176,7 +176,7 @@ inline generation_level_map_t make_default_generation_levels_map()
 	INSERT_LEVEL(exp_time, dv::image_level);
 	INSERT_LEVEL(background_galaxy_density, dv::image_level);
 	INSERT_LEVEL(cluster_density, dv::image_level);
-	INSERT_LEVEL(field_galaxy_density, dv::image_level);
+	INSERT_LEVEL(galaxy_density, dv::image_level);
 	INSERT_LEVEL(image_size_xp, dv::image_level);
 	INSERT_LEVEL(image_size_yp, dv::image_level);
 	INSERT_LEVEL(num_fields, dv::image_level);

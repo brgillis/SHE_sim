@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>SHE_SIM_gal_params</name>
+	<name>CFHTLenS_mag_size_info</name>
 	<comment></comment>
 	<projects>
-		<project>IceBRG_lensing</project>
-		<project>IceBRG_main</project>
-		<project>IceBRG_physics</project>
+		<project>Generate_GalSim_Images</project>
 	</projects>
 	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-			<triggers>full,incremental,</triggers>
-			<arguments>
-				<dictionary>
-					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Swig-Python Builder (SHE_SIM_gal_params).launch</value>
-				</dictionary>
-			</arguments>
-		</buildCommand>
 		<buildCommand>
 			<name>org.python.pydev.PyDevBuilder</name>
 			<arguments>

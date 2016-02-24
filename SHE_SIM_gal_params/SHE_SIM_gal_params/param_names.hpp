@@ -46,7 +46,7 @@ DEF_NAME(background_galaxy_density);
 DEF_NAME(background_noise);
 DEF_NAME(cluster_density);
 DEF_NAME(exp_time);
-DEF_NAME(field_galaxy_density);
+DEF_NAME(galaxy_density);
 DEF_NAME(image_area);
 DEF_NAME(image_size_xp);
 DEF_NAME(image_size_yp);

@@ -32,61 +32,33 @@
 
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
+#include "IceBRG_main/math/misc_math.hpp"
 #include "IceBRG_main/math/random/random_functions.hpp"
+#include "IceBRG_main/units/units.hpp"
+#include "IceBRG_main/units/unit_conversions.hpp"
+#include "IceBRG_physics/astro.h"
+#include "IceBRG_physics/astro_caches.h"
 
 namespace SHE_SIM {
 
-inline flt_t get_cluster_pz( flt_t const & z, flt_t const & z_m )
-{
-	return square(z)*exp(-pow(1.412*z/z_m,1.5));
-}
+flt_t get_cluster_pz( flt_t const & z );
 
-inline flt_t get_total_pz( flt_t const & z, flt_t const & z_m )
-{
-	return square(z)*exp(-pow(1.412*z/z_m,1.5));
-}
+flt_t get_total_pz( flt_t const & z );
 
-inline flt_t get_field_pz( flt_t const & z, flt_t const & total_scale, flt_t const & total_z_m,
-		flt_t const & cluster_scale, flt_t const & cluster_z_m )
-{
-	flt_t p = total_scale*get_total_pz(z,total_z_m) - cluster_scale*get_cluster_pz(z,cluster_z_m);
-	if(p < 0) return 0;
-	return p;
-}
+flt_t get_field_pz( flt_t const & z, flt_t const & total_enhancement,
+		flt_t const & cluster_enhancement );
 
-inline flt_t generate_cluster_z( flt_t const & z_m, flt_t const & z_min, flt_t const & z_max, gen_t & rng )
-{
-	auto get_cluster_pz_for_zm = [&z_m] (flt_t const & z)
-		{
-			return get_total_pz(z,z_m);
-		};
-	return IceBRG::rand_from_pdf(get_cluster_pz_for_zm,40,z_min,z_max,rng);
-}
+flt_t generate_cluster_z( flt_t const & z_min, flt_t const & z_max, gen_t & rng );
 
-inline flt_t generate_field_z( flt_t const & total_scale, flt_t const & total_z_m,
-		flt_t const & cluster_scale, flt_t const & cluster_z_m,
-		flt_t const & z_min, flt_t const & z_max, gen_t & rng )
-{
-	auto get_field_pz_for_zm = [&] (flt_t const & z)
-		{
-			return get_field_pz(z, total_scale, total_z_m, cluster_scale, cluster_z_m);
-		};
+flt_t generate_field_z( flt_t const & total_enhancement,
+		flt_t const & cluster_enhancement,
+		flt_t const & z_min, flt_t const & z_max, gen_t & rng );
 
-	// Use a fallback here in case the cluster distribution is bad
-	try
-	{
-		return IceBRG::rand_from_pdf(get_field_pz_for_zm,40,z_min,z_max,rng);
-	}
-	catch(std::runtime_error & e)
-	{
-		BOOST_LOG_TRIVIAL(warning) << "Cluster N(z) is uniformly greater than total N(z).";
-		auto get_total_pz_for_zm = [&total_z_m] (flt_t const & z)
-			{
-				return get_total_pz(z,total_z_m);
-			};
-		return IceBRG::rand_from_pdf(get_total_pz_for_zm,40,z_min,z_max,rng);
-	}
-}
+flt_t get_cluster_enhancement(flt_t const & cluster_density, flt_t const & z_min, flt_t const & z_max);
+
+flt_t get_total_enhancement(flt_t const & total_density, flt_t const & z_min, flt_t const & z_max);
+
+flt_t get_ex_num_cluster_galaxies(flt_t const & num_clusters, flt_t const & z_min, flt_t const & z_max);
 
 } // namespace SHE_SIM
 

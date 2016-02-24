@@ -53,7 +53,7 @@ constexpr const int_t image_level = 2;
 
 constexpr const flt_t background_galaxy_density = 60.; // #/arcmin^2
 constexpr const flt_t cluster_density = 1.; // #/arcmin^2
-constexpr const flt_t field_galaxy_density = 30.; // #/arcmin^2
+constexpr const flt_t galaxy_density = 30.; // #/arcmin^2
 constexpr const flt_t star_density = 30.; // #/arcmin^2
 
 constexpr const flt_t num_fields = 1.; // #/arcsec^2
@@ -86,12 +86,11 @@ constexpr const int_t cluster_level = 4;
 constexpr const flt_t cluster_mass_l10_mean = 14; // log10 Msun
 constexpr const flt_t cluster_mass_l10_stddev = 0.5; // log10 Msun
 
-constexpr const flt_t cluster_redshift_scale = 0.568949279513;
-constexpr const flt_t cluster_redshift_median = 0.661315685092;
+constexpr const flt_t cluster_redshift_enhancement = 1.;
 constexpr const flt_t cluster_redshift_min = 0.2;
 constexpr const flt_t cluster_redshift_max = 1.3;
 
-constexpr const flt_t cluster_richness = 10.;
+constexpr const flt_t cluster_richness = 4.694274644444455;
 
 constexpr const flt_t cluster_xp_min = 0.; // pixels
 constexpr const flt_t cluster_xp_max = image_size_xp; // pixels
@@ -144,10 +143,9 @@ constexpr const flt_t physical_size_bulge = 1.; // kpc
 
 constexpr const flt_t physical_size_disk = 1.; // kpc
 
-constexpr const flt_t redshift_scale = 205.075335391;
-constexpr const flt_t redshift_median = 0.98251953;
-constexpr const flt_t redshift_min = 0.2;
-constexpr const flt_t redshift_max = 2.0;
+constexpr const flt_t galaxy_redshift_enhancement = 1.;
+constexpr const flt_t galaxy_redshift_min = 0.2;
+constexpr const flt_t galaxy_redshift_max = 2.0;
 
 constexpr const flt_t rotation_min = 0.; // degrees
 constexpr const flt_t rotation_max = 180.; // degrees

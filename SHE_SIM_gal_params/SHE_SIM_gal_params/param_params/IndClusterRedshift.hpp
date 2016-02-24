@@ -42,26 +42,25 @@ class IndClusterRedshift: public ParamParam
 {
 private:
 
-	flt_t _N_scale, _z_m, _z_min, _z_max;
+	flt_t _enhancement, _z_min, _z_max;
 
 	// Private methods
 	virtual bool is_equal( ParamParam const * const & other ) const override
 	{
 		IndClusterRedshift const * other_derived = dynamic_cast<IndClusterRedshift const *>(other);
 		if(other_derived==nullptr) return false;
-		return (_N_scale==other_derived->_N_scale) and (_z_m==other_derived->_z_m)
+		return (_enhancement==other_derived->_enhancement)
 				and (_z_min==other_derived->_z_min) and (_z_max==other_derived->_z_max);
 	}
 
 public:
 
 	// Constructor and destructor
-	IndClusterRedshift( flt_t const & N_scale = 1., flt_t const & z_m = 1.,
-			flt_t const & z_min = 1., flt_t const & z_max = 1.
+	IndClusterRedshift( flt_t const & enhancement = 1.,
+			flt_t const & z_min = 0.2, flt_t const & z_max = 1.3
 			)
 	: ParamParam(ParamParam::INDEPENDENT),
-	  _N_scale(N_scale),
-	  _z_m(z_m),
+	  _enhancement(enhancement),
 	  _z_min(z_min),
 	  _z_max(z_max)
 	{
@@ -74,7 +73,7 @@ public:
 	// Get the value
 	virtual flt_t get_independently( gen_t & gen = IceBRG::rng ) const override
 	{
-		return generate_cluster_z(_z_m,_z_min,_z_max,gen);
+		return generate_cluster_z(_z_min,_z_max,gen);
 	}
 
 	virtual ParamParam * clone() const override
@@ -84,19 +83,23 @@ public:
 
 	virtual ParamParam * recreate(const std::vector<flt_t> & params) const override
 	{
-		if(params.size() != 4) throw std::runtime_error("Invalid number of arguments used for redshift param param.\n"
-				"Exactly 4 arguments are required.");
-		return new IndClusterRedshift(params[0],params[1],params[2],params[3]);
+		if(params.size() != 3) throw std::runtime_error("Invalid number of arguments used for redshift param param.\n"
+				"Exactly 3 arguments are required.");
+		return new IndClusterRedshift(params[0],params[1],params[2]);
 	}
 
 	// Get parameter values
-	flt_t const & get_N_scale() const
+	flt_t const & get_enhancement() const
 	{
-		return _N_scale;
+		return _enhancement;
 	}
-	flt_t const & get_z_m() const
+	flt_t const & get_z_min() const
 	{
-		return _z_m;
+		return _z_min;
+	}
+	flt_t const & get_z_max() const
+	{
+		return _z_max;
 	}
 };
 

@@ -130,8 +130,23 @@ DEPENDENT_PARAM(num_clusters,
 				 REQUEST(cluster_density) , _rng) );
 
 DEPENDENT_PARAM(num_field_galaxies,
-		 _cached_value = generate_count( REQUEST(image_area) *
-				 REQUEST(field_galaxy_density) , _rng) );
+		const IndClusterRedshift * p_redshift_pp = dynamic_cast<const IndClusterRedshift *>(
+				_request_param(cluster_redshift_name)->get_p_params());
+		flt_t z_min;
+		flt_t z_max;
+		if(p_redshift_pp==nullptr)
+		{
+			z_min = dv::cluster_redshift_min;
+			z_max = dv::cluster_redshift_max;
+		}
+		else
+		{
+			z_min = p_redshift_pp->get_z_min();
+			z_max = p_redshift_pp->get_z_max();
+		}
+		 _cached_value = generate_count( (REQUEST(image_area) * REQUEST(galaxy_density)) -
+				 get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
+						 z_min, z_max), _rng) );
 
 DEPENDENT_PARAM(num_stars,
 		 _cached_value = generate_count( REQUEST(image_area) *
@@ -170,6 +185,7 @@ DEPENDENT_PARAM(redshift,
 			{
 				_cached_value = p_redshift_pp->get_dependently(
 						_request_param(cluster_redshift_name)->get_p_params(),
+						REQUEST(cluster_density), REQUEST(galaxy_density),
 						_rng);
 			}
 		}
@@ -186,7 +202,8 @@ DEPENDENT_PARAM(rotation,
 			_cached_value = _p_params->get_independently(_rng);)
 
 DEPENDENT_PARAM(rp,
-		_cached_value = generate_rp(REQUEST(galaxy_type), REQUEST(cluster_mass), REQUEST(cluster_redshift), _rng));
+		_cached_value = generate_rp(REQUEST(galaxy_type), REQUEST(cluster_mass), REQUEST(cluster_redshift),
+				REQUEST(pixel_scale), _rng));
 
 DEPENDENT_PARAM(shear_angle,
 		_cached_value = generate_shear_angle(REQUEST(xp), REQUEST(yp), _rng));

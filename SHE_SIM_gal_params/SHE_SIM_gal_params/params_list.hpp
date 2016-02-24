@@ -76,7 +76,7 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(background_galaxy_density);
 	INSERT_PARAM(background_noise);
 	INSERT_PARAM(cluster_density);
-	INSERT_PARAM(field_galaxy_density);
+	INSERT_PARAM(galaxy_density);
 	INSERT_PARAM(image_area);
 	INSERT_PARAM(image_size_xp);
 	INSERT_PARAM(image_size_yp);

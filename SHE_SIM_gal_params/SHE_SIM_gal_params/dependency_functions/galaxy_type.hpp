@@ -26,6 +26,8 @@
 #ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_GALAXY_TYPE_HPP_
 #define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_GALAXY_TYPE_HPP_
 
+#include "SHE_SIM_gal_params/common.hpp"
+
 namespace SHE_SIM {
 
 // Constant definitions for each type

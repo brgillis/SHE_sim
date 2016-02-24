@@ -32,29 +32,35 @@
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/default_values.hpp"
+
 #include "IceBRG_main/math/random/random_functions.hpp"
+#include "IceBRG_main/units/units.hpp"
+#include "IceBRG_physics/astro.h"
 
 namespace SHE_SIM {
 
+using namespace IceBRG;
+
 flt_t generate_cluster_mass( flt_t const & cluster_redshift, gen_t & rng )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_cluster_mass used.";
+	flt_t l10_min_mass = std::log10(min_cluster_mass(cluster_redshift)/(unitconv::Msuntokg*kg));
 
-	return IceBRG::log10Gaus_rand(dv::cluster_mass_l10_mean, dv::cluster_mass_l10_stddev, rng);
-}
+	auto l10_mass_function_at_z = [&] (flt_t const & l10_m)
+	{
+		return value_of(log10_mass_function(l10_m,cluster_redshift));
+	};
 
-flt_t generate_cluster_redshift( gen_t & rng )
-{
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_cluster_redshift used.";
+	flt_t l10_mass = rand_from_pdf(l10_mass_function_at_z,40,l10_min_mass,mass_func_l10_max,rng);
 
-	return IceBRG::drand(dv::cluster_redshift_min, dv::cluster_redshift_max, rng);
+	return std::pow(10.,l10_mass)*unitconv::kgtoMsun;
 }
 
 flt_t get_cluster_richness( flt_t const & cluster_mass, flt_t const & cluster_redshift )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_cluster_richness used.";
+	flt_t richness = cluster_richness(cluster_mass*unitconv::Msuntokg*kg,
+			cluster_redshift);
 
-	return dv::cluster_richness;
+	return richness;
 }
 
 } // namespace SHE_SIM
