@@ -115,16 +115,6 @@ DEPENDENT_PARAM(image_area,
 		 _cached_value = get_image_area(REQUEST(image_size_xp),REQUEST(image_size_yp),
 				 REQUEST(pixel_scale)));
 
-DEPENDENT_PARAM(mag_i_zp,  _cached_value = get_zp(REQUEST(mag_i_inst_zp),
-		REQUEST(exp_time)));
-
-DEPENDENT_PARAM(mag_vis_zp,  _cached_value = get_zp(REQUEST(mag_vis_inst_zp),
-		REQUEST(exp_time)));
-
-DEPENDENT_PARAM(num_background_galaxies,
-		 _cached_value = generate_count( REQUEST(image_area) *
-				 REQUEST(background_galaxy_density) , _rng) );
-
 DEPENDENT_PARAM(num_clusters,
 		 _cached_value = generate_count( REQUEST(image_area) *
 				 REQUEST(cluster_density) , _rng) );
@@ -148,10 +138,6 @@ DEPENDENT_PARAM(num_field_galaxies,
 				 get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
 						 z_min, z_max), _rng) );
 
-DEPENDENT_PARAM(num_stars,
-		 _cached_value = generate_count( REQUEST(image_area) *
-				 REQUEST(star_density) , _rng) );
-
 // Cluster level
 
 DEPENDENT_PARAM(cluster_mass,
@@ -162,8 +148,15 @@ DEPENDENT_PARAM(cluster_num_satellites,
 
 // Galaxy level
 
+DEPENDENT_PARAM(absolute_mag_vis,
+		_cached_value = generate_abs_mag_vis(REQUEST(galaxy_type), REQUEST(redshift),
+				REQUEST(cluster_mass),_rng));
+
 DEPENDENT_PARAM(apparent_mag_vis,
-		_cached_value = get_apparent_mag_vis(REQUEST(stellar_mass), REQUEST(redshift)));
+		_cached_value = get_apparent_mag_vis(REQUEST(absolute_mag_vis), REQUEST(redshift)));
+
+DEPENDENT_PARAM(bulge_class,
+		_cached_value = generate_bulge_class(REQUEST(stellar_mass), REQUEST(redshift), _rng));
 
 DEPENDENT_PARAM(physical_size_bulge,
 		_cached_value = generate_physical_size_bulge(REQUEST(galaxy_type), REQUEST(redshift),
@@ -197,7 +190,7 @@ DEPENDENT_PARAM(redshift,
 DEPENDENT_PARAM(rotation,
 		if(is_satellite_galaxy(REQUEST(galaxy_type)))
 			_cached_value = generate_rotation( REQUEST(xp), REQUEST(yp), REQUEST(cluster_xp), REQUEST(cluster_yp),
-		         REQUEST(morphology), REQUEST(stellar_mass), _rng  );
+		         REQUEST(sersic_index), REQUEST(stellar_mass), _rng  );
 		else
 			_cached_value = _p_params->get_independently(_rng);)
 
@@ -212,12 +205,12 @@ DEPENDENT_PARAM(shear_magnitude,
 		_cached_value = generate_shear_magnitude(REQUEST(xp), REQUEST(yp), REQUEST(redshift), _rng));
 
 DEPENDENT_PARAM(stellar_mass,
-		_cached_value = generate_stellar_mass(REQUEST(galaxy_type), REQUEST(redshift), _rng));
+		_cached_value = get_stellar_mass(REQUEST(absolute_mag_vis)));
 
 DEPENDENT_PARAM(tilt,
 		if(is_satellite_galaxy(REQUEST(galaxy_type)))
 			_cached_value = generate_tilt( REQUEST(xp), REQUEST(yp), REQUEST(cluster_xp), REQUEST(cluster_yp),
-		         REQUEST(morphology), REQUEST(stellar_mass), _rng  );
+		         REQUEST(sersic_index), REQUEST(stellar_mass), _rng  );
 		else
 			_cached_value = _p_params->get_independently(_rng);)
 

@@ -26,18 +26,8 @@
 #ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_GALAXY_REDSHIFT_HPP_
 #define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_GALAXY_REDSHIFT_HPP_
 
-#include <cmath>
-
-#include <boost/log/trivial.hpp>
-
 #include "SHE_SIM_gal_params/common.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
-#include "IceBRG_main/math/misc_math.hpp"
-#include "IceBRG_main/math/random/random_functions.hpp"
 #include "IceBRG_main/units/units.hpp"
-#include "IceBRG_main/units/unit_conversions.hpp"
-#include "IceBRG_physics/astro.h"
-#include "IceBRG_physics/astro_caches.h"
 
 namespace SHE_SIM {
 

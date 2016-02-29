@@ -27,15 +27,17 @@
 
 #include <boost/log/trivial.hpp>
 
-#include "SHE_SIM_gal_params/dependency_functions/galaxy_redshift.hpp"
-#include "SHE_SIM_gal_params/common.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
 #include "IceBRG_main/math/misc_math.hpp"
 #include "IceBRG_main/math/random/random_functions.hpp"
 #include "IceBRG_main/units/units.hpp"
 #include "IceBRG_main/units/unit_conversions.hpp"
-#include "IceBRG_physics/astro.h"
-#include "IceBRG_physics/astro_caches.h"
+
+#include "IceBRG_physics/cluster_visibility.hpp"
+#include "IceBRG_physics/galaxy_visibility.hpp"
+
+#include "SHE_SIM_gal_params/dependency_functions/galaxy_redshift.hpp"
+#include "SHE_SIM_gal_params/common.hpp"
+#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {
 

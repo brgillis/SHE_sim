@@ -77,10 +77,6 @@ inline param_params_t make_default_param_params_map()
 
 	INSERT_FIXED_PARAM(gain);
 	INSERT_FIXED_PARAM(num_images);
-	INSERT_FIXED_PARAM(mag_i_inst_zp);
-	INSERT_CALCULATED_PARAM(mag_i_zp);
-	INSERT_FIXED_PARAM(mag_vis_inst_zp);
-	INSERT_CALCULATED_PARAM(mag_vis_zp);
 	INSERT_FIXED_PARAM(pixel_scale);
 	INSERT_FIXED_PARAM(read_noise);
 
@@ -89,25 +85,20 @@ inline param_params_t make_default_param_params_map()
 
 	INSERT_CALCULATED_PARAM(background_noise);
 	INSERT_FIXED_PARAM(exp_time);
-	INSERT_FIXED_PARAM(background_galaxy_density);
 	INSERT_FIXED_PARAM(cluster_density);
 	INSERT_FIXED_PARAM(galaxy_density);
 	INSERT_CALCULATED_PARAM(image_area);
 	INSERT_FIXED_PARAM(image_size_xp);
 	INSERT_FIXED_PARAM(image_size_yp);
-	INSERT_CALCULATED_PARAM(num_background_galaxies);
 	INSERT_CALCULATED_PARAM(num_clusters);
 	INSERT_FIXED_PARAM(num_fields);
-	INSERT_CALCULATED_PARAM(num_stars);
-	INSERT_FIXED_PARAM(star_density);
-	INSERT_FIXED_PARAM(psf_params);
 	INSERT_LOGNORMAL_PARAM(subtracted_background);
 	INSERT_FIXED_PARAM(unsubtracted_background);
 
 
 	// Cluster level
 
-	INSERT_LOGNORMAL_PARAM(cluster_mass);
+	INSERT_CALCULATED_PARAM(cluster_mass);
 	insert_default_param_param<IndClusterRedshift>(res, cluster_redshift_name,
 			dv::cluster_redshift_enhancement,
 			dv::cluster_redshift_min, dv::cluster_redshift_max);
@@ -122,19 +113,20 @@ inline param_params_t make_default_param_params_map()
 
 	// Galaxy level
 
+	INSERT_CALCULATED_PARAM(absolute_mag_vis);
 	INSERT_CALCULATED_PARAM(apparent_mag_vis);
-	INSERT_LOGNORMAL_PARAM(apparent_size_bulge);
-	INSERT_LOGNORMAL_PARAM(apparent_size_disk);
+	INSERT_CALCULATED_PARAM(apparent_size_bulge);
+	INSERT_CALCULATED_PARAM(apparent_size_disk);
+	INSERT_CALCULATED_PARAM(bulge_class);
 	INSERT_CALCULATED_PARAM(bulge_fraction);
-	INSERT_FIXED_PARAM(galaxy_type);
-	INSERT_UNIFORM_PARAM(morphology);
+	INSERT_CALCULATED_PARAM(galaxy_type);
 	INSERT_CALCULATED_PARAM(physical_size_bulge);
 	INSERT_CALCULATED_PARAM(physical_size_disk);
-	INSERT_CALCULATED_PARAM(psf_model);
 	insert_default_param_param<DepFieldRedshift>(res, redshift_name,
 			dv::galaxy_redshift_enhancement, dv::galaxy_redshift_min, dv::galaxy_redshift_max);
 	INSERT_UNIFORM_PARAM(rotation);
 	INSERT_CALCULATED_PARAM(rp);
+	INSERT_CALCULATED_PARAM(sersic_index);
 	INSERT_UNIFORM_PARAM(shear_angle);
 	INSERT_CONTRAYLEIGH_PARAM(shear_magnitude);
 	INSERT_CALCULATED_PARAM(stellar_mass);
@@ -165,43 +157,31 @@ inline generation_level_map_t make_default_generation_levels_map()
 	// Survey level
 
 	INSERT_LEVEL(gain, dv::survey_level);
-	INSERT_LEVEL(mag_i_inst_zp, dv::survey_level);
-	INSERT_LEVEL(mag_vis_inst_zp, dv::survey_level);
 	INSERT_LEVEL(num_images, dv::survey_level);
 	INSERT_LEVEL(pixel_scale, dv::survey_level);
 	INSERT_LEVEL(read_noise, dv::survey_level);
 
 	// Image level
 
-	INSERT_LEVEL(exp_time, dv::image_level);
-	INSERT_LEVEL(background_galaxy_density, dv::image_level);
+	INSERT_LEVEL(background_noise, dv::image_level);
 	INSERT_LEVEL(cluster_density, dv::image_level);
+	INSERT_LEVEL(exp_time, dv::image_level);
 	INSERT_LEVEL(galaxy_density, dv::image_level);
+	INSERT_LEVEL(image_area, dv::image_level);
 	INSERT_LEVEL(image_size_xp, dv::image_level);
 	INSERT_LEVEL(image_size_yp, dv::image_level);
+	INSERT_LEVEL(num_clusters, dv::image_level);
 	INSERT_LEVEL(num_fields, dv::image_level);
-	INSERT_LEVEL(star_density, dv::image_level);
-	INSERT_LEVEL(psf_params, dv::image_level);
 	INSERT_LEVEL(subtracted_background, dv::image_level);
 	INSERT_LEVEL(unsubtracted_background, dv::image_level);
 
-	INSERT_LEVEL(background_noise, dv::image_level);
-	INSERT_LEVEL(image_area, dv::image_level);
-	INSERT_LEVEL(mag_i_zp, dv::image_level);
-	INSERT_LEVEL(mag_vis_zp, dv::image_level);
-	INSERT_LEVEL(num_background_galaxies, dv::image_level);
-	INSERT_LEVEL(num_clusters, dv::image_level);
-	INSERT_LEVEL(num_field_galaxies, dv::image_level);
-	INSERT_LEVEL(num_stars, dv::image_level);
-
 	// Cluster level
 
+	INSERT_LEVEL(cluster_num_satellites, dv::cluster_level);
 	INSERT_LEVEL(cluster_mass, dv::cluster_level);
 	INSERT_LEVEL(cluster_redshift, dv::cluster_level);
 	INSERT_LEVEL(cluster_xp, dv::cluster_level);
 	INSERT_LEVEL(cluster_yp, dv::cluster_level);
-
-	INSERT_LEVEL(cluster_num_satellites, dv::cluster_level);
 
 	// Field level
 
@@ -209,17 +189,19 @@ inline generation_level_map_t make_default_generation_levels_map()
 
 	// Galaxy level
 
+	INSERT_LEVEL(absolute_mag_vis, dv::galaxy_level);
 	INSERT_LEVEL(apparent_mag_vis, dv::galaxy_level);
 	INSERT_LEVEL(apparent_size_bulge, dv::galaxy_level);
 	INSERT_LEVEL(apparent_size_disk, dv::galaxy_level);
+	INSERT_LEVEL(bulge_class, dv::galaxy_level);
 	INSERT_LEVEL(bulge_fraction, dv::galaxy_level);
 	INSERT_LEVEL(galaxy_type, dv::galaxy_level);
-	INSERT_LEVEL(morphology, dv::galaxy_level);
 	INSERT_LEVEL(physical_size_bulge, dv::galaxy_level);
 	INSERT_LEVEL(physical_size_disk, dv::galaxy_level);
 	INSERT_LEVEL(redshift, dv::galaxy_level);
 	INSERT_LEVEL(rotation, dv::galaxy_level);
 	INSERT_LEVEL(rp, dv::galaxy_level);
+	INSERT_LEVEL(sersic_index, dv::galaxy_level);
 	INSERT_LEVEL(shear_angle, dv::galaxy_level);
 	INSERT_LEVEL(shear_magnitude, dv::galaxy_level);
 	INSERT_LEVEL(stellar_mass, dv::galaxy_level);

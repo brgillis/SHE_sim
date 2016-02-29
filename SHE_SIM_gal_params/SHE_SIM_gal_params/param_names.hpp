@@ -32,17 +32,12 @@
 // Survey level
 
 DEF_NAME(gain);
-DEF_NAME(mag_vis_inst_zp);
-DEF_NAME(mag_i_inst_zp);
-DEF_NAME(mag_vis_zp);
-DEF_NAME(mag_i_zp);
 DEF_NAME(num_images);
 DEF_NAME(pixel_scale);
 DEF_NAME(read_noise);
 
 // Image level
 
-DEF_NAME(background_galaxy_density);
 DEF_NAME(background_noise);
 DEF_NAME(cluster_density);
 DEF_NAME(exp_time);
@@ -50,13 +45,8 @@ DEF_NAME(galaxy_density);
 DEF_NAME(image_area);
 DEF_NAME(image_size_xp);
 DEF_NAME(image_size_yp);
-DEF_NAME(num_background_galaxies);
 DEF_NAME(num_clusters);
-DEF_NAME(num_field_galaxies);
 DEF_NAME(num_fields);
-DEF_NAME(num_stars);
-DEF_NAME(psf_params);
-DEF_NAME(star_density);
 DEF_NAME(subtracted_background);
 DEF_NAME(unsubtracted_background);
 
@@ -68,20 +58,26 @@ DEF_NAME(cluster_num_satellites);
 DEF_NAME(cluster_xp);
 DEF_NAME(cluster_yp);
 
+// Field level
+
+DEF_NAME(num_field_galaxies);
+
 // Galaxy level
 
+DEF_NAME(absolute_mag_vis);
 DEF_NAME(apparent_mag_vis);
 DEF_NAME(apparent_size_bulge);
 DEF_NAME(apparent_size_disk);
+DEF_NAME(bulge_class);
 DEF_NAME(bulge_fraction);
 DEF_NAME(galaxy_type);
-DEF_NAME(morphology);
 DEF_NAME(physical_size_bulge);
 DEF_NAME(physical_size_disk);
 DEF_NAME(psf_model);
 DEF_NAME(redshift);
 DEF_NAME(rotation);
 DEF_NAME(rp);
+DEF_NAME(sersic_index);
 DEF_NAME(shear_angle);
 DEF_NAME(shear_magnitude);
 DEF_NAME(stellar_mass);

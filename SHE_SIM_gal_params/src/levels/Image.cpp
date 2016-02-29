@@ -146,7 +146,6 @@ void Image::fill_children()
 {
 	fill_clusters();
 	fill_field();
-	fill_background_galaxies();
 }
 
 void Image::fill_clusters()
@@ -175,21 +174,6 @@ void Image::autofill_field()
 	for( int_t i=0; i<N; ++i )
 	{
 		auto p_new = add_field();
-		p_new->autofill_children();
-	}
-}
-
-void Image::fill_background_galaxies()
-{
-	int_t N = round_int(get_param_value(num_background_galaxies_name));
-	add_background_galaxies(N);
-}
-void Image::autofill_background_galaxies()
-{
-	int_t N = round_int(get_param_value(num_background_galaxies_name));
-	for( int_t i=0; i<N; ++i )
-	{
-		auto p_new = add_background_galaxy();
 		p_new->autofill_children();
 	}
 }

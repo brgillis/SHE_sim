@@ -34,6 +34,7 @@
 
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
+#include "SHE_SIM_gal_params/dependency_functions/morphology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
@@ -124,13 +125,13 @@ ALT_DEPENDENT_PARAM(apparent_size_disk,
 		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), _rng));
 
 ALT_DEPENDENT_PARAM(bulge_fraction,
-		_cached_value = generate_bulge_fraction(REQUEST(galaxy_type), REQUEST(redshift),
-				REQUEST(stellar_mass), REQUEST(morphology), _rng),
-		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(morphology), _rng));
+		_cached_value = get_bulge_fraction_from_class(REQUEST(bulge_class)),
+		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(sersic_index),
+				_rng));
 
-ALT_DEPENDENT_PARAM(morphology,
-		_cached_value = generate_morphology(REQUEST(galaxy_type), REQUEST(redshift), REQUEST(stellar_mass), _rng),
-		_cached_value = generate_morphology(REQUEST(apparent_mag_vis), _rng));
+ALT_DEPENDENT_PARAM(sersic_index,
+		_cached_value = generate_sersic_index_from_bulge_class(REQUEST(bulge_class), _rng),
+		_cached_value = generate_sersic_index_from_apparent_mag_vis(REQUEST(apparent_mag_vis), _rng));
 
 // Undef the macro
 #undef ALT_DEPENDENT_PARAM

@@ -30,6 +30,8 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
+#include "IceBRG_main/math/misc_math.hpp"
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/Field.hpp"
@@ -40,6 +42,8 @@
 
 namespace SHE_SIM
 {
+
+using namespace IceBRG;
 
 struct PHL_autofill_children_fixture {
 
@@ -54,10 +58,6 @@ struct PHL_autofill_children_fixture {
 	int_t ex_clusters = dv::image_size_xp * dv::image_size_yp * square(dv::pixel_scale/60.) * dv::cluster_density;
 	int_t ex_clusters_min = ex_clusters - accepted_sigma * std::sqrt(ex_clusters);
 	int_t ex_clusters_max = ex_clusters + accepted_sigma * std::sqrt(ex_clusters);
-
-	int_t ex_bgs = dv::image_size_xp * dv::image_size_yp * square(dv::pixel_scale/60.) * dv::background_galaxy_density;
-	int_t ex_bgs_min = ex_bgs - accepted_sigma * std::sqrt(ex_bgs);
-	int_t ex_bgs_max = ex_bgs + accepted_sigma * std::sqrt(ex_bgs);
 
 	int_t ex_cgs = dv::cluster_richness;
 	int_t ex_cgs_min = ex_cgs - accepted_sigma * std::sqrt(ex_cgs-1); // - 1 to exclude central from variation
@@ -80,10 +80,6 @@ BOOST_FIXTURE_TEST_CASE(test_PHL_autofill_children, PHL_autofill_children_fixtur
 
 	Image * p_image1;
 	BOOST_CHECK_NO_THROW(p_image1 = survey1.get_children<Image>().at(0));
-
-	auto bgs = p_image1->get_children<Galaxy>();
-	BOOST_CHECK_GE(static_cast<int_t>(bgs.size()),ex_bgs_min);
-	BOOST_CHECK_LE(static_cast<int_t>(bgs.size()),ex_bgs_max);
 
 	auto fields = p_image1->get_children<Field>();
 	BOOST_CHECK_EQUAL(static_cast<int_t>(fields.size()),ex_fields);

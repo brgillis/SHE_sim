@@ -110,9 +110,6 @@ public:
 	void fill_field();
 	void autofill_field();
 
-	void fill_background_galaxies();
-	void autofill_background_galaxies();
-
 #endif
 
 	virtual ParamHierarchyLevel * clone() const override { return new Image(*this); }

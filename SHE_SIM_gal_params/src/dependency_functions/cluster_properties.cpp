@@ -34,8 +34,11 @@
 #include "SHE_SIM_gal_params/default_values.hpp"
 
 #include "IceBRG_main/math/random/random_functions.hpp"
+#include "IceBRG_main/units/unit_conversions.hpp"
 #include "IceBRG_main/units/units.hpp"
-#include "IceBRG_physics/astro.h"
+
+#include "IceBRG_physics/cluster_visibility.hpp"
+#include "IceBRG_physics/mass_function.hpp"
 
 namespace SHE_SIM {
 

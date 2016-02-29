@@ -35,7 +35,7 @@
 #include "SHE_SIM_gal_params/common.hpp"
 
 #include "IceBRG_main/math/random/random_functions.hpp"
-#include "IceBRG_lensing/lensing_tNFW_profile.h"
+#include <IceBRG_lensing/lensing_tNFW_profile.hpp>
 
 namespace SHE_SIM {
 

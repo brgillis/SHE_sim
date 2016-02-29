@@ -81,18 +81,13 @@ public: \
 INDEPENDENT_PARAM(exp_time);
 INDEPENDENT_PARAM(gain);
 INDEPENDENT_PARAM(num_images);
-INDEPENDENT_PARAM(mag_i_inst_zp);
-INDEPENDENT_PARAM(mag_vis_inst_zp);
 INDEPENDENT_PARAM(pixel_scale);
 INDEPENDENT_PARAM(read_noise);
 
 // Image level
-INDEPENDENT_PARAM(background_galaxy_density);
 INDEPENDENT_PARAM(cluster_density);
 INDEPENDENT_PARAM(galaxy_density);
 INDEPENDENT_PARAM(num_fields);
-INDEPENDENT_PARAM(psf_params);
-INDEPENDENT_PARAM(star_density);
 INDEPENDENT_PARAM(subtracted_background);
 INDEPENDENT_PARAM(unsubtracted_background);
 INDEPENDENT_PARAM(image_size_xp);

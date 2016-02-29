@@ -29,6 +29,10 @@
 
 #include <math.h>
 
+#include "IceBRG_main/units/unit_conversions.hpp"
+#include "IceBRG_main/units/units.hpp"
+#include "IceBRG_physics/distance_measures.hpp"
+
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/dfa_cache.hpp"
@@ -36,44 +40,25 @@
 
 namespace SHE_SIM {
 
-flt_t H( flt_t const & z )
-{
-	if(z==0) return H_0;
-
-	// Friedmann equation, assuming omega = -1
-
-	flt_t zp1 = 1.+z;
-
-	return H_0 * std::sqrt( Omega_r * square( zp1 )*square( zp1 )
-							+ Omega_m * zp1 * square( zp1 )
-							+ Omega_k * square( zp1 ) + Omega_l );
-}
-
-flt_t get_dfa( const flt_t & z )
-{
-	dfa_array_t z_array = dfa_cache.first;
-	dfa_array_t dfa_array = dfa_cache.second;
-
-	return interpolate(z,z_array,dfa_array);
-}
+using namespace IceBRG;
 
 flt_t get_distance_from_angle( const flt_t & theta_arcsec, const flt_t & z )
 {
-	flt_t res = theta_arcsec * get_dfa(z);
+	flt_t res = dfa(theta_arcsec*unitconv::asectorad*rad,z)/(unitconv::kpctom*m);
 
 	return res;
 }
 
 flt_t get_angle_from_distance( const flt_t & d_kpc, const flt_t & z )
 {
-	flt_t res = d_kpc / get_dfa(z);
+	flt_t res = afd(d_kpc*unitconv::kpctom*m,z)/(unitconv::asectorad*rad);
 
 	return res;
 }
 
 flt_t get_relative_luminosity_distance( const flt_t & z1, const flt_t & z2 )
 {
-	flt_t res = get_dfa(z1)*square(1+z1)/(get_dfa(z2)*square(1+z2));
+	flt_t res = luminosity_distance(z1)/luminosity_distance(z2);
 
 	return res;
 }

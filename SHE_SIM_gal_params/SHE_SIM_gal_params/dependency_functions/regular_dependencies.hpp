@@ -72,20 +72,12 @@ flt_t get_cluster_richness( flt_t const & cluster_mass, flt_t const & cluster_re
 
 // Galaxy-level
 
-flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift );
+flt_t generate_abs_mag_vis(flt_t const & galaxy_type, flt_t const & redshift,
+		flt_t const & cluster_mass, gen_t & rng);
 
-flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng );
+flt_t get_apparent_mag_vis( flt_t const & absolute_mag_vis, flt_t const & redshift );
 
-flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );
-
-flt_t generate_bulge_fraction( flt_t const & galaxy_type, flt_t const & redshift,
-		flt_t const & stellar_mass, flt_t const & morphology, gen_t & rng );
-
-flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & morphology, gen_t & rng );
-
-flt_t generate_morphology( flt_t const & galaxy_type, flt_t const & redshift, flt_t const & stellar_mass, gen_t & rng );
-
-flt_t generate_morphology( flt_t const & apparent_mag_vis, gen_t & rng );
+flt_t get_stellar_mass( flt_t const & absolute_mag_vis );
 
 /**
  * Generates a random physical bulge size in kpc from galaxy type, redshift, and stellar mass in M_sun.
@@ -131,7 +123,9 @@ flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & clus
 
 flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng );
 
+flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng );
 
+flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );
 
 } // namespace SHE_SIM
 

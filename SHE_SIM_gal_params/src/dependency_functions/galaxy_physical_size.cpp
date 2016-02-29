@@ -27,15 +27,20 @@
 #include "config.h"
 #endif
 
+#include "IceBRG_main/math/random/random_functions.hpp"
+#include "IceBRG_physics/constants.hpp"
+#include "IceBRG_physics/cosmology.hpp"
+
 #include "SHE_SIM_gal_params/common.hpp"
 
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_size_detail.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/math.hpp"
-#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
+
+using namespace IceBRG;
 
 // Implementation of functions
 

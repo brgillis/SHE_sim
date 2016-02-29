@@ -37,8 +37,6 @@ constexpr flt_t const Omega_k = 0; // Assuming flat space
 constexpr flt_t const Omega_l = 1 - Omega_k - Omega_m - Omega_r;
 constexpr flt_t const Omega_b = 0.0472; // WMAP9 + priors
 
-flt_t H( flt_t const & z );
-
 /**
  * Get a transverse distance in kpc from an angle in arcsec
  *

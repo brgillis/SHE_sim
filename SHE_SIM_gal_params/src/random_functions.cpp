@@ -28,9 +28,8 @@
 #include <numeric>
 #include <stdexcept>
 
-#include <Eigen/Core>
-
 #include <SHE_SIM_gal_params/common.hpp>
+#include "IceBRG_main/Eigen.hpp"
 #include <IceBRG_main/math/random/random_functions.hpp>
 
 namespace SHE_SIM {
@@ -38,8 +37,7 @@ namespace SHE_SIM {
 // Implement the random number generator engine
 gen_t rng;
 
-#include <functional>
-typedef Eigen::Array<flt_t,Eigen::Dynamic,1> flt_array_t;
+typedef IceBRG::flt_array_t flt_array_t;
 
 flt_t rand_from_cdf_arrays( flt_array_t const & xvals, flt_array_t cvals, gen_t & gen = rng )
 {

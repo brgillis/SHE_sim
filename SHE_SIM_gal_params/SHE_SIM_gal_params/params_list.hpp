@@ -64,28 +64,19 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	INSERT_PARAM(exp_time);
 	INSERT_PARAM(gain);
 	INSERT_PARAM(num_images);
-	INSERT_PARAM(mag_i_inst_zp);
-	INSERT_PARAM(mag_i_zp);
-	INSERT_PARAM(mag_vis_inst_zp);
-	INSERT_PARAM(mag_vis_zp);
 	INSERT_PARAM(pixel_scale);
 	INSERT_PARAM(read_noise);
 
 
 	// Image level
-	INSERT_PARAM(background_galaxy_density);
 	INSERT_PARAM(background_noise);
 	INSERT_PARAM(cluster_density);
 	INSERT_PARAM(galaxy_density);
 	INSERT_PARAM(image_area);
 	INSERT_PARAM(image_size_xp);
 	INSERT_PARAM(image_size_yp);
-	INSERT_PARAM(num_background_galaxies);
 	INSERT_PARAM(num_clusters);
 	INSERT_PARAM(num_fields);
-	INSERT_PARAM(num_stars);
-	INSERT_PARAM(psf_params);
-	INSERT_PARAM(star_density);
 	INSERT_PARAM(subtracted_background);
 	INSERT_PARAM(unsubtracted_background);
 
@@ -102,17 +93,19 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 
 	// Galaxy-level params here
 
+	INSERT_PARAM(absolute_mag_vis);
 	INSERT_PARAM(apparent_mag_vis);
 	INSERT_PARAM(apparent_size_bulge);
 	INSERT_PARAM(apparent_size_disk);
+	INSERT_PARAM(bulge_class);
 	INSERT_PARAM(bulge_fraction);
 	INSERT_PARAM(galaxy_type);
-	INSERT_PARAM(morphology);
 	INSERT_PARAM(physical_size_bulge);
 	INSERT_PARAM(physical_size_disk);
 	INSERT_PARAM(redshift);
 	INSERT_PARAM(rotation);
 	INSERT_PARAM(rp);
+	INSERT_PARAM(sersic_index);
 	INSERT_PARAM(shear_angle);
 	INSERT_PARAM(shear_magnitude);
 	INSERT_PARAM(stellar_mass);
