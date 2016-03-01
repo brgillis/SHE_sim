@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file morphology.cpp
+ @file sersic_index.cpp
  ------------------
 
  TODO <Insert file description here>
@@ -46,14 +46,14 @@ using namespace IceBRG;
 // Static initialisation
 #if(1)
 
-const array_t<flt_t,num_bulge_classes,1> morphology_data::sm_coeffs = load_morphology_sm_coeffs();
-const array_t<flt_t,num_bulge_classes,1> morphology_data::z_coeffs = load_morphology_z_coeffs();
-const array_t<flt_t,num_bulge_classes,1> morphology_data::y_intercepts =
+const array_t<flt_t,num_bulge_classes,1> sersic_index_data::sm_coeffs = load_morphology_sm_coeffs();
+const array_t<flt_t,num_bulge_classes,1> sersic_index_data::z_coeffs = load_morphology_z_coeffs();
+const array_t<flt_t,num_bulge_classes,1> sersic_index_data::y_intercepts =
 		load_morphology_y_intercepts();
 
-const array_t<flt_t,num_bulge_classes,1> morphology_data::bulge_sersic_means =
+const array_t<flt_t,num_bulge_classes,1> sersic_index_data::bulge_sersic_means =
 		load_bulge_sersic_means();
-const array_t<flt_t,num_bulge_classes,1> morphology_data::bulge_sersic_stds =
+const array_t<flt_t,num_bulge_classes,1> sersic_index_data::bulge_sersic_stds =
 		load_bulge_sersic_stds();
 
 #endif // End static initialisation
@@ -136,9 +136,9 @@ flt_t generate_bulge_class( flt_t const & stellar_mass, flt_t const & redshift, 
 	// Calculate t values for each bulge classification, where t is monotonic
 	// increasing with probability
 	auto ts =
-			l10_sm * morphology_data::sm_coeffs +
-			redshift * morphology_data::z_coeffs
-			+ morphology_data::y_intercepts;
+			l10_sm * sersic_index_data::sm_coeffs +
+			redshift * sersic_index_data::z_coeffs
+			+ sersic_index_data::y_intercepts;
 
 	flt_t (*pf)(flt_t) = &std::exp;
 
@@ -188,8 +188,8 @@ flt_t generate_sersic_index_from_bulge_class( flt_t const & bulge_class, gen_t &
 
 	if(bulge_class>num_bulge_classes-1.5)
 	{
-		mean = morphology_data::bulge_sersic_means[num_bulge_classes-1];
-		stddev = morphology_data::bulge_sersic_stds[num_bulge_classes-1];
+		mean = sersic_index_data::bulge_sersic_means[num_bulge_classes-1];
+		stddev = sersic_index_data::bulge_sersic_stds[num_bulge_classes-1];
 	}
 	else
 	{
@@ -197,18 +197,18 @@ flt_t generate_sersic_index_from_bulge_class( flt_t const & bulge_class, gen_t &
 		if(il>=num_bulge_classes-3) il = num_bulge_classes-3;
 		flt_t d = bulge_class+0.5-il;
 
-		mean = morphology_data::bulge_sersic_means[il]*(1-d);
-		stddev = morphology_data::bulge_sersic_stds[il]*(1-d);
-		mean += morphology_data::bulge_sersic_means[il+1]*d;
-		stddev += morphology_data::bulge_sersic_stds[il+1]*d;
+		mean = sersic_index_data::bulge_sersic_means[il]*(1-d);
+		stddev = sersic_index_data::bulge_sersic_stds[il]*(1-d);
+		mean += sersic_index_data::bulge_sersic_means[il+1]*d;
+		stddev += sersic_index_data::bulge_sersic_stds[il+1]*d;
 	}
 
-	flt_t sersic_index = Gaus_rand( mean, stddev, rng);
+	flt_t sersic_index = trunc_Gaus_rand( mean, stddev, 0.5, 6.5, rng);
 
 	return sersic_index;
 }
 
-flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & morphology, gen_t & rng )
+flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & sersic_index, gen_t & rng )
 {
 	BOOST_LOG_TRIVIAL(warning) << "Dummy function generate_bulge_fraction used.";
 

@@ -53,7 +53,7 @@ BOOST_FIXTURE_TEST_CASE(test_gen_params, gen_params_fixture) {
 
 	BOOST_CHECK_NO_THROW(survey.autofill_children());
 
-	survey.generate_parameters();
+	BOOST_CHECK_NO_THROW(survey.generate_parameters());
 
 }
 

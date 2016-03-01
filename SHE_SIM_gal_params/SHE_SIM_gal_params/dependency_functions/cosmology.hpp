@@ -30,7 +30,6 @@
 
 namespace SHE_SIM {
 
-constexpr flt_t const H_0 = 70; // Hubble parameter at z=0 in km/s/Mpc
 constexpr flt_t const Omega_m = 0.288; // WMAP9 + priors
 constexpr flt_t const Omega_r = 0.000086; // WMAP9 + priors
 constexpr flt_t const Omega_k = 0; // Assuming flat space

@@ -33,15 +33,16 @@
 #include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/default_values.hpp"
+
 #include "IceBRG_main/math/random/random_functions.hpp"
+
+#include "IceBRG_physics/luminosity.hpp"
 
 namespace SHE_SIM {
 
-flt_t get_apparent_mag_vis( flt_t const & stellar_mass, flt_t const & redshift )
+flt_t get_apparent_mag_vis( flt_t const & absolute_mag_vis, flt_t const & redshift )
 {
-	BOOST_LOG_TRIVIAL(warning) << "Dummy function get_apparent_mag_vis used.";
-
-	return IceBRG::drand( dv::apparent_mag_vis_min, dv::apparent_mag_vis_max, IceBRG::rng );
+	return IceBRG::get_app_mag_from_abs_mag(absolute_mag_vis,redshift);
 }
 
 flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng )

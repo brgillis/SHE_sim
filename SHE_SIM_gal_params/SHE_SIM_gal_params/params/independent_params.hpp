@@ -79,10 +79,8 @@ public: \
 
 // Survey level
 INDEPENDENT_PARAM(exp_time);
-INDEPENDENT_PARAM(gain);
 INDEPENDENT_PARAM(num_images);
 INDEPENDENT_PARAM(pixel_scale);
-INDEPENDENT_PARAM(read_noise);
 
 // Image level
 INDEPENDENT_PARAM(cluster_density);

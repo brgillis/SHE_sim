@@ -107,10 +107,6 @@ public: \
 
 // Image level
 
-DEPENDENT_PARAM(background_noise,
-		_cached_value = get_background_noise(REQUEST(subtracted_background), REQUEST(unsubtracted_background),
-				REQUEST(read_noise), REQUEST(gain), REQUEST(pixel_scale) ));
-
 DEPENDENT_PARAM(image_area,
 		 _cached_value = get_image_area(REQUEST(image_size_xp),REQUEST(image_size_yp),
 				 REQUEST(pixel_scale)));
@@ -178,7 +174,7 @@ DEPENDENT_PARAM(redshift,
 			{
 				_cached_value = p_redshift_pp->get_dependently(
 						_request_param(cluster_redshift_name)->get_p_params(),
-						REQUEST(cluster_density), REQUEST(galaxy_density),
+						REQUEST(galaxy_density), REQUEST(cluster_density),
 						_rng);
 			}
 		}

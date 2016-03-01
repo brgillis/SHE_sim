@@ -34,10 +34,8 @@ namespace SHE_SIM { namespace dv {
 
 constexpr const int_t survey_level = 0;
 
-constexpr const flt_t gain = 3.3; // e-/ADU
 constexpr const flt_t num_images = 1;
 constexpr const flt_t pixel_scale = 0.1; // arcsec/pixel
-constexpr const flt_t read_noise = 5.4; // e-/pixel
 
 // ImageGroup-level
 
@@ -79,7 +77,7 @@ constexpr const flt_t cluster_redshift_enhancement = 1.;
 constexpr const flt_t cluster_redshift_min = 0.2;
 constexpr const flt_t cluster_redshift_max = 1.3;
 
-constexpr const flt_t cluster_richness = 4.694274644444455;
+constexpr const flt_t cluster_richness = 7.;
 
 constexpr const flt_t cluster_xp_min = 0.; // pixels
 constexpr const flt_t cluster_xp_max = image_size_xp; // pixels
@@ -113,8 +111,10 @@ constexpr const flt_t apparent_mag_vis_max = 24.5; // kpc
 
 constexpr const flt_t bulge_fraction = 1./3.;
 
-constexpr const flt_t morphology_min = 0.5; // Sersic index
-constexpr const flt_t morphology_max = 6.5; // Sersic index
+constexpr const flt_t galaxy_type = 0.;
+
+constexpr const flt_t sersic_index_min = 0.5; // Sersic index
+constexpr const flt_t sersic_index_max = 6.5; // Sersic index
 
 constexpr const flt_t galaxy_redshift_enhancement = 1.;
 constexpr const flt_t galaxy_redshift_min = 0.2;

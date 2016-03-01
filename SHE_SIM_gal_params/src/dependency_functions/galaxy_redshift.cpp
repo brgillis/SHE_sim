@@ -58,7 +58,9 @@ flt_t get_total_pz( flt_t const & z )
 flt_t get_field_pz( flt_t const & z, flt_t const & total_enhancement,
 		flt_t const & cluster_enhancement )
 {
-	flt_t p = total_enhancement*get_total_pz(z) - cluster_enhancement*get_cluster_pz(z);
+	flt_t p = total_enhancement*get_total_pz(z) -
+			cluster_enhancement*get_cluster_pz(z) *
+				IceBRG::mean_cluster_richness_at_redshift(z);
 	if(p < 0) return 0;
 	return p;
 }

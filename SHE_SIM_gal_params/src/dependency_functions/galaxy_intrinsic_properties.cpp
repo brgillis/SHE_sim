@@ -47,13 +47,13 @@ namespace SHE_SIM {
 using namespace IceBRG;
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  )
+				         flt_t const & sersic_index, flt_t const & stellar_mass, gen_t & rng  )
 {
 	return IceBRG::drand( dv::rotation_min, dv::rotation_max, rng );
 }
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng  )
+				         flt_t const & sersic_index, flt_t const & stellar_mass, gen_t & rng  )
 {
 	return IceBRG::drand( dv::tilt_min, dv::tilt_max, rng );
 }
@@ -119,7 +119,7 @@ flt_t generate_abs_mag_vis(flt_t const & galaxy_type, flt_t const & redshift,
 {
 	flt_t abs_mag_vis = 0.;
 
-	if(is_satellite_galaxy(galaxy_type))
+	if(is_field_galaxy(galaxy_type))
 	{
 		abs_mag_vis = generate_field_abs_mag_vis(redshift,rng);
 	}
@@ -141,7 +141,8 @@ flt_t generate_abs_mag_vis(flt_t const & galaxy_type, flt_t const & redshift,
 
 flt_t get_stellar_mass( flt_t const & abs_mag_vis )
 {
-	flt_t stellar_mass_msun = estimate_stellar_mass_from_abs_mag_i(abs_mag_vis);
+	flt_t stellar_mass_msun = estimate_stellar_mass_from_abs_mag_i(abs_mag_vis) /
+			(unitconv::Msuntokg*kg);
 
 	return stellar_mass_msun;
 }

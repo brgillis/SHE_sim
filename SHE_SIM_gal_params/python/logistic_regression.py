@@ -13,9 +13,9 @@ from scipy.stats import norm
 from matplotlib import gridspec
 
 
-def morphology():
+def sersic_index():
     '''
-    Try and figure out functional forms using morphology
+    Try and figure out functional forms using sersic_index
 
     '''
     

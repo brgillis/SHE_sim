@@ -1,5 +1,5 @@
 /**********************************************************************\
- @file morphology.hpp
+ @file sersic_index.hpp
  ------------------
 
  Functions for estimating the sersic indices of galaxies.
@@ -23,8 +23,8 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MORPHOLOGY_HPP_
-#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MORPHOLOGY_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_sersic_index_HPP_
+#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_sersic_index_HPP_
 
 #include "IceBRG_main/Eigen.hpp"
 
@@ -34,7 +34,7 @@ namespace SHE_SIM {
 
 constexpr int_t num_bulge_classes=5;
 
-struct morphology_data
+struct sersic_index_data
 {
 	static const IceBRG::array_t<flt_t,num_bulge_classes,1> sm_coeffs;
 	static const IceBRG::array_t<flt_t,num_bulge_classes,1> z_coeffs;
@@ -57,11 +57,11 @@ flt_t generate_bulge_class( flt_t const & stellar_mass, flt_t const & redshift, 
 flt_t generate_sersic_index_from_apparent_mag_vis( flt_t const & apparent_mag_vis, gen_t & rng );
 flt_t generate_sersic_index_from_bulge_class( flt_t const & bulge_class, gen_t & rng );
 
-flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & morphology, gen_t & rng );
+flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & sersic_index, gen_t & rng );
 
 flt_t get_bulge_class_from_fraction( flt_t const & bulge_fraction );
 flt_t get_bulge_fraction_from_class( flt_t const & bulge_class );
 
 }
 
-#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MORPHOLOGY_HPP_
+#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_sersic_index_HPP_

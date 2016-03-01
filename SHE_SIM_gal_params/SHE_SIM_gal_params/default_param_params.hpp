@@ -75,15 +75,12 @@ inline param_params_t make_default_param_params_map()
 
 	// Survey level
 
-	INSERT_FIXED_PARAM(gain);
 	INSERT_FIXED_PARAM(num_images);
 	INSERT_FIXED_PARAM(pixel_scale);
-	INSERT_FIXED_PARAM(read_noise);
 
 
 	// Image level
 
-	INSERT_CALCULATED_PARAM(background_noise);
 	INSERT_FIXED_PARAM(exp_time);
 	INSERT_FIXED_PARAM(cluster_density);
 	INSERT_FIXED_PARAM(galaxy_density);
@@ -119,7 +116,7 @@ inline param_params_t make_default_param_params_map()
 	INSERT_CALCULATED_PARAM(apparent_size_disk);
 	INSERT_CALCULATED_PARAM(bulge_class);
 	INSERT_CALCULATED_PARAM(bulge_fraction);
-	INSERT_CALCULATED_PARAM(galaxy_type);
+	INSERT_FIXED_PARAM(galaxy_type);
 	INSERT_CALCULATED_PARAM(physical_size_bulge);
 	INSERT_CALCULATED_PARAM(physical_size_disk);
 	insert_default_param_param<DepFieldRedshift>(res, redshift_name,
@@ -156,14 +153,11 @@ inline generation_level_map_t make_default_generation_levels_map()
 
 	// Survey level
 
-	INSERT_LEVEL(gain, dv::survey_level);
 	INSERT_LEVEL(num_images, dv::survey_level);
 	INSERT_LEVEL(pixel_scale, dv::survey_level);
-	INSERT_LEVEL(read_noise, dv::survey_level);
 
 	// Image level
 
-	INSERT_LEVEL(background_noise, dv::image_level);
 	INSERT_LEVEL(cluster_density, dv::image_level);
 	INSERT_LEVEL(exp_time, dv::image_level);
 	INSERT_LEVEL(galaxy_density, dv::image_level);

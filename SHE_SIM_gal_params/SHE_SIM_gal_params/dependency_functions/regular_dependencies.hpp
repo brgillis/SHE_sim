@@ -105,13 +105,13 @@ flt_t generate_physical_size_disk( flt_t const & galaxy_type, flt_t const & reds
 		flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_rotation( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );
+				         flt_t const & sersic_index, flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t const & cluster_redshift,
 		flt_t const & pixel_scale, gen_t & rng );
 
 flt_t generate_tilt( flt_t const & xp, flt_t const & yp, flt_t const & cluster_xp, flt_t const & cluster_yp,
-				         flt_t const & morphology, flt_t const & stellar_mass, gen_t & rng );
+				         flt_t const & sersic_index, flt_t const & stellar_mass, gen_t & rng );
 
 flt_t generate_shear_angle( flt_t const & xp, flt_t const & yp, gen_t & rng );
 

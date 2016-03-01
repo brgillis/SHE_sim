@@ -31,14 +31,11 @@
 
 // Survey level
 
-DEF_NAME(gain);
 DEF_NAME(num_images);
 DEF_NAME(pixel_scale);
-DEF_NAME(read_noise);
 
 // Image level
 
-DEF_NAME(background_noise);
 DEF_NAME(cluster_density);
 DEF_NAME(exp_time);
 DEF_NAME(galaxy_density);

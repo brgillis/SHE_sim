@@ -62,14 +62,11 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 
 	// Survey level
 	INSERT_PARAM(exp_time);
-	INSERT_PARAM(gain);
 	INSERT_PARAM(num_images);
 	INSERT_PARAM(pixel_scale);
-	INSERT_PARAM(read_noise);
 
 
 	// Image level
-	INSERT_PARAM(background_noise);
 	INSERT_PARAM(cluster_density);
 	INSERT_PARAM(galaxy_density);
 	INSERT_PARAM(image_area);
