@@ -33,7 +33,7 @@
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
 #include <SHE_SIM_gal_params/math.hpp>
-#include <SHE_SIM_gal_params/param_names.hpp>
+#include <SHE_SIM_gal_params/param_declarations.hpp>
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_size_detail.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"

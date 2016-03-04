@@ -31,7 +31,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
-#include "SHE_SIM_gal_params/param_names.hpp"
+#include <SHE_SIM_gal_params/param_declarations.hpp>
 #include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/ClusterGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Field.hpp"

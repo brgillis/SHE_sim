@@ -33,7 +33,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include <SHE_SIM_gal_params/param_names.hpp>
+#include <SHE_SIM_gal_params/param_declarations.hpp>
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
