@@ -29,6 +29,7 @@
 
 #include <math.h>
 
+#include "IceBRG_main/math/misc_math.hpp"
 #include "IceBRG_main/units/unit_conversions.hpp"
 #include "IceBRG_main/units/units.hpp"
 #include "IceBRG_physics/distance_measures.hpp"
@@ -36,7 +37,6 @@
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/dfa_cache.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {
 

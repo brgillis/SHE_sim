@@ -29,16 +29,19 @@
 
 #include <utility>
 
+#include "IceBRG_main/math/misc_math.hpp"
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include <SHE_SIM_gal_params/param_declarations.hpp>
-#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/levels/Image.hpp"
 #include "SHE_SIM_gal_params/levels/ImageGroup.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 
 namespace SHE_SIM
 {
+
+using namespace IceBRG;
 
 Survey::Survey()
 : ParamHierarchyLevel(nullptr)

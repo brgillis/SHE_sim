@@ -45,9 +45,8 @@
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/halos.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/morphology.hpp"
-#include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
-
 #include <SHE_SIM_gal_params/default_param_params.hpp>
+#include <SHE_SIM_gal_params/dependency_functions/misc_dependencies.hpp>
 #include <SHE_SIM_gal_params/param_declarations.hpp>
 
 namespace SHE_SIM {

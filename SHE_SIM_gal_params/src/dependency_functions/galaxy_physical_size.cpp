@@ -27,6 +27,7 @@
 #include "config.h"
 #endif
 
+#include "IceBRG_main/math/misc_math.hpp"
 #include "IceBRG_main/math/random/random_functions.hpp"
 #include "IceBRG_physics/constants.hpp"
 #include "IceBRG_physics/cosmology.hpp"
@@ -35,12 +36,35 @@
 
 #include "SHE_SIM_gal_params/dependency_functions/cosmology.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_size_detail.hpp"
-#include "SHE_SIM_gal_params/dependency_functions/regular_dependencies.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
+#include <SHE_SIM_gal_params/dependency_functions/misc_dependencies.hpp>
 
 namespace SHE_SIM {
 
 using namespace IceBRG;
+
+template< typename T_array >
+flt_t interpolate( flt_t const & x, T_array const & x_array, T_array const & y_array )
+{
+	assert(x_array.size()==y_array.size());
+
+	T_array diffs = (x_array-x).abs();
+	int_t x_i,x_j;
+	diffs.minCoeff(&x_i,&x_j);
+
+	// We want the lower index around this redshift if possible
+	if(x_array[x_i] > x) --x_i;
+	if(x_i<0) x_i = 0;
+	if(x_i>=x_array.size()-1) x_i = x_array.size()-2;
+
+	flt_t x_lo = x_array[x_i];
+	flt_t x_hi = x_array[x_i+1];
+	flt_t y_lo = y_array[x_i];
+	flt_t y_hi = y_array[x_i+1];
+
+	flt_t y = y_lo + (y_hi-y_lo)/(x_hi-x_lo) * (x-x_lo);
+
+	return y;
+}
 
 // Implementation of functions
 

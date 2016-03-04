@@ -30,9 +30,10 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
+#include "IceBRG_main/math/misc_math.hpp"
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_values.hpp>
-#include <SHE_SIM_gal_params/math.hpp>
 #include <SHE_SIM_gal_params/param_declarations.hpp>
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_size_detail.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
@@ -40,6 +41,8 @@
 
 namespace SHE_SIM
 {
+
+using namespace IceBRG;
 
 struct physical_size_fixture {
 

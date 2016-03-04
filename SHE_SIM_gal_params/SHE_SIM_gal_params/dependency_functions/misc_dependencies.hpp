@@ -23,12 +23,13 @@
 
 \**********************************************************************/
 
-#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_REGULAR_DEPENDENCIES_HPP_
-#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_REGULAR_DEPENDENCIES_HPP_
+#ifndef SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MISC_DEPENDENCIES_HPP_
+#define SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MISC_DEPENDENCIES_HPP_
+
+#include "IceBRG_main/math/misc_math.hpp"
+#include "IceBRG_main/math/random/random_functions.hpp"
 
 #include "SHE_SIM_gal_params/common.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
-#include "IceBRG_main/math/random/random_functions.hpp"
 
 namespace SHE_SIM {
 
@@ -44,7 +45,7 @@ namespace SHE_SIM {
  */
 inline flt_t get_image_area( flt_t const & image_size_x_pix, flt_t const & image_size_y_pix, flt_t const & pixel_scale )
 {
-	return image_size_x_pix * image_size_y_pix * square( pixel_scale/60. );
+	return image_size_x_pix * image_size_y_pix * IceBRG::square( pixel_scale/60. );
 }
 
 inline flt_t get_zp( flt_t const & inst_zp, flt_t const & exp_time)
@@ -129,4 +130,4 @@ flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng )
 
 } // namespace SHE_SIM
 
-#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_REGULAR_DEPENDENCIES_HPP_
+#endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MISC_DEPENDENCIES_HPP_

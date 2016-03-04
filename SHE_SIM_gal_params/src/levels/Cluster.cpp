@@ -30,10 +30,11 @@
 #include <stdexcept>
 #include <vector>
 
+#include "IceBRG_main/math/misc_math.hpp"
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include "SHE_SIM_gal_params/params_list.hpp"
 #include <SHE_SIM_gal_params/param_declarations.hpp>
-#include "SHE_SIM_gal_params/math.hpp"
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_type.hpp"
 #include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/Galaxy.hpp"
@@ -41,6 +42,8 @@
 
 namespace SHE_SIM
 {
+
+using namespace IceBRG;
 
 Cluster::Cluster(ParamHierarchyLevel * const & p_parent)
 : ParamHierarchyLevel(p_parent)

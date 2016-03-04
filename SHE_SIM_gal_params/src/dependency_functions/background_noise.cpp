@@ -29,8 +29,9 @@
 
 #include <cmath>
 
+#include "IceBRG_main/math/misc_math.hpp"
+
 #include "SHE_SIM_gal_params/common.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {
 
@@ -38,7 +39,7 @@ flt_t get_background_noise( flt_t const & subtracted_background, flt_t const & u
 		flt_t const & read_noise, flt_t const & gain, flt_t const & pixel_scale )
 {
 	flt_t background_ADU_per_arcsec = subtracted_background + unsubtracted_background;
-	flt_t background_e_per_pixel = background_ADU_per_arcsec * square(pixel_scale) * gain;
+	flt_t background_e_per_pixel = background_ADU_per_arcsec * IceBRG::square(pixel_scale) * gain;
 
 	flt_t background_noise_e = std::sqrt( background_e_per_pixel + read_noise );
 	flt_t background_noise_ADU = background_noise_e / gain;

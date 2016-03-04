@@ -37,7 +37,6 @@
 
 #include "SHE_SIM_gal_params/dependency_functions/galaxy_redshift.hpp"
 #include "SHE_SIM_gal_params/common.hpp"
-#include "SHE_SIM_gal_params/math.hpp"
 
 namespace SHE_SIM {
 
