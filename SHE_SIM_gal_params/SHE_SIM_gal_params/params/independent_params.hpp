@@ -43,8 +43,8 @@ namespace SHE_SIM
 class param_name##_obj : public ParamGenerator \
 { \
 public: \
-	param_name##_obj( owner_t & owner) \
-	: ParamGenerator(owner) \
+	param_name##_obj( owner_t * const & p_owner) \
+	: ParamGenerator(p_owner) \
 	{ \
 		/* See if we can get generation level and params from the parent */ \
 		auto p_parent_version = _p_parent_version(); \

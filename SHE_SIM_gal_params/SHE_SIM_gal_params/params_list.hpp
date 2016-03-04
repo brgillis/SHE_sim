@@ -27,11 +27,6 @@
 #define SHE_SIM_GAL_PARAMS_PARAMS_LIST_HPP_
 
 #include <SHE_SIM_gal_params/common.hpp>
-#include <SHE_SIM_gal_params/params/alt_dependent_params.hpp>
-#include <SHE_SIM_gal_params/params/dependent_params.hpp>
-#include <SHE_SIM_gal_params/params/independent_params.hpp>
-#include <memory>
-#include <unordered_map>
 #include <utility>
 
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
@@ -42,6 +37,8 @@ namespace SHE_SIM {
 
 class ParamGenerator;
 class ParamHierarchyLevel;
+
+extern params_t default_params_map;
 
 // Function to get a list of all params
 
@@ -60,56 +57,14 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 {
 	params_t res;
 
-	// Survey level
-	INSERT_PARAM(exp_time);
-	INSERT_PARAM(num_images);
-	INSERT_PARAM(pixel_scale);
+	for( auto const & name_and_ptr : default_params_map )
+	{
+		name_t name = name_and_ptr.first;
+		param_ptr_t new_ptr(name_and_ptr.second->clone());
+		new_ptr->set_owner(owner);
 
-
-	// Image level
-	INSERT_PARAM(cluster_density);
-	INSERT_PARAM(galaxy_density);
-	INSERT_PARAM(image_area);
-	INSERT_PARAM(image_size_xp);
-	INSERT_PARAM(image_size_yp);
-	INSERT_PARAM(num_clusters);
-	INSERT_PARAM(num_fields);
-	INSERT_PARAM(subtracted_background);
-	INSERT_PARAM(unsubtracted_background);
-
-
-	// Cluster level
-	INSERT_PARAM(cluster_mass);
-	INSERT_PARAM(cluster_redshift);
-	INSERT_PARAM(cluster_num_satellites);
-	INSERT_PARAM(cluster_xp);
-	INSERT_PARAM(cluster_yp);
-
-	// Field level
-	INSERT_PARAM(num_field_galaxies);
-
-	// Galaxy-level params here
-
-	INSERT_PARAM(absolute_mag_vis);
-	INSERT_PARAM(apparent_mag_vis);
-	INSERT_PARAM(apparent_size_bulge);
-	INSERT_PARAM(apparent_size_disk);
-	INSERT_PARAM(bulge_class);
-	INSERT_PARAM(bulge_fraction);
-	INSERT_PARAM(galaxy_type);
-	INSERT_PARAM(physical_size_bulge);
-	INSERT_PARAM(physical_size_disk);
-	INSERT_PARAM(redshift);
-	INSERT_PARAM(rotation);
-	INSERT_PARAM(rp);
-	INSERT_PARAM(sersic_index);
-	INSERT_PARAM(shear_angle);
-	INSERT_PARAM(shear_magnitude);
-	INSERT_PARAM(stellar_mass);
-	INSERT_PARAM(theta_sat);
-	INSERT_PARAM(tilt);
-	INSERT_PARAM(xp);
-	INSERT_PARAM(yp);
+		res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
+	}
 
 	return res;
 

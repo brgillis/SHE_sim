@@ -53,11 +53,10 @@ protected:
 	// Protected members
 
 	flt_t _cached_value;
-	owner_t & _owner;
+	owner_t * _p_owner;
 	std::unordered_set<name_t> _dependant_names;
 	const ParamParam * _p_params;
 	const level_t * _p_generation_level;
-	gen_t & _rng;
 
 	// Protected methods
 
@@ -98,7 +97,7 @@ public:
 	 *
 	 * @param level_determined_at Which level of the hierarchy this will be generated at.
 	 */
-	ParamGenerator( owner_t & owner );
+	ParamGenerator( owner_t * const & p_owner );
 
 	/**
 	 * Virtual destructor.
@@ -107,30 +106,34 @@ public:
 
 	virtual name_t name() const = 0;
 
+	owner_t * get_p_owner();
+	owner_t const * get_p_owner() const;
+	owner_t & get_owner();
+	owner_t const & get_owner() const;
+	void set_p_owner(owner_t * const & p_owner);
+	void set_owner(owner_t & owner);
+
+	gen_t * get_p_rng();
+	gen_t const * get_p_rng() const;
+	gen_t & get_rng();
+	gen_t const & get_rng() const;
+
 	ParamParam const & get_params() const;
-
 	ParamParam const * const & get_p_params() const noexcept;
-
 	void set_p_params(ParamParam const * const & p);
 
 	level_t const & get_generation_level() const;
-
 	level_t const * const & get_p_generation_level() const;
-
 	void set_generation_level( level_t const & level );
-
 	void set_p_generation_level( level_t const * const & p_level );
 
 	flt_t const & get();
-
 	flt_t const & get_new();
 
 	flt_t const & request_value(name_t const & requester_name);
-
 	flt_t const & request_new_value(name_t const & requester_name);
 
 	ParamGenerator * request(name_t const & requester_name);
-
 	ParamGenerator * request_new(name_t const & requester_name);
 
 	const level_t & level_generated_at() const;

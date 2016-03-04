@@ -32,6 +32,7 @@
 
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/param_names.hpp>
+#include "SHE_SIM_gal_params/levels/Cluster.hpp"
 #include "SHE_SIM_gal_params/levels/Survey.hpp"
 #include "SHE_SIM_gal_params/param_params/IndFixed.hpp"
 
@@ -50,6 +51,10 @@ BOOST_AUTO_TEST_SUITE (Generate_Parameters_Test)
 BOOST_FIXTURE_TEST_CASE(test_gen_params, gen_params_fixture) {
 
 	BOOST_CHECK_NO_THROW(survey.generate_parameters());
+
+	Cluster cluster;
+
+	cluster.add_central_galaxy();
 
 	BOOST_CHECK_NO_THROW(survey.autofill_children());
 

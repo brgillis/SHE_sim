@@ -27,7 +27,11 @@
 #ifndef SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_
 #define SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_
 
-#define DEF_NAME(param) constexpr const char * param##_name = #param;
+#include "SHE_SIM_gal_params/common.hpp"
+
+namespace SHE_SIM {
+
+#define DEF_NAME(param) extern const name_t param##_name;
 
 // Survey level
 
@@ -84,5 +88,7 @@ DEF_NAME(xp);
 DEF_NAME(yp);
 
 #undef DEF_NAME
+
+} // namespace SHE_SIM
 
 #endif // SHE_SIM_GAL_PARAMS_PARAM_NAMES_HPP_

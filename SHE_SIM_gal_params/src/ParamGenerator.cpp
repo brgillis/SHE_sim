@@ -23,9 +23,11 @@
 
  \**********************************************************************/
 
+#include <limits>
+#include <stdexcept>
+
 #include <SHE_SIM_gal_params/common.hpp>
 #include <SHE_SIM_gal_params/default_param_params.hpp>
-#include <limits>
 
 #include "SHE_SIM_gal_params/ParamHierarchyLevel.hpp"
 #include "SHE_SIM_gal_params/ParamGenerator.hpp"
@@ -40,19 +42,21 @@ namespace SHE_SIM
 
 flt_t ParamGenerator::_request_param_value(name_t const & param_name)
 {
-	return _owner._request_param_value(param_name, name());
+	if(!_p_owner) throw std::logic_error("Cannot request another param value from a default ParamGenerator.");
+	return _p_owner->_request_param_value(param_name, name());
 }
 
 ParamGenerator * ParamGenerator::_request_param(name_t const & param_name)
 {
-	return _owner._request_param(param_name, name());
+	if(!_p_owner) return nullptr;
+	return _p_owner->_request_param(param_name, name());
 }
 
 void ParamGenerator::_generate()
 {
 	if(_p_params->get_mode()==ParamParam::INDEPENDENT)
 	{
-		_cached_value = _p_params->get_independently(_rng);
+		_cached_value = _p_params->get_independently(get_rng());
 	}
 	else
 	{
@@ -76,16 +80,19 @@ void ParamGenerator::_clear_cache()
 {
 	_decache();
 
-	// Uncache for any children
-	for( auto const & child : _owner._children )
+	if(_p_owner)
 	{
-		child->_clear_param_cache(name());
-	}
+		// Uncache for any children
+		for( auto const & child : _p_owner->_children )
+		{
+			child->_clear_param_cache(name());
+		}
 
-	// Uncache any dependants as well
-	for( auto const & dependant_name : _dependant_names )
-	{
-		_owner._clear_param_cache(dependant_name);
+		// Uncache any dependants as well
+		for( auto const & dependant_name : _dependant_names )
+		{
+			_p_owner->_clear_param_cache(dependant_name);
+		}
 	}
 
 	_dependant_names.clear();
@@ -98,7 +105,8 @@ void ParamGenerator::_add_dependant(name_t const & dependant_name)
 
 bool ParamGenerator::_generated_at_this_level() const
 {
-	return _owner.get_hierarchy_level() <= level_generated_at();
+	if(!_p_owner) return true;
+	return _p_owner->get_hierarchy_level() <= level_generated_at();
 }
 
 void ParamGenerator::_determine_value()
@@ -121,14 +129,16 @@ void ParamGenerator::_determine_new_value()
 
 ParamGenerator * ParamGenerator::_p_parent_version()
 {
-	auto p_parent = _owner.get_parent();
+	if(!_p_owner) return nullptr;
+	auto p_parent = _p_owner->get_parent();
 	if(!p_parent) return nullptr;
 	return p_parent->get_param(name());
 }
 
 ParamGenerator const * ParamGenerator::_p_parent_version() const
 {
-	auto p_parent = _owner.get_parent();
+	if(!_p_owner) return nullptr;
+	auto p_parent = _p_owner->get_parent();
 	if(!p_parent) return nullptr;
 	return p_parent->get_param(name());
 }
@@ -145,13 +155,61 @@ ParamGenerator const & ParamGenerator::_parent_version() const
 	return *_p_parent_version();
 }
 
-ParamGenerator::ParamGenerator( owner_t & owner )
+ParamGenerator::ParamGenerator( owner_t * const & p_owner )
 : _cached_value(UNCACHED_VALUE),
-  _owner(owner),
+  _p_owner(p_owner),
   _p_params(nullptr),
-  _p_generation_level(nullptr),
-  _rng(_owner._rng)
+  _p_generation_level(nullptr)
 {
+}
+
+
+ParamGenerator::owner_t * ParamGenerator::get_p_owner()
+{
+	return _p_owner;
+}
+ParamGenerator::owner_t const * ParamGenerator::get_p_owner() const
+{
+	return _p_owner;
+}
+ParamGenerator::owner_t & ParamGenerator::get_owner()
+{
+	if(!_p_owner) throw std::logic_error("Owner of ParamGenerator requested for default generator.");
+	return *_p_owner;
+}
+ParamGenerator::owner_t const & ParamGenerator::get_owner() const
+{
+	if(!_p_owner) throw std::logic_error("Owner of ParamGenerator requested for default generator.");
+	return *_p_owner;
+}
+void ParamGenerator::set_p_owner(ParamGenerator::owner_t * const & p_owner)
+{
+	_p_owner = p_owner;
+}
+void ParamGenerator::set_owner(ParamGenerator::owner_t & owner)
+{
+	_p_owner = &owner;
+}
+
+gen_t * ParamGenerator::get_p_rng()
+{
+	if(!get_p_owner()) return nullptr;
+	return &(get_p_owner()->_rng);
+}
+gen_t const * ParamGenerator::get_p_rng() const
+{
+	if(!get_p_owner()) return nullptr;
+	return &(get_p_owner()->_rng);
+}
+gen_t & ParamGenerator::get_rng()
+{
+	if(!get_p_owner()) throw std::logic_error("RNG of ParamGenerator requested for default generator.");
+	return get_p_owner()->_rng;
+}
+gen_t const & ParamGenerator::get_rng() const
+{
+	if(!get_p_owner()) throw std::logic_error("RNG of ParamGenerator requested for default generator.");
+	return get_p_owner()->_rng;
 }
 
 void ParamGenerator::set_p_params(ParamParam const * const & p)
@@ -182,7 +240,7 @@ level_t const * const & ParamGenerator::get_p_generation_level() const
 
 void ParamGenerator::set_generation_level( level_t const & level )
 {
-	_owner.set_generation_level(name(),level);
+	_p_owner->set_generation_level(name(),level);
 }
 
 void ParamGenerator::set_p_generation_level( level_t const * const & p_level )
@@ -237,7 +295,7 @@ flt_t const & ParamGenerator::request_new_value(name_t const & requester_name)
 
 const level_t & ParamGenerator::level_generated_at() const
 {
-	return _owner.get_generation_level(name());
+	return _p_owner->get_generation_level(name());
 }
 
 } // namespace SHE_SIM

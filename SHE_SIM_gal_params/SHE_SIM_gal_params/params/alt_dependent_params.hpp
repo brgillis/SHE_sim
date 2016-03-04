@@ -62,7 +62,7 @@ private: \
 		} \
 		else if(_p_params->get_mode()==ParamParam::INDEPENDENT) \
 		{ \
-			_cached_value = _p_params->get_independently(_rng); \
+			_cached_value = _p_params->get_independently(get_rng()); \
 		} \
 		else \
 		{ \
@@ -71,8 +71,8 @@ private: \
 	} \
 \
 public: \
-	param_name##_obj( owner_t & owner) \
-	: ParamGenerator(owner) \
+	param_name##_obj( owner_t * const & p_owner) \
+	: ParamGenerator(p_owner) \
 	{ \
 		/* See if we can get generation level and params from the parent */ \
 		auto p_parent_version = _p_parent_version(); \
@@ -118,20 +118,20 @@ public: \
 
 ALT_DEPENDENT_PARAM(apparent_size_bulge,
 		_cached_value = get_angle_from_distance(REQUEST(physical_size_bulge), REQUEST(redshift)),
-		_cached_value = generate_apparent_size_bulge(REQUEST(apparent_mag_vis), _rng));
+		_cached_value = generate_apparent_size_bulge(REQUEST(apparent_mag_vis), get_rng()));
 
 ALT_DEPENDENT_PARAM(apparent_size_disk,
 		_cached_value = get_angle_from_distance(REQUEST(physical_size_bulge), REQUEST(redshift)),
-		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), _rng));
+		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), get_rng()));
 
 ALT_DEPENDENT_PARAM(bulge_fraction,
 		_cached_value = get_bulge_fraction_from_class(REQUEST(bulge_class)),
 		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(sersic_index),
-				_rng));
+				get_rng()));
 
 ALT_DEPENDENT_PARAM(sersic_index,
-		_cached_value = generate_sersic_index_from_bulge_class(REQUEST(bulge_class), _rng),
-		_cached_value = generate_sersic_index_from_apparent_mag_vis(REQUEST(apparent_mag_vis), _rng));
+		_cached_value = generate_sersic_index_from_bulge_class(REQUEST(bulge_class), get_rng()),
+		_cached_value = generate_sersic_index_from_apparent_mag_vis(REQUEST(apparent_mag_vis), get_rng()));
 
 // Undef the macro
 #undef ALT_DEPENDENT_PARAM

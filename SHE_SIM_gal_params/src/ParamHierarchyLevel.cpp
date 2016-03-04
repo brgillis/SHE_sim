@@ -157,8 +157,7 @@ void ParamHierarchyLevel::_clear_own_param_cache()
 // Public methods
 
 ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent)
-: _p_parent(p_parent),
-  _params(get_full_params_map(*this))
+: _p_parent(p_parent)
 {
 	// Inherit parameters and generation_levels from parent if it exists
 	if(p_parent)
@@ -166,6 +165,16 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent)
 		// Get ID from the parent's number of children
 		_local_ID = p_parent->num_children();
 		set_seed(p_parent->get_seed());
+
+		// Deep copy parameters map from parent
+		for( auto const & param_name_and_ptr : p_parent->_params )
+		{
+			param_ptr_t new_param_ptr(param_name_and_ptr.second->clone());
+			new_param_ptr->set_p_owner(this);
+			auto new_param_name_and_ptr = std::make_pair( param_name_and_ptr.first ,
+					std::move(new_param_ptr) );
+			_params.insert( std::move(new_param_name_and_ptr) );
+		}
 	}
 	else
 	{
@@ -174,6 +183,9 @@ ParamHierarchyLevel::ParamHierarchyLevel(parent_ptr_t const & p_parent)
 
 		// Use default seed
 		set_seed();
+
+		// Use default parameters map
+		_params = get_full_params_map(*this);
 	}
 }
 
@@ -260,7 +272,11 @@ ParamHierarchyLevel & ParamHierarchyLevel::operator=(const ParamHierarchyLevel &
 	_params.clear();
 	for( auto const & param_name_and_ptr : other._params )
 	{
-		_params.insert( std::make_pair( param_name_and_ptr.first , param_ptr_t( param_name_and_ptr.second->clone() ) ) );
+		param_ptr_t new_param_ptr(param_name_and_ptr.second->clone());
+		new_param_ptr->set_p_owner(this);
+		auto new_param_name_and_ptr = std::make_pair( param_name_and_ptr.first ,
+				std::move(new_param_ptr) );
+		_params.insert( std::move(new_param_name_and_ptr) );
 	}
 
 	_local_param_params.clear();
