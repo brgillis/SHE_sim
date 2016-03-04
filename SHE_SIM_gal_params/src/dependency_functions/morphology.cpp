@@ -203,7 +203,8 @@ flt_t generate_sersic_index_from_bulge_class( flt_t const & bulge_class, gen_t &
 		stddev += sersic_index_data::bulge_sersic_stds[il+1]*d;
 	}
 
-	flt_t sersic_index = trunc_Gaus_rand( mean, stddev, 0.5, 6.5, rng);
+	flt_t sersic_index = trunc_Gaus_rand( mean, stddev, dv::sersic_index_min,
+			dv::sersic_index_max, rng);
 
 	return sersic_index;
 }

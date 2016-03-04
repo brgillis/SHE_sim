@@ -113,8 +113,8 @@ constexpr const flt_t bulge_fraction = 1./3.;
 
 constexpr const flt_t galaxy_type = 0.;
 
-constexpr const flt_t sersic_index_min = 0.5; // Sersic index
-constexpr const flt_t sersic_index_max = 6.5; // Sersic index
+constexpr const flt_t sersic_index_min = 0.3; // Limits coded into GalSim
+constexpr const flt_t sersic_index_max = 6.2;
 
 constexpr const flt_t galaxy_redshift_enhancement = 1.;
 constexpr const flt_t galaxy_redshift_min = 0.2;
