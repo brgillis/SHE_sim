@@ -51,8 +51,6 @@ void insert_param(T_map & res, ParamHierarchyLevel & owner)
 	res.insert(std::make_pair(std::move(name),std::move(new_ptr)));
 }
 
-#define INSERT_PARAM(param) insert_param<param##_obj>(res,owner);
-
 inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 {
 	params_t res;
@@ -69,8 +67,6 @@ inline params_t get_full_params_map(ParamHierarchyLevel & owner)
 	return res;
 
 } // params_t get_full_params_map()
-
-#undef INSERT_PARAM
 
 } // namespace SHE_SIM
 
