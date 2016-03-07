@@ -111,6 +111,10 @@ constexpr const flt_t apparent_mag_vis_max = 24.5; // kpc
 
 constexpr const flt_t bulge_fraction = 1./3.;
 
+constexpr const flt_t bulge_intrinsic_ellipticity_sigma = 0.25;
+constexpr const flt_t bulge_intrinsic_ellipticity_max = 0.9;
+constexpr const flt_t bulge_intrinsic_ellipticity_p = 4.;
+
 constexpr const flt_t galaxy_type = 0.;
 
 constexpr const flt_t sersic_index_min = 0.3; // Limits coded into GalSim
@@ -128,7 +132,7 @@ constexpr const flt_t sersic_index = 2.;
 constexpr const flt_t shear_angle_min = 0.; // degrees
 constexpr const flt_t shear_angle_max = 180.; // degrees
 
-constexpr const flt_t shear_magnitude_sigma = 0.25;
+constexpr const flt_t shear_magnitude_sigma = 0.03;
 constexpr const flt_t shear_magnitude_max = 0.9;
 constexpr const flt_t shear_magnitude_p = 4.;
 

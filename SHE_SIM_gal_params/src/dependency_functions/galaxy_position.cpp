@@ -65,14 +65,14 @@ flt_t generate_rp( flt_t const & galaxy_type, flt_t const & cluster_mass, flt_t 
 	return rp;
 }
 
-flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng  )
+flt_t get_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp )
 {
 	return cluster_xp + rp * std::cos(theta_sat*M_PI/180);
 }
 
-flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng  )
+flt_t get_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp )
 {
-	return generate_xp( rp, 45-theta_sat, cluster_yp, rng);
+	return get_xp( rp, 45-theta_sat, cluster_yp);
 }
 
 }

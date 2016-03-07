@@ -46,19 +46,17 @@ IMPLEMENT_PARAM(cluster_redshift, dv::cluster_level, IndClusterRedshift(
 	,
 		_cached_value = _p_params->get_independently(get_rng());
 	);
-IMPLEMENT_PARAM(cluster_xp, dv::cluster_level, IndUniform(dv::cluster_xp_min,
-														dv::cluster_xp_max)
+IMPLEMENT_PARAM(cluster_xp, dv::cluster_level, Calculated
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = IceBRG::drand(0.,REQUEST(image_size_xp));
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = IceBRG::drand(0.,REQUEST(image_size_xp));
 	);
-IMPLEMENT_PARAM(cluster_yp, dv::cluster_level, IndUniform(dv::cluster_yp_min,
-														dv::cluster_yp_max)
+IMPLEMENT_PARAM(cluster_yp, dv::cluster_level, Calculated
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = IceBRG::drand(0.,REQUEST(image_size_yp));
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = IceBRG::drand(0.,REQUEST(image_size_yp));
 	);
 
 IMPLEMENT_PARAM(cluster_num_satellites, dv::cluster_level, Calculated
@@ -88,9 +86,10 @@ IMPLEMENT_PARAM(num_field_galaxies, dv::field_level, Calculated
 			z_min = p_redshift_pp->get_z_min();
 			z_max = p_redshift_pp->get_z_max();
 		}
-		 _cached_value = generate_count( (REQUEST(image_area) * REQUEST(galaxy_density)) -
-				 get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
-						 z_min, z_max), get_rng());
+		flt_t ex_num_gals = REQUEST(image_area) * REQUEST(galaxy_density);
+		flt_t ex_num_cluster_gals = get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
+				 z_min, z_max);
+		 _cached_value = generate_count( ex_num_gals - ex_num_cluster_gals, get_rng());
 	,
 		const IndClusterRedshift * p_redshift_pp = dynamic_cast<const IndClusterRedshift *>(
 				_request_param(cluster_redshift_name)->get_p_params());
@@ -106,9 +105,10 @@ IMPLEMENT_PARAM(num_field_galaxies, dv::field_level, Calculated
 			z_min = p_redshift_pp->get_z_min();
 			z_max = p_redshift_pp->get_z_max();
 		}
-		 _cached_value = generate_count( (REQUEST(image_area) * REQUEST(galaxy_density)) -
-				 get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
-						 z_min, z_max), get_rng());
+		flt_t ex_num_gals = REQUEST(image_area) * REQUEST(galaxy_density);
+		flt_t ex_num_cluster_gals = get_ex_num_cluster_galaxies(REQUEST(image_area) * REQUEST(cluster_density),
+				 z_min, z_max);
+		 _cached_value = generate_count( ex_num_gals - ex_num_cluster_gals, get_rng());
 	);
 
 

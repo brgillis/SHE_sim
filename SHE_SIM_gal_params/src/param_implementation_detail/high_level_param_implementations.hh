@@ -76,7 +76,7 @@ IMPLEMENT_PARAM(image_size_xp, dv::image_level, IndFixed(dv::image_size_xp)
 	,
 		_cached_value = _p_params->get_independently(get_rng());
 	);
-IMPLEMENT_PARAM(image_size_yp, dv::image_level, IndFixed(dv::image_size_xp)
+IMPLEMENT_PARAM(image_size_yp, dv::image_level, IndFixed(dv::image_size_yp)
 	,
 		_cached_value = _p_params->get_independently(get_rng());
 	,

@@ -99,6 +99,8 @@ DECLARE_PARAM(apparent_size_bulge);
 DECLARE_PARAM(apparent_size_disk);
 DECLARE_PARAM(bulge_class);
 DECLARE_PARAM(bulge_fraction);
+DECLARE_PARAM(bulge_intrinsic_ellipticity);
+DECLARE_PARAM(bulge_ellipticity);
 DECLARE_PARAM(galaxy_type);
 DECLARE_PARAM(physical_size_bulge);
 DECLARE_PARAM(physical_size_disk);

@@ -52,10 +52,6 @@ BOOST_FIXTURE_TEST_CASE(test_gen_params, gen_params_fixture) {
 
 	BOOST_CHECK_NO_THROW(survey.generate_parameters());
 
-	Cluster cluster;
-
-	cluster.add_central_galaxy();
-
 	BOOST_CHECK_NO_THROW(survey.autofill_children());
 
 	BOOST_CHECK_NO_THROW(survey.generate_parameters());

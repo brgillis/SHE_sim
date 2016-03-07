@@ -34,7 +34,9 @@
 #include "SHE_SIM_gal_params/common.hpp"
 #include "SHE_SIM_gal_params/default_values.hpp"
 
+#include "IceBRG_main/math/misc_math.hpp"
 #include "IceBRG_main/math/random/random_functions.hpp"
+#include "IceBRG_main/units/unit_conversions.hpp"
 
 #include "IceBRG_physics/luminosity.hpp"
 
@@ -73,6 +75,23 @@ flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const 
 	return IceBRG::contracted_Rayleigh_rand( dv::shear_magnitude_sigma,
 			dv::shear_magnitude_max, dv::shear_magnitude_p , rng );
 }
+
+flt_t get_bulge_ellipticity( flt_t const & bulge_intrinsic_ellipticity, flt_t const & tilt )
+{
+	flt_t int_r_square = IceBRG::square((1-bulge_intrinsic_ellipticity)/
+			(1+bulge_intrinsic_ellipticity));
+
+	flt_t sin2_tilt = IceBRG::square(std::sin(tilt*IceBRG::unitconv::degtorad));
+	flt_t cos2_tilt = 1-sin2_tilt;
+
+	flt_t r = std::sqrt(int_r_square*sin2_tilt + cos2_tilt);
+
+	flt_t bulge_ellipticity = (1-r)/(1+r);
+
+	return bulge_ellipticity;
+}
+
+
 
 
 } // namespace SHE_SIM

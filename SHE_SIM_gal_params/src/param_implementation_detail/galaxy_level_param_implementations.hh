@@ -68,6 +68,21 @@ IMPLEMENT_PARAM(bulge_fraction, dv::galaxy_level, Calculated
 		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(sersic_index),
 					get_rng());
 	);
+IMPLEMENT_PARAM(bulge_intrinsic_ellipticity, dv::galaxy_level,
+	IndContRayleigh(dv::bulge_intrinsic_ellipticity_sigma,
+			dv::bulge_intrinsic_ellipticity_max,
+			dv::bulge_intrinsic_ellipticity_p)
+	,
+		_cached_value = _p_params->get_independently(get_rng());
+	,
+		_cached_value = _p_params->get_independently(get_rng());
+	);
+IMPLEMENT_PARAM(bulge_ellipticity, dv::galaxy_level, Calculated
+	,
+		_cached_value = get_bulge_ellipticity(REQUEST(bulge_intrinsic_ellipticity),REQUEST(tilt));
+	,
+		_cached_value = get_bulge_ellipticity(REQUEST(bulge_intrinsic_ellipticity),REQUEST(tilt));
+	);
 IMPLEMENT_PARAM(galaxy_type, dv::galaxy_level, IndFixed(dv::galaxy_type)
 	,
 		_cached_value = _p_params->get_independently(get_rng());
@@ -205,41 +220,41 @@ IMPLEMENT_PARAM(tilt, dv::galaxy_level, IndUniform(dv::tilt_min, dv::tilt_max)
 		else
 			_cached_value = _p_params->get_independently(get_rng());
 	);
-IMPLEMENT_PARAM(xp, dv::galaxy_level, IndUniform(dv::xp_min, dv::yp_max)
+IMPLEMENT_PARAM(xp, dv::galaxy_level, Calculated
 	,
 		if(is_field_galaxy(REQUEST(galaxy_type)))
-			_cached_value = _p_params->get_independently(get_rng());
-		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = IceBRG::drand(0.,REQUEST(image_size_xp));
+		else if(is_central_galaxy(REQUEST(galaxy_type)))
 			_cached_value = REQUEST(cluster_xp);
 		else
-			_cached_value = generate_xp(REQUEST(rp), REQUEST(theta_sat),
-					REQUEST(cluster_xp),  get_rng());
+			_cached_value = get_xp(REQUEST(rp), REQUEST(theta_sat),
+					REQUEST(cluster_xp));
 	,
 		if(is_field_galaxy(REQUEST(galaxy_type)))
-			_cached_value = _p_params->get_independently(get_rng());
-		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = IceBRG::drand(0.,REQUEST(image_size_xp));
+		else if(is_central_galaxy(REQUEST(galaxy_type)))
 			_cached_value = REQUEST(cluster_xp);
 		else
-			_cached_value = generate_xp(REQUEST(rp), REQUEST(theta_sat),
-					REQUEST(cluster_xp),  get_rng());
+			_cached_value = get_xp(REQUEST(rp), REQUEST(theta_sat),
+					REQUEST(cluster_xp));
 	);
-IMPLEMENT_PARAM(yp, dv::galaxy_level, IndUniform(dv::yp_min, dv::yp_max)
+IMPLEMENT_PARAM(yp, dv::galaxy_level, Calculated
 	,
 		if(is_field_galaxy(REQUEST(galaxy_type)))
-			_cached_value = _p_params->get_independently(get_rng());
-		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = IceBRG::drand(0.,REQUEST(image_size_yp));
+		else if(is_central_galaxy(REQUEST(galaxy_type)))
 			_cached_value = REQUEST(cluster_yp);
 		else
-			_cached_value = generate_yp(REQUEST(rp), REQUEST(theta_sat),
-				REQUEST(cluster_yp), get_rng());
+			_cached_value = get_yp(REQUEST(rp), REQUEST(theta_sat),
+				REQUEST(cluster_yp));
 	,
 		if(is_field_galaxy(REQUEST(galaxy_type)))
-			_cached_value = _p_params->get_independently(get_rng());
-		if(is_central_galaxy(REQUEST(galaxy_type)))
+			_cached_value = IceBRG::drand(0.,REQUEST(image_size_yp));
+		else if(is_central_galaxy(REQUEST(galaxy_type)))
 			_cached_value = REQUEST(cluster_yp);
 		else
-			_cached_value = generate_yp(REQUEST(rp), REQUEST(theta_sat),
-				REQUEST(cluster_yp), get_rng());
+			_cached_value = get_yp(REQUEST(rp), REQUEST(theta_sat),
+				REQUEST(cluster_yp));
 	);
 
 #endif // SRC_PARAM_IMPLEMENTATION_DETAIL_GALAXY_LEVEL_PARAM_IMPLEMENTATIONS_HH_

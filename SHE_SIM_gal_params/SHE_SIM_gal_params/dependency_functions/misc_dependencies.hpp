@@ -120,13 +120,15 @@ flt_t generate_shear_magnitude( flt_t const & xp, flt_t const & yp, flt_t const 
 
 flt_t generate_stellar_mass( flt_t const & galaxy_type, flt_t const & redshift, gen_t & rng );
 
-flt_t generate_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp, gen_t & rng );
+flt_t get_xp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_xp );
 
-flt_t generate_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp, gen_t & rng );
+flt_t get_yp( flt_t const & rp, flt_t const & theta_sat, flt_t const & cluster_yp );
 
 flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng );
 
 flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );
+
+flt_t get_bulge_ellipticity( flt_t const & bulge_intrinsic_ellipticity, flt_t const & tilt );
 
 } // namespace SHE_SIM
 
