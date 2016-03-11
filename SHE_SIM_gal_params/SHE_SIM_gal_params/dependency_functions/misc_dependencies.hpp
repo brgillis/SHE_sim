@@ -128,8 +128,6 @@ flt_t generate_apparent_size_bulge( flt_t const & apparent_mag_vis, gen_t & rng 
 
 flt_t generate_apparent_size_disk( flt_t const & apparent_mag_vis, gen_t & rng );
 
-flt_t get_bulge_ellipticity( flt_t const & bulge_intrinsic_ellipticity, flt_t const & tilt );
-
 } // namespace SHE_SIM
 
 #endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_MISC_DEPENDENCIES_HPP_

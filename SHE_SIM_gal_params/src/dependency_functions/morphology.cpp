@@ -218,7 +218,7 @@ flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & ser
 
 flt_t get_bulge_class_from_fraction( flt_t const & bulge_frac )
 {
-	flt_t bulge_class = 2.5 - 3.*bulge_frac;
+	flt_t bulge_class = 3.5 - 4.*bulge_frac;
 
 	return bulge_class;
 }
@@ -229,7 +229,7 @@ flt_t get_bulge_fraction_from_class( flt_t const & bulge_class )
 	{
 		return dv::bulge_fraction;
 	}
-	flt_t bulge_frac = 2.5/3. - bulge_class/3.;
+	flt_t bulge_frac = 3.5/4. - bulge_class/4.;
 
 	// Enforce bounds
 	if( bulge_frac > 1. )
@@ -242,6 +242,32 @@ flt_t get_bulge_fraction_from_class( flt_t const & bulge_class )
 	}
 
 	return bulge_frac;
+}
+
+flt_t get_bulge_axis_ratio( flt_t const & sersic_index )
+{
+	if( sersic_index > dv::bulge_axis_ratio_n_cutoff )
+	{
+		return dv::bulge_axis_ratio_high_n;
+	}
+	else
+	{
+		return dv::bulge_axis_ratio_low_n;
+	}
+}
+
+flt_t get_bulge_ellipticity( flt_t const & bulge_axis_ratio, flt_t const & tilt )
+{
+	flt_t int_r_square = IceBRG::square(bulge_axis_ratio);
+
+	flt_t sin2_tilt = IceBRG::square(std::sin(tilt*IceBRG::unitconv::degtorad));
+	flt_t cos2_tilt = 1-sin2_tilt;
+
+	flt_t r = std::sqrt(int_r_square*sin2_tilt + cos2_tilt);
+
+	flt_t bulge_ellipticity = (1-r)/(1+r);
+
+	return bulge_ellipticity;
 }
 
 

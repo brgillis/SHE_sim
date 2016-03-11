@@ -45,8 +45,8 @@ constexpr const int_t image_group_level = 1;
 
 constexpr const int_t image_level = 2;
 
-constexpr const flt_t cluster_density = 1.; // #/arcmin^2
-constexpr const flt_t galaxy_density = 100.; // #/arcmin^2
+constexpr const flt_t cluster_density = 1.398166241099125; // #/arcmin^2
+constexpr const flt_t galaxy_density = 73.98910170237812; // #/arcmin^2
 
 constexpr const flt_t num_fields = 1.; // #/arcsec^2
 
@@ -111,6 +111,10 @@ constexpr const flt_t apparent_mag_vis_max = 24.5; // kpc
 
 constexpr const flt_t bulge_fraction = 1./3.;
 
+constexpr const flt_t bulge_axis_ratio_high_n = 0.64;
+constexpr const flt_t bulge_axis_ratio_low_n = 0.54;
+constexpr const flt_t bulge_axis_ratio_n_cutoff = 2.25;
+
 constexpr const flt_t bulge_intrinsic_ellipticity_sigma = 0.25;
 constexpr const flt_t bulge_intrinsic_ellipticity_max = 0.9;
 constexpr const flt_t bulge_intrinsic_ellipticity_p = 4.;
@@ -135,6 +139,9 @@ constexpr const flt_t shear_angle_max = 180.; // degrees
 constexpr const flt_t shear_magnitude_sigma = 0.03;
 constexpr const flt_t shear_magnitude_max = 0.9;
 constexpr const flt_t shear_magnitude_p = 4.;
+
+constexpr const flt_t spin_min = 0.; // degrees
+constexpr const flt_t spin_max = 360.; // degrees
 
 constexpr const flt_t theta_sat_min = 0.;
 constexpr const flt_t theta_sat_max = 360.;

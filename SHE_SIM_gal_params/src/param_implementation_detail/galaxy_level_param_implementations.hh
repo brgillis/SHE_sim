@@ -51,7 +51,7 @@ IMPLEMENT_PARAM(apparent_size_bulge, dv::galaxy_level, Calculated
 	);
 IMPLEMENT_PARAM(apparent_size_disk, dv::galaxy_level, Calculated
 	,
-		_cached_value = get_angle_from_distance(REQUEST(physical_size_bulge), REQUEST(redshift));
+		_cached_value = get_angle_from_distance(REQUEST(physical_size_disk), REQUEST(redshift));
 	,
 		_cached_value = generate_apparent_size_disk(REQUEST(apparent_mag_vis), get_rng());
 	);
@@ -68,20 +68,17 @@ IMPLEMENT_PARAM(bulge_fraction, dv::galaxy_level, Calculated
 		_cached_value = generate_bulge_fraction(REQUEST(apparent_mag_vis), REQUEST(sersic_index),
 					get_rng());
 	);
-IMPLEMENT_PARAM(bulge_intrinsic_ellipticity, dv::galaxy_level,
-	IndContRayleigh(dv::bulge_intrinsic_ellipticity_sigma,
-			dv::bulge_intrinsic_ellipticity_max,
-			dv::bulge_intrinsic_ellipticity_p)
+IMPLEMENT_PARAM(bulge_axis_ratio, dv::galaxy_level, Calculated
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = get_bulge_axis_ratio(REQUEST(sersic_index));
 	,
-		_cached_value = _p_params->get_independently(get_rng());
+		_cached_value = get_bulge_axis_ratio(REQUEST(sersic_index));
 	);
 IMPLEMENT_PARAM(bulge_ellipticity, dv::galaxy_level, Calculated
 	,
-		_cached_value = get_bulge_ellipticity(REQUEST(bulge_intrinsic_ellipticity),REQUEST(tilt));
+		_cached_value = get_bulge_ellipticity(REQUEST(bulge_axis_ratio),REQUEST(tilt));
 	,
-		_cached_value = get_bulge_ellipticity(REQUEST(bulge_intrinsic_ellipticity),REQUEST(tilt));
+		_cached_value = get_bulge_ellipticity(REQUEST(bulge_axis_ratio),REQUEST(tilt));
 	);
 IMPLEMENT_PARAM(galaxy_type, dv::galaxy_level, IndFixed(dv::galaxy_type)
 	,
@@ -193,6 +190,12 @@ IMPLEMENT_PARAM(shear_magnitude, dv::galaxy_level, IndContRayleigh(dv::shear_mag
 	,
 		_cached_value = generate_shear_magnitude(REQUEST(xp), REQUEST(yp),
 				REQUEST(redshift), get_rng());
+	);
+IMPLEMENT_PARAM(spin, dv::galaxy_level, IndUniform(dv::spin_min, dv::spin_max)
+	,
+		_cached_value = _p_params->get_independently(get_rng());
+	,
+		_cached_value = _p_params->get_independently(get_rng());
 	);
 IMPLEMENT_PARAM(stellar_mass, dv::galaxy_level, Calculated
 	,

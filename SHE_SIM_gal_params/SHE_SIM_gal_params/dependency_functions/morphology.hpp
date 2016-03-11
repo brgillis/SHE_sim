@@ -62,6 +62,10 @@ flt_t generate_bulge_fraction( flt_t const & apparent_mag_vis, flt_t const & ser
 flt_t get_bulge_class_from_fraction( flt_t const & bulge_fraction );
 flt_t get_bulge_fraction_from_class( flt_t const & bulge_class );
 
+flt_t get_bulge_axis_ratio( flt_t const & sersic_index );
+
+flt_t get_bulge_ellipticity( flt_t const & bulge_axis_ratio, flt_t const & tilt );
+
 }
 
 #endif // SHE_SIM_GAL_PARAMS_DEPENDENCY_FUNCTIONS_sersic_index_HPP_
