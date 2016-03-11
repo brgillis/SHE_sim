@@ -18,7 +18,7 @@ INCLUDE=-I${FITSIO_INCDIR}
 LDLIBS = -L/home/brg/lib/cfitsio -lcfitsio 
 
 
-image=galsim3d_gen_models
+image=galsim3d_gen_models_v2
 #image=fit_goods_bvizyjh
 
 
